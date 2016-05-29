@@ -1,9 +1,16 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static game.CellState.*;
+import static game.Ship.Direction;
+import static game.Ship.Direction.HORIZONTAL;
+import static game.Ship.Direction.VERTICAL;
+import static game.Ship.Size;
+import static game.Ship.Size.*;
 
 public class Board {
     protected Cell[][] matrix;
@@ -15,6 +22,20 @@ public class Board {
             for (int j = 0; j < matrix.length; j++) {
                 matrix[i][j] = new Cell(i, j, null);
             }
+        }
+    }
+
+    public static boolean coordinateCorrect(int coordinate) {
+        return coordinate < 10 && coordinate >= 0;
+    }
+
+    private static boolean coordinatesCorrect(int x, int y) {
+        return coordinateCorrect(x) && coordinateCorrect(y);
+    }
+
+    private static void verifyCoordinatesCorrect(int x, int y) {
+        if (!coordinatesCorrect(x, y)) {
+            throw new CellOutOfBoundsException(x, y);
         }
     }
 
@@ -44,34 +65,56 @@ public class Board {
         return result;
     }
 
-    public void addShip(Ship ship) {
-        shipList.add(ship);
-        int x = ship.getX();
-        int y = ship.getY();
-        for (int i = 0; i < ship.getSize(); i++) {
-            Cell cell = getCellAt(x, y);
-            cell.setShip(ship);
-            cell.setState(SHIP);
-            if (ship.isVertical()) {
-                x++;
-            } else {
-                y++;
-            }
+    public void addShip(int x, int y, Direction direction, Size size) {
+        Set<Cell> shipCells = new HashSet<>();
+        int xCoord = x;
+        int yCoord = y;
+        for (int i = 0; i < size.value(); i++) {
+            verifyCoordinatesCorrect(xCoord, yCoord);
+            Cell cell = getCellAt(xCoord, yCoord);
+            if (!cell.isBounded() || cell.getState() != SHIP) {
+                shipCells.add(cell);
+                if (direction == VERTICAL) {
+                    xCoord++;
+                } else {
+                    yCoord++;
+                }
+            } else
+                throw new IllegalArgumentException("Cell x = " + xCoord + ", y = " + yCoord + " is already occupied.");
         }
+        Ship ship = new Ship(x, y, direction, size.value());
+        shipCells.forEach(e -> {
+            e.setState(SHIP);
+            e.setShip(ship);
+        });
+        ship.setCellList(shipCells);
+        Set<Cell> adjacentCells = getAdjacentCellsForShip(ship);
+        ship.setBoundedCells(adjacentCells);
+        adjacentCells.forEach(e -> e.setBounded(true));
+    }
+
+    public void addShip(int x, int y, Size size) {
+        addShip(x, y, HORIZONTAL, size);
+    }
+
+    private Set<Cell> getAdjacentCellsForShip(Ship ship) {
+        Set<Cell> adjacentShipCells = new HashSet<>();
+        Set<Cell> shipCells = ship.getCellList();
+        shipCells.forEach(e -> getAdjacentCellsForCell(e).forEach(adjacentShipCells::add));
+        return adjacentShipCells;
     }
 
     protected void putHardCodedShips() {
-        addShip(new Ship(0, 0, 4, this));
-        addShip(new Ship(0, 5, 3, this));
-        addShip(new Ship(2, 0, true, 3, this));
-        addShip(new Ship(2, 2, 2, this));
-        addShip(new Ship(2, 5, 2, this));
-        addShip(new Ship(2, 8, 2, this));
-        addShip(new Ship(4, 2, 1, this));
-        addShip(new Ship(4, 4, 1, this));
-        addShip(new Ship(4, 6, 1, this));
-        addShip(new Ship(4, 8, 1, this));
-        // TODO: 29.05.2016  add putRandomShipsMethod
+        addShip(0, 0, FOUR);
+        addShip(0, 5, THREE);
+        addShip(2, 0, VERTICAL, THREE);
+        addShip(2, 2, TWO);
+        addShip(2, 5, TWO);
+        addShip(2, 8, TWO);
+        addShip(4, 2, ONE);
+        addShip(4, 4, ONE);
+        addShip(4, 6, ONE);
+        addShip(4, 8, ONE);
     }
 
     public FireResult fire(int x, int y) {
@@ -86,8 +129,7 @@ public class Board {
             Ship ship = cell.getShip();
             ship.hit();
             if (ship.isDead()) {
-//                markAdjacentMissForShipAt(cell);
-//                ship.getCellList().forEach(e-> e.setState());
+                ship.getBoundedCells().forEach(e -> e.setState(MISS));
                 return FireResult.DEAD;
             } else {
                 return FireResult.HIT;
@@ -97,62 +139,28 @@ public class Board {
     }
 
     private void verifyFireAllowed(int x, int y) {
-        boolean coordinatesCorrect = verifyCoordinates(x, y);
-        if (coordinatesCorrect && getCellAt(x, y).getState() == MISS || getCellAt(x, y).getState() == HIT) {
+        verifyCoordinatesCorrect(x, y);
+        if (getCellAt(x, y).getState() == MISS || getCellAt(x, y).getState() == HIT) {
             throw new IllegalMoveException("x = " + x + ", y = ");
         }
     }
-
-//    private void markAdjacentMissForShipAt(Cell cell) {
-//        getAdjacentCellsForShipAt(cell).forEach(c -> c.setState(MISS));
-//    }
 
     public Cell getCellAt(int x, int y) {
         return matrix[x][y];
     }
 
-    public static boolean verifyCoordinate(int coordinate) {
-        return coordinate < 10 && coordinate >= 0;
+    private Set<Cell> getAdjacentCellsForCell(Cell cell) {
+        Set<Cell> adjacentCells = new HashSet<>();
+        for (int x = cell.getX() - 1; x < cell.getX() + 2; x++) {
+            for (int y = cell.getY() - 1; y < cell.getY() + 2; y++) {
+                if (coordinatesCorrect(x, y)) {
+                    if (x == cell.getX() && y == cell.getY()) {
+                        continue;
+                    }
+                    adjacentCells.add(getCellAt(x, y));
+                }
+            }
+        }
+        return adjacentCells;
     }
-
-    private boolean verifyCoordinates(int x, int y) {
-        return verifyCoordinate(x) && verifyCoordinate(y);
-    }
-
-//    private Set<Cell> getAdjacentCellsForShipAt(Cell cell) {
-//        Ship ship = cell.getShip();
-//        Set<Cell> shipCells = new HashSet<>();
-//        int x = ship.getX();
-//        int y = ship.getY();
-//        int size = ship.getSize();
-//        for (int i = 0; i < size; i++) {
-//            shipCells.add(getCellAt(x, y));
-//            if (ship.isVertical()) {
-//                x++;
-//            } else {
-//                y++;
-//            }
-//        }
-//
-//        Set<Cell> adjacentShipCells = new HashSet<>();
-//        shipCells.forEach(e -> getAdjacentCellsForCell(e).forEach(adjacentShipCells::add));
-//
-//        return adjacentShipCells;
-//    }
-
-//    private Set<Cell> getAdjacentCellsForCell(Cell cell) {
-//        Set<Cell> adjacentCells = new HashSet<>();
-//
-//        for (int x = cell.getX() - 1; x < cell.getX() + 2; x++) {
-//            for (int y = cell.getY() - 1; y < cell.getY() + 2; y++) {
-//                if (verifyCoordinates(x, y)) {
-//                    if (x == cell.getX() && y == cell.getY()) {
-//                        continue;
-//                    }
-//                    adjacentCells.add(getCellAt(x, y));
-//                }
-//            }
-//        }
-//        return adjacentCells;
-//    }
 }

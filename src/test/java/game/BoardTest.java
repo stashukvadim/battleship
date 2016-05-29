@@ -4,6 +4,9 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.Test;
 
 import static game.FireResult.*;
+import static game.Ship.Direction.VERTICAL;
+import static game.Ship.Size.FOUR;
+import static game.Ship.Size.ONE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -34,8 +37,7 @@ public class BoardTest {
     @Test
     public void testAddShip() {
         Board board = new Board();
-        Ship ship = new Ship(0, 0, 1, board);
-        board.addShip(ship);
+        board.addShip(0, 0, ONE);
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
                 "0 S _ _ _ _ _ _ _ _ _ \n" +
@@ -51,10 +53,11 @@ public class BoardTest {
         assertThat(actual).isEqualTo(expected);
     }
 
+    @SuppressWarnings("Duplicates")
     @Test
     public void testAddShipWith4CellsVertical() {
         Board board = new Board();
-        board.addShip(new Ship(1, 1, true, 4, board));
+        board.addShip(1, 1, VERTICAL, FOUR);
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
                 "0 _ _ _ _ _ _ _ _ _ _ \n" +
@@ -70,10 +73,11 @@ public class BoardTest {
         assertThat(actual).isEqualTo(expected);
     }
 
+    @SuppressWarnings("Duplicates")
     @Test
     public void testAddShipWith4CellsHorizontal() {
         Board board = new Board();
-        board.addShip(new Ship(1, 1, 4, board));
+        board.addShip(1, 1, FOUR);
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
                 "0 _ _ _ _ _ _ _ _ _ _ \n" +
@@ -181,14 +185,14 @@ public class BoardTest {
         assertThat(fireResult).isEqualTo(DEAD);
 
         SoftAssertions softly = new SoftAssertions();
-        softly.assertThat(board.getCellAt(3,1).getState()).isEqualTo(CellState.MISS);
-        softly.assertThat(board.getCellAt(3,2).getState()).isEqualTo(CellState.MISS);
-        softly.assertThat(board.getCellAt(3,3).getState()).isEqualTo(CellState.MISS);
-        softly.assertThat(board.getCellAt(4,1).getState()).isEqualTo(CellState.MISS);
-        softly.assertThat(board.getCellAt(4,3).getState()).isEqualTo(CellState.MISS);
-        softly.assertThat(board.getCellAt(5,1).getState()).isEqualTo(CellState.MISS);
-        softly.assertThat(board.getCellAt(5,2).getState()).isEqualTo(CellState.MISS);
-        softly.assertThat(board.getCellAt(5,3).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(3, 1).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(3, 2).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(3, 3).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(4, 1).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(4, 3).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(5, 1).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(5, 2).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(5, 3).getState()).isEqualTo(CellState.MISS);
         softly.assertAll();
     }
 
@@ -199,7 +203,7 @@ public class BoardTest {
         FireResult fireResult = board.fire(0, 0);
         assertThat(fireResult).isEqualTo(HIT);
 
-        assertThatThrownBy(() -> board.fire(0,0)).isInstanceOf(IllegalMoveException.class);
+        assertThatThrownBy(() -> board.fire(0, 0)).isInstanceOf(IllegalMoveException.class);
     }
 
     @Test
@@ -209,6 +213,6 @@ public class BoardTest {
         FireResult fireResult = board.fire(1, 0);
         assertThat(fireResult).isEqualTo(MISS);
 
-        assertThatThrownBy(() -> board.fire(1,0)).isInstanceOf(IllegalMoveException.class);
+        assertThatThrownBy(() -> board.fire(1, 0)).isInstanceOf(IllegalMoveException.class);
     }
 }

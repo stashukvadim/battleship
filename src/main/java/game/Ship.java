@@ -1,54 +1,38 @@
 package game;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import static game.Ship.Direction.HORIZONTAL;
+import static game.Ship.Direction.VERTICAL;
 
 public class Ship {
-    private Board board;
     private int size;
-    private boolean isVertical;
+    private Direction direction;
     private int x;
     private int y;
     private boolean isDamaged;
     private boolean isDead;
     private int damagedCellsCount;
-    private List<Cell> cellList = new ArrayList<>();
+    private Set<Cell> cellList = new HashSet<>();
+    private Set<Cell> boundedCells = new HashSet<>();
 
-    public List<Cell> getCellList() {
-        return cellList;
-    }
-
-    public Ship(int x, int y, boolean isVertical, int size, Board board) {
-        verifyCoordinates(x, y, isVertical, size);
+    protected Ship(int x, int y, Direction direction, int size) {
+        verifyCoordinates(x, y, direction, size);
         this.size = size;
-        this.isVertical = isVertical;
+        this.direction = direction;
         this.x = x;
         this.y = y;
-        this.board = board;
-        addCells();
     }
 
-    public Ship(int x, int y, int size, Board board) {
-        this(x, y, false, size, board);
+    public Ship(int x, int y, int size) {
+        this(x, y, HORIZONTAL, size);
     }
 
-    private void addCells() {
-        int currentX = x;
-        int currentY = y;
+    private static void verifyCoordinates(int x, int y, Direction direction, int size) {
         for (int i = 0; i < size; i++) {
-            cellList.add(board.getCellAt(x, y));
-            if (isVertical) {
-                currentX++;
-            } else {
-                currentY++;
-            }
-        }
-    }
-
-    private static void verifyCoordinates(int x, int y, boolean isVertical, int size) {
-        for (int i = 0; i < size; i++) {
-            if (Board.verifyCoordinate(x) && Board.verifyCoordinate(y)) {
-                if (isVertical) {
+            if (Board.coordinateCorrect(x) && Board.coordinateCorrect(y)) {
+                if (direction == VERTICAL) {
                     x++;
                 } else {
                     y++;
@@ -59,13 +43,20 @@ public class Ship {
         }
     }
 
-
-    public void setDamaged(boolean damaged) {
-        isDamaged = damaged;
+    public Set<Cell> getBoundedCells() {
+        return boundedCells;
     }
 
-    public void setDead(boolean dead) {
-        isDead = dead;
+    public void setBoundedCells(Set<Cell> boundedCells) {
+        this.boundedCells = boundedCells;
+    }
+
+    public Set<Cell> getCellList() {
+        return cellList;
+    }
+
+    public void setCellList(Set<Cell> cellList) {
+        this.cellList = cellList;
     }
 
     public int getX() {
@@ -80,16 +71,24 @@ public class Ship {
         return isDamaged;
     }
 
+    public void setDamaged(boolean damaged) {
+        isDamaged = damaged;
+    }
+
     public boolean isDead() {
         return isDead;
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
     }
 
     public int getSize() {
         return size;
     }
 
-    public boolean isVertical() {
-        return isVertical;
+    public Direction getDirection() {
+        return direction;
     }
 
     public void hit() {
@@ -104,7 +103,7 @@ public class Ship {
     public String toString() {
         return "Ship{" +
                 "size=" + size +
-                ", isVertical=" + isVertical +
+                ", direction=" + direction +
                 ", x=" + x +
                 ", y=" + y +
                 ", isDamaged=" + isDamaged +
@@ -112,5 +111,22 @@ public class Ship {
                 ", damagedCellsCount=" + damagedCellsCount +
                 ", cellList=" + cellList +
                 '}';
+    }
+
+    enum Direction {
+        VERTICAL, HORIZONTAL
+    }
+
+    enum Size {
+        ONE(1), TWO(2), THREE(3), FOUR(4);
+        private int size;
+
+        Size(int size) {
+            this.size = size;
+        }
+
+        public int value() {
+            return size;
+        }
     }
 }

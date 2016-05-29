@@ -1,5 +1,8 @@
 package game;
 
+import com.google.common.collect.ArrayListMultimap;
+import com.google.common.collect.Multimap;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -9,7 +12,7 @@ import static game.CellState.*;
 
 public class Board {
     protected Cell[][] matrix;
-    protected List<Ship> shipList = new ArrayList<>();
+    protected Multimap<Integer, Ship> map = ArrayListMultimap.create();
 
     public Board() {
         matrix = new Cell[10][10];
@@ -45,11 +48,19 @@ public class Board {
     public void addShip(List<Cell> cells) throws IllegalArgumentException {
         verifyCellsCorrect(cells);
         Ship ship = new Ship(cells);
-        cells.forEach(e -> {
+        addShip(ship);
+    }
+
+    private void addShip(Ship ship) {
+        if (map.get(ship.getSize()).size() > 4 - ship.getSize()) {
+            throw new IllegalArgumentException(
+                    "you can't insert more than " + (5 - ship.getSize()) + " for " + ship.getSize() + "-deck ships");
+        }
+        map.put(ship.getSize(), ship);
+        ship.getCells().forEach(e -> {
             e.setShip(ship);
             e.setUnavailable();
             e.setState(SHIP);
-            shipList.add(ship);
         });
         getAdjacentCellsForShip(ship).forEach(Cell::setUnavailable);
     }
@@ -143,7 +154,7 @@ public class Board {
     }
 
     public boolean allShipsDead() {
-        for (Ship ship : shipList) {
+        for (Ship ship : map.values()) {
             if (!ship.isDead()) {
                 return false;
             }

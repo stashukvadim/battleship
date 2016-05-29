@@ -24,4 +24,5 @@ dependencies {
     /*SmartFox jars*/
     compile files('C:\\workspace\\SmatfoxProjectsFolder\\lib\\sfs2x.jar')
     compile files('C:\\workspace\\SmatfoxProjectsFolder\\lib\\sfs2x-core.jar')
+    compile group: 'com.google.guava', name: 'guava', version: '19.0'
 }

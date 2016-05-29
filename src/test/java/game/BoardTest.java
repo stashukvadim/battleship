@@ -4,8 +4,7 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.Test;
 
 import static game.FireResult.*;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.*;
 
 public class BoardTest {
     private Board getHardCodedBoard() {
@@ -233,5 +232,13 @@ public class BoardTest {
         assertThat(board.allShipsDead()).isFalse();
         board.fire(2, 2);
         assertThat(board.allShipsDead()).isTrue();
+    }
+
+    @Test
+    public void shouldThrowIllegalArgumentExceptionWhenAddTwoFourCellShips() {
+        Board board = new Board();
+        board.addShip(0, 0, 4);
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> board.addShip(2, 0, 4));
+
     }
 }

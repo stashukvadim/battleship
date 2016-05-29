@@ -239,6 +239,18 @@ public class BoardTest {
         Board board = new Board();
         board.addShip(0, 0, 4);
         assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> board.addShip(2, 0, 4));
+    }
 
+    @Test
+    public void testIsCompleteMethod() {
+        Board board = new Board();
+        assertThat(board.isComplete()).isFalse();
+
+        board.addShip(0, 0, 4);
+        assertThat(board.isComplete()).isFalse();
+
+        board = new Board();
+        board.putHardCodedShips();
+        assertThat(board.isComplete()).isTrue();
     }
 }

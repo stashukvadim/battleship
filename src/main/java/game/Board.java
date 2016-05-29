@@ -12,7 +12,7 @@ import static game.CellState.*;
 
 public class Board {
     protected Cell[][] matrix;
-    protected Multimap<Integer, Ship> map = ArrayListMultimap.create();
+    protected Multimap<Integer, Ship> shipMultimap = ArrayListMultimap.create();
 
     public Board() {
         matrix = new Cell[10][10];
@@ -52,11 +52,11 @@ public class Board {
     }
 
     private void addShip(Ship ship) {
-        if (map.get(ship.getSize()).size() > 4 - ship.getSize()) {
+        if (shipMultimap.get(ship.getSize()).size() > 4 - ship.getSize()) {
             throw new IllegalArgumentException(
                     "you can't insert more than " + (5 - ship.getSize()) + " for " + ship.getSize() + "-deck ships");
         }
-        map.put(ship.getSize(), ship);
+        shipMultimap.put(ship.getSize(), ship);
         ship.getCells().forEach(e -> {
             e.setShip(ship);
             e.setUnavailable();
@@ -154,7 +154,7 @@ public class Board {
     }
 
     public boolean allShipsDead() {
-        for (Ship ship : map.values()) {
+        for (Ship ship : shipMultimap.values()) {
             if (!ship.isDead()) {
                 return false;
             }
@@ -188,4 +188,7 @@ public class Board {
         return result;
     }
 
+    public boolean isComplete() {
+        return shipMultimap.size() == 10;
+    }
 }

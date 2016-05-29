@@ -49,8 +49,9 @@ public class Board {
         int x = ship.getX();
         int y = ship.getY();
         for (int i = 0; i < ship.getSize(); i++) {
-            matrix[x][y].setShip(ship);
-            matrix[x][y].setState(SHIP);
+            Cell cell = getCellAt(x, y);
+            cell.setShip(ship);
+            cell.setState(SHIP);
             if (ship.isVertical()) {
                 x++;
             } else {
@@ -60,21 +61,22 @@ public class Board {
     }
 
     protected void putHardCodedShips() {
-        addShip(new Ship(0, 0, 4));
-        addShip(new Ship(0, 5, 3));
-        addShip(new Ship(2, 0, true, 3));
-        addShip(new Ship(2, 2, 2));
-        addShip(new Ship(2, 5, 2));
-        addShip(new Ship(2, 8, 2));
-        addShip(new Ship(4, 2, 1));
-        addShip(new Ship(4, 4, 1));
-        addShip(new Ship(4, 6, 1));
-        addShip(new Ship(4, 8, 1));
+        addShip(new Ship(0, 0, 4, this));
+        addShip(new Ship(0, 5, 3, this));
+        addShip(new Ship(2, 0, true, 3, this));
+        addShip(new Ship(2, 2, 2, this));
+        addShip(new Ship(2, 5, 2, this));
+        addShip(new Ship(2, 8, 2, this));
+        addShip(new Ship(4, 2, 1, this));
+        addShip(new Ship(4, 4, 1, this));
+        addShip(new Ship(4, 6, 1, this));
+        addShip(new Ship(4, 8, 1, this));
         // TODO: 29.05.2016  add putRandomShipsMethod
     }
 
     public FireResult fire(int x, int y) {
-        Cell cell = getCell(x, y);
+        verifyFireAllowed(x, y);
+        Cell cell = getCellAt(x, y);
         if (cell.getState() == EMPTY) {
             cell.setState(MISS);
             return FireResult.MISS;
@@ -84,24 +86,73 @@ public class Board {
             Ship ship = cell.getShip();
             ship.hit();
             if (ship.isDead()) {
+//                markAdjacentMissForShipAt(cell);
+//                ship.getCellList().forEach(e-> e.setState());
                 return FireResult.DEAD;
             } else {
                 return FireResult.HIT;
             }
         }
-        return null;
+        throw new IllegalStateException();
     }
 
-    private Cell getCell(int x, int y) {
+    private void verifyFireAllowed(int x, int y) {
+        boolean coordinatesCorrect = verifyCoordinates(x, y);
+        if (coordinatesCorrect && getCellAt(x, y).getState() == MISS || getCellAt(x, y).getState() == HIT) {
+            throw new IllegalMoveException("x = " + x + ", y = ");
+        }
+    }
+
+//    private void markAdjacentMissForShipAt(Cell cell) {
+//        getAdjacentCellsForShipAt(cell).forEach(c -> c.setState(MISS));
+//    }
+
+    public Cell getCellAt(int x, int y) {
         return matrix[x][y];
     }
 
-    private boolean verifyCoordinate(int coordinate) {
-        return coordinate <= 10;
+    public static boolean verifyCoordinate(int coordinate) {
+        return coordinate < 10 && coordinate >= 0;
     }
 
     private boolean verifyCoordinates(int x, int y) {
         return verifyCoordinate(x) && verifyCoordinate(y);
     }
 
+//    private Set<Cell> getAdjacentCellsForShipAt(Cell cell) {
+//        Ship ship = cell.getShip();
+//        Set<Cell> shipCells = new HashSet<>();
+//        int x = ship.getX();
+//        int y = ship.getY();
+//        int size = ship.getSize();
+//        for (int i = 0; i < size; i++) {
+//            shipCells.add(getCellAt(x, y));
+//            if (ship.isVertical()) {
+//                x++;
+//            } else {
+//                y++;
+//            }
+//        }
+//
+//        Set<Cell> adjacentShipCells = new HashSet<>();
+//        shipCells.forEach(e -> getAdjacentCellsForCell(e).forEach(adjacentShipCells::add));
+//
+//        return adjacentShipCells;
+//    }
+
+//    private Set<Cell> getAdjacentCellsForCell(Cell cell) {
+//        Set<Cell> adjacentCells = new HashSet<>();
+//
+//        for (int x = cell.getX() - 1; x < cell.getX() + 2; x++) {
+//            for (int y = cell.getY() - 1; y < cell.getY() + 2; y++) {
+//                if (verifyCoordinates(x, y)) {
+//                    if (x == cell.getX() && y == cell.getY()) {
+//                        continue;
+//                    }
+//                    adjacentCells.add(getCellAt(x, y));
+//                }
+//            }
+//        }
+//        return adjacentCells;
+//    }
 }

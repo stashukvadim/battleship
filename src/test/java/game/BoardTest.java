@@ -1,9 +1,11 @@
 package game;
 
+import org.assertj.core.api.SoftAssertions;
 import org.junit.Test;
 
 import static game.FireResult.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 public class BoardTest {
     private Board getHardCodedBoard() {
@@ -32,7 +34,8 @@ public class BoardTest {
     @Test
     public void testAddShip() {
         Board board = new Board();
-        board.addShip(new Ship(0, 0, 1));
+        Ship ship = new Ship(0, 0, 1, board);
+        board.addShip(ship);
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
                 "0 S _ _ _ _ _ _ _ _ _ \n" +
@@ -51,7 +54,7 @@ public class BoardTest {
     @Test
     public void testAddShipWith4CellsVertical() {
         Board board = new Board();
-        board.addShip(new Ship(1, 1, true, 4));
+        board.addShip(new Ship(1, 1, true, 4, board));
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
                 "0 _ _ _ _ _ _ _ _ _ _ \n" +
@@ -70,7 +73,7 @@ public class BoardTest {
     @Test
     public void testAddShipWith4CellsHorizontal() {
         Board board = new Board();
-        board.addShip(new Ship(1, 1, 4));
+        board.addShip(new Ship(1, 1, 4, board));
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
                 "0 _ _ _ _ _ _ _ _ _ _ \n" +
@@ -168,7 +171,44 @@ public class BoardTest {
         assertThat(board.fire(0, 1)).isEqualTo(HIT);
         assertThat(board.fire(0, 2)).isEqualTo(HIT);
         assertThat(board.fire(0, 3)).isEqualTo(DEAD);
-        assertThat(board.fire(0, 4)).isEqualTo(MISS);
-        assertThat(board.fire(0, 5)).isEqualTo(HIT);
+    }
+
+    @Test
+    public void shouldReturnAddMissToAllAdjacentCellsWhenShipIsDead() {
+        Board board = getHardCodedBoard();
+
+        FireResult fireResult = board.fire(4, 2);
+        assertThat(fireResult).isEqualTo(DEAD);
+
+        SoftAssertions softly = new SoftAssertions();
+        softly.assertThat(board.getCellAt(3,1).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(3,2).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(3,3).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(4,1).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(4,3).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(5,1).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(5,2).getState()).isEqualTo(CellState.MISS);
+        softly.assertThat(board.getCellAt(5,3).getState()).isEqualTo(CellState.MISS);
+        softly.assertAll();
+    }
+
+    @Test
+    public void shouldThrowIllegalMoveExceptionWhenFireToAlreadyHitCell() {
+        Board board = getHardCodedBoard();
+
+        FireResult fireResult = board.fire(0, 0);
+        assertThat(fireResult).isEqualTo(HIT);
+
+        assertThatThrownBy(() -> board.fire(0,0)).isInstanceOf(IllegalMoveException.class);
+    }
+
+    @Test
+    public void shouldThrowIllegalMoveExceptionWhenFireToAlreadyMissCell() {
+        Board board = getHardCodedBoard();
+
+        FireResult fireResult = board.fire(1, 0);
+        assertThat(fireResult).isEqualTo(MISS);
+
+        assertThatThrownBy(() -> board.fire(1,0)).isInstanceOf(IllegalMoveException.class);
     }
 }

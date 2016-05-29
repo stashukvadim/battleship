@@ -9,18 +9,20 @@ public class GameController {
     private Board whoseTurn;
 
     public GameController() {
-        board1 = new Board();
-        board2 = new Board();
+        board1 = new Board("Board1");
+        board2 = new Board("Board2");
         whoseTurn = board1;
         board1.addShip(1, 1, true, 2);
         board2.addShip(0, 0, 4);
     }
 
     public void fire(int x, int y) {
-        FireResult fire = whoseTurn.fire(x, y);
-        System.out.println(fire);
+        FireResult fireResult = whoseTurn.fire(x, y);
+        System.out.println(fireResult);
         printBoards();
-        whoseTurn = whoseTurn == board1 ? board2 : board1;
+        if (fireResult == FireResult.MISS) {
+            whoseTurn = whoseTurn == board1 ? board2 : board1;
+        }
     }
 
     public void startGame() {

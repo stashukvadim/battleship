@@ -11,10 +11,12 @@ import java.util.Set;
 import static game.CellState.*;
 
 public class Board {
-    protected Cell[][] matrix;
-    protected Multimap<Integer, Ship> shipMultimap = ArrayListMultimap.create();
+    protected final Cell[][] matrix;
+    protected final Multimap<Integer, Ship> shipMultimap = ArrayListMultimap.create();
+    private final String title;
 
-    public Board() {
+    public Board(String title) {
+        this.title = title;
         matrix = new Cell[10][10];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
@@ -190,5 +192,9 @@ public class Board {
 
     public boolean isComplete() {
         return shipMultimap.size() == 10;
+    }
+
+    public Cell[][] getMatrix() {
+        return matrix;
     }
 }

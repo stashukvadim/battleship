@@ -1,10 +1,9 @@
 package game;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Ship {
-    private List<Cell> cells = new ArrayList<>();
+    private final List<Cell> cells;
 
     public Ship(List<Cell> cells) {
         verifyCorrectCells(cells);
@@ -48,10 +47,6 @@ public class Ship {
 
     public List<Cell> getCells() {
         return cells;
-    }
-
-    public void setCells(List<Cell> cells) {
-        this.cells = cells;
     }
 
     public boolean isDamaged() {

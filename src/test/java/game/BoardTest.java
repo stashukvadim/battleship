@@ -7,15 +7,17 @@ import static game.FireResult.*;
 import static org.assertj.core.api.Assertions.*;
 
 public class BoardTest {
+    private Board board = new Board("");
+
     private Board getHardCodedBoard() {
-        Board board = new Board();
+        Board board = new Board("");
         board.putHardCodedShips();
         return board;
     }
 
     @Test
     public void testToStringForEmptyBoard() {
-        String actual = new Board().toString();
+        String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
                 "0 _ _ _ _ _ _ _ _ _ _ \n" +
                 "1 _ _ _ _ _ _ _ _ _ _ \n" +
@@ -32,7 +34,6 @@ public class BoardTest {
 
     @Test
     public void testAddShip() {
-        Board board = new Board();
         board.addShip(0, 0, 1);
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
@@ -52,7 +53,6 @@ public class BoardTest {
     @SuppressWarnings("Duplicates")
     @Test
     public void testAddShipWith4CellsVertical() {
-        Board board = new Board();
         board.addShip(1, 1, true, 4);
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
@@ -72,7 +72,6 @@ public class BoardTest {
     @SuppressWarnings("Duplicates")
     @Test
     public void testAddShipWith4CellsHorizontal() {
-        Board board = new Board();
         board.addShip(1, 1, 4);
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
@@ -91,7 +90,6 @@ public class BoardTest {
 
     @Test
     public void testPutHardCodedShips() {
-        Board board = new Board();
         board.putHardCodedShips();
         Cell[][] matrix = board.matrix;
         int countShipCell = 0;
@@ -224,7 +222,6 @@ public class BoardTest {
 
     @Test
     public void shouldReturnTrueWhenAllShipsDead() {
-        Board board = new Board();
         board.addShip(0, 0, 2);
         board.addShip(2, 2, 1);
         board.fire(0, 0);
@@ -236,20 +233,18 @@ public class BoardTest {
 
     @Test
     public void shouldThrowIllegalArgumentExceptionWhenAddTwoFourCellShips() {
-        Board board = new Board();
         board.addShip(0, 0, 4);
         assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> board.addShip(2, 0, 4));
     }
 
     @Test
     public void testIsCompleteMethod() {
-        Board board = new Board();
         assertThat(board.isComplete()).isFalse();
 
         board.addShip(0, 0, 4);
         assertThat(board.isComplete()).isFalse();
 
-        board = new Board();
+        board = new Board("");
         board.putHardCodedShips();
         assertThat(board.isComplete()).isTrue();
     }

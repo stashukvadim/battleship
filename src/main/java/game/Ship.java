@@ -1,132 +1,88 @@
 package game;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import static game.Ship.Direction.HORIZONTAL;
-import static game.Ship.Direction.VERTICAL;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Ship {
-    private int size;
-    private Direction direction;
-    private int x;
-    private int y;
-    private boolean isDamaged;
-    private boolean isDead;
-    private int damagedCellsCount;
-    private Set<Cell> cellList = new HashSet<>();
-    private Set<Cell> boundedCells = new HashSet<>();
+    private List<Cell> cells = new ArrayList<>();
 
-    protected Ship(int x, int y, Direction direction, int size) {
-        verifyCoordinates(x, y, direction, size);
-        this.size = size;
-        this.direction = direction;
-        this.x = x;
-        this.y = y;
+    public Ship(List<Cell> cells) {
+        verifyCorrectCells(cells);
+        this.cells = cells;
     }
 
-    public Ship(int x, int y, int size) {
-        this(x, y, HORIZONTAL, size);
-    }
-
-    private static void verifyCoordinates(int x, int y, Direction direction, int size) {
-        for (int i = 0; i < size; i++) {
-            if (Board.coordinateCorrect(x) && Board.coordinateCorrect(y)) {
-                if (direction == VERTICAL) {
-                    x++;
-                } else {
-                    y++;
-                }
-            } else {
-                throw new CellOutOfBoundsException(x, y);
+    private void verifyCorrectCells(List<Cell> cells) throws IllegalArgumentException {//// TODO: 29.05.2016 Simplify
+        int size = cells.size();
+        if (size == 1) {
+            return;
+        }
+        if (size > 1 && size < 5) {
+            boolean vertical = false;
+            int difference = cells.get(1).getAsInt() - cells.get(0).getAsInt();
+            if (difference == 10) {
+                vertical = true;
+            } else if (difference != 1) {
+                throw new IllegalArgumentException();
             }
+            int current = cells.get(0).getAsInt();
+
+            for (int i = 1; i < size; i++) {
+                if (vertical) {
+                    if (current + 10 == cells.get(i).getAsInt()) {
+                        current = current + 10;
+                    } else {
+                        throw new IllegalArgumentException();
+                    }
+                } else if (!vertical) {
+                    if (current + 1 == cells.get(i).getAsInt()) {
+                        current = current + 1;
+                    } else {
+                        throw new IllegalArgumentException();
+                    }
+                }
+            }
+        } else {
+            throw new IllegalArgumentException();
         }
     }
 
-    public Set<Cell> getBoundedCells() {
-        return boundedCells;
+    public List<Cell> getCells() {
+        return cells;
     }
 
-    public void setBoundedCells(Set<Cell> boundedCells) {
-        this.boundedCells = boundedCells;
-    }
-
-    public Set<Cell> getCellList() {
-        return cellList;
-    }
-
-    public void setCellList(Set<Cell> cellList) {
-        this.cellList = cellList;
-    }
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
+    public void setCells(List<Cell> cells) {
+        this.cells = cells;
     }
 
     public boolean isDamaged() {
-        return isDamaged;
-    }
-
-    public void setDamaged(boolean damaged) {
-        isDamaged = damaged;
+        for (Cell cell : cells) {
+            if (cell.getState() == CellState.HIT) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean isDead() {
-        return isDead;
-    }
-
-    public void setDead(boolean dead) {
-        isDead = dead;
+        for (Cell cell : cells) {
+            if (cell.getState() == CellState.SHIP) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public int getSize() {
-        return size;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public void hit() {
-        damagedCellsCount++;
-        isDamaged = true;
-        if (damagedCellsCount == size) {
-            isDead = true;
-        }
+        return cells.size();
     }
 
     @Override
     public String toString() {
         return "Ship{" +
-                "size=" + size +
-                ", direction=" + direction +
-                ", x=" + x +
-                ", y=" + y +
-                ", isDamaged=" + isDamaged +
-                ", isDead=" + isDead +
-                ", damagedCellsCount=" + damagedCellsCount +
-                ", cellList=" + cellList +
+                "size=" + getSize() +
+                ", x=" + cells.get(0).getX() +
+                ", y=" + cells.get(0).getY() +
+                ", cells=" + cells +
                 '}';
-    }
-
-    enum Direction {
-        VERTICAL, HORIZONTAL
-    }
-
-    enum Size {
-        ONE(1), TWO(2), THREE(3), FOUR(4);
-        private int size;
-
-        Size(int size) {
-            this.size = size;
-        }
-
-        public int value() {
-            return size;
-        }
     }
 }

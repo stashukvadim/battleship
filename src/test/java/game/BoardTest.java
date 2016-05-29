@@ -4,9 +4,6 @@ import org.assertj.core.api.SoftAssertions;
 import org.junit.Test;
 
 import static game.FireResult.*;
-import static game.Ship.Direction.VERTICAL;
-import static game.Ship.Size.FOUR;
-import static game.Ship.Size.ONE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -37,7 +34,7 @@ public class BoardTest {
     @Test
     public void testAddShip() {
         Board board = new Board();
-        board.addShip(0, 0, ONE);
+        board.addShip(0, 0, 1);
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
                 "0 S _ _ _ _ _ _ _ _ _ \n" +
@@ -57,7 +54,7 @@ public class BoardTest {
     @Test
     public void testAddShipWith4CellsVertical() {
         Board board = new Board();
-        board.addShip(1, 1, VERTICAL, FOUR);
+        board.addShip(1, 1, true, 4);
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
                 "0 _ _ _ _ _ _ _ _ _ _ \n" +
@@ -77,7 +74,7 @@ public class BoardTest {
     @Test
     public void testAddShipWith4CellsHorizontal() {
         Board board = new Board();
-        board.addShip(1, 1, FOUR);
+        board.addShip(1, 1, 4);
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
                 "0 _ _ _ _ _ _ _ _ _ _ \n" +
@@ -178,7 +175,7 @@ public class BoardTest {
     }
 
     @Test
-    public void shouldReturnAddMissToAllAdjacentCellsWhenShipIsDead() {
+    public void shouldAddMissToAllAdjacentCellsWhenShipIsDead() {
         Board board = getHardCodedBoard();
 
         FireResult fireResult = board.fire(4, 2);
@@ -214,5 +211,27 @@ public class BoardTest {
         assertThat(fireResult).isEqualTo(MISS);
 
         assertThatThrownBy(() -> board.fire(1, 0)).isInstanceOf(IllegalMoveException.class);
+    }
+
+    @Test
+    public void shouldReturnFalseWhenAllShipsDeadWhenThereAreShipsLeft() {
+        Board board = getHardCodedBoard();
+
+        assertThat(board.allShipsDead()).isFalse();
+
+        board.fire(0, 0);
+        assertThat(board.allShipsDead()).isFalse();
+    }
+
+    @Test
+    public void shouldReturnTrueWhenAllShipsDead() {
+        Board board = new Board();
+        board.addShip(0, 0, 2);
+        board.addShip(2, 2, 1);
+        board.fire(0, 0);
+        board.fire(0, 1);
+        assertThat(board.allShipsDead()).isFalse();
+        board.fire(2, 2);
+        assertThat(board.allShipsDead()).isTrue();
     }
 }

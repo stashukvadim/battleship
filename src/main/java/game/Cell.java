@@ -1,5 +1,6 @@
 package game;
 
+import static game.Board.verifyCoordinatesCorrect;
 import static game.CellState.EMPTY;
 
 public class Cell {
@@ -10,17 +11,23 @@ public class Cell {
     private boolean available;
 
     public Cell(int x, int y) {
+        verifyCoordinatesCorrect(x, y);
         this.x = x;
         this.y = y;
         this.state = EMPTY;
+        available = true;
     }
 
     public boolean isAvailable() {
         return available;
     }
 
-    public void setAvailable(boolean available) {
-        this.available = available;
+    public void setAvailable() {
+        available = true;
+    }
+
+    public void setUnavailable() {
+        available = false;
     }
 
     public int getX() {
@@ -39,6 +46,10 @@ public class Cell {
         this.state = state;
     }
 
+    public int getAsInt() {
+        return x * 10 + y;
+    }
+
     public Ship getShip() {
         return ship;
     }
@@ -46,7 +57,6 @@ public class Cell {
     public void setShip(Ship ship) {
         this.ship = ship;
     }
-
 
     @Override
     public String toString() {

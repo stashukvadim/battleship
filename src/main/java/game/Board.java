@@ -6,11 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import static game.CellState.*;
-import static game.Ship.Direction;
-import static game.Ship.Direction.HORIZONTAL;
-import static game.Ship.Direction.VERTICAL;
-import static game.Ship.Size;
-import static game.Ship.Size.*;
 
 public class Board {
     protected Cell[][] matrix;
@@ -33,90 +28,69 @@ public class Board {
         return coordinateCorrect(x) && coordinateCorrect(y);
     }
 
-    private static void verifyCoordinatesCorrect(int x, int y) {
+    public static void verifyCoordinatesCorrect(int x, int y) throws CellOutOfBoundsException {
         if (!coordinatesCorrect(x, y)) {
             throw new CellOutOfBoundsException(x, y);
         }
     }
 
-    @Override
-    public String toString() {
-        String result = "  a b c d e f g h i j ";
-        for (int i = 0; i < matrix.length; i++) {
-            result += "\n" + i + " ";
-            for (int j = 0; j < matrix.length; j++) {
-                Cell cell = matrix[i][j];
-                switch (cell.getState()) {
-                    case EMPTY:
-                        result += "_ ";
-                        break;
-                    case SHIP:
-                        result += "S ";
-                        break;
-                    case MISS:
-                        result += "* ";
-                        break;
-                    case HIT:
-                        result += "H ";
-                        break;
-                }
+    private static void verifyCellsCorrect(List<Cell> cells) throws IllegalArgumentException {
+        for (Cell cell : cells) {
+            if (!cell.isAvailable()) {
+                throw new IllegalArgumentException("This cell is already occupied " + cell);
             }
         }
-        return result;
     }
 
-    public void addShip(int x, int y, Direction direction, Size size) {
-        Set<Cell> shipCells = new HashSet<>();
-        int xCoord = x;
-        int yCoord = y;
-        for (int i = 0; i < size.value(); i++) {
-            verifyCoordinatesCorrect(xCoord, yCoord);
-            Cell cell = getCellAt(xCoord, yCoord);
-            if (cell.isAvailable() || cell.getState() != SHIP) {
-                shipCells.add(cell);
-                if (direction == VERTICAL) {
-                    xCoord++;
-                } else {
-                    yCoord++;
-                }
-            } else
-                throw new IllegalArgumentException("Cell x = " + xCoord + ", y = " + yCoord + " is already occupied.");
-        }
-        Ship ship = new Ship(x, y, direction, size.value());
-        shipCells.forEach(e -> {
-            e.setState(SHIP);
+    public void addShip(List<Cell> cells) throws IllegalArgumentException {
+        verifyCellsCorrect(cells);
+        Ship ship = new Ship(cells);
+        cells.forEach(e -> {
             e.setShip(ship);
-            e.setAvailable(false);
+            e.setUnavailable();
+            e.setState(SHIP);
+            shipList.add(ship);
         });
-        ship.setCellList(shipCells);
-        Set<Cell> adjacentCells = getAdjacentCellsForShip(ship);
-        ship.setBoundedCells(adjacentCells);
-        adjacentCells.forEach(e -> e.setAvailable(false));
-        shipList.add(ship);
+        getAdjacentCellsForShip(ship).forEach(Cell::setUnavailable);
     }
 
-    public void addShip(int x, int y, Size size) {
-        addShip(x, y, HORIZONTAL, size);
+    public void addShip(int x, int y, boolean vertical, int size) {
+        List<Cell> shipCells = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            verifyCoordinatesCorrect(x, y);
+            Cell cell = getCellAt(x, y);
+            shipCells.add(cell);
+            if (vertical) {
+                x++;
+            } else {
+                y++;
+            }
+        }
+        addShip(shipCells);
+    }
+
+    public void addShip(int x, int y, int size) {
+        addShip(x, y, false, size);
     }
 
     private Set<Cell> getAdjacentCellsForShip(Ship ship) {
         Set<Cell> adjacentShipCells = new HashSet<>();
-        Set<Cell> shipCells = ship.getCellList();
+        List<Cell> shipCells = ship.getCells();
         shipCells.forEach(e -> getAdjacentCellsForShipCell(e).forEach(adjacentShipCells::add));
         return adjacentShipCells;
     }
 
     protected void putHardCodedShips() {
-        addShip(0, 0, FOUR);
-        addShip(0, 5, THREE);
-        addShip(2, 0, VERTICAL, THREE);
-        addShip(2, 2, TWO);
-        addShip(2, 5, TWO);
-        addShip(2, 8, TWO);
-        addShip(4, 2, ONE);
-        addShip(4, 4, ONE);
-        addShip(4, 6, ONE);
-        addShip(4, 8, ONE);
+        addShip(0, 0, 4);
+        addShip(0, 5, 3);
+        addShip(2, 0, true, 3);
+        addShip(2, 2, 2);
+        addShip(2, 5, 2);
+        addShip(2, 8, 2);
+        addShip(4, 2, 1);
+        addShip(4, 4, 1);
+        addShip(4, 6, 1);
+        addShip(4, 8, 1);
     }
 
     public FireResult fire(int x, int y) {
@@ -129,9 +103,8 @@ public class Board {
         if (cell.getState() == SHIP) {
             cell.setState(HIT);
             Ship ship = cell.getShip();
-            ship.hit();
             if (ship.isDead()) {
-                ship.getBoundedCells().forEach(e -> e.setState(MISS));
+                getAdjacentCellsForShip(ship).forEach(e -> e.setState(MISS));
                 return FireResult.DEAD;
             } else {
                 return FireResult.HIT;
@@ -170,6 +143,38 @@ public class Board {
     }
 
     public boolean allShipsDead() {
-        return shipList.isEmpty();
+        for (Ship ship : shipList) {
+            if (!ship.isDead()) {
+                return false;
+            }
+        }
+        return true;
     }
+
+    @Override
+    public String toString() {
+        String result = "  a b c d e f g h i j ";
+        for (int i = 0; i < matrix.length; i++) {
+            result += "\n" + i + " ";
+            for (int j = 0; j < matrix.length; j++) {
+                Cell cell = matrix[i][j];
+                switch (cell.getState()) {
+                    case EMPTY:
+                        result += "_ ";
+                        break;
+                    case SHIP:
+                        result += "S ";
+                        break;
+                    case MISS:
+                        result += "* ";
+                        break;
+                    case HIT:
+                        result += "H ";
+                        break;
+                }
+            }
+        }
+        return result;
+    }
+
 }

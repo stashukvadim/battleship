@@ -1,3 +1,5 @@
+package game;
+
 public class Ship {
     private int size;
     private boolean isVertical;
@@ -5,8 +7,9 @@ public class Ship {
     private int y;
     private boolean isDamaged;
     private boolean isDead;
+    private int damagedCellsCount;
 
-    public Ship(int x, int y, int size, boolean isVertical) {
+    public Ship(int x, int y, boolean isVertical, int size) {
         this.size = size;
         this.isVertical = isVertical;
         this.x = x;
@@ -49,5 +52,13 @@ public class Ship {
 
     public boolean isVertical() {
         return isVertical;
+    }
+
+    public void hit() {
+        damagedCellsCount++;
+        isDamaged = true;
+        if (damagedCellsCount == size){
+            isDead = true;
+        }
     }
 }

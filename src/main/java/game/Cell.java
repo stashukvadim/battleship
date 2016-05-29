@@ -7,25 +7,20 @@ public class Cell {
     private int y;
     private CellState state;
     private Ship ship;//null for empty cell
-    private boolean isBounded;
+    private boolean available;
 
-    public Cell(int x, int y, Ship ship) {
+    public Cell(int x, int y) {
         this.x = x;
         this.y = y;
-        this.ship = ship;
         this.state = EMPTY;
     }
 
-    public Cell(int x, int y) {
-        this(x, y, null);
+    public boolean isAvailable() {
+        return available;
     }
 
-    public boolean isBounded() {
-        return isBounded;
-    }
-
-    public void setBounded(boolean bounded) {
-        isBounded = bounded;
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     public int getX() {

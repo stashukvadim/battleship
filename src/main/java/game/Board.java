@@ -20,7 +20,7 @@ public class Board {
         matrix = new Cell[10][10];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
-                matrix[i][j] = new Cell(i, j, null);
+                matrix[i][j] = new Cell(i, j);
             }
         }
     }
@@ -72,7 +72,7 @@ public class Board {
         for (int i = 0; i < size.value(); i++) {
             verifyCoordinatesCorrect(xCoord, yCoord);
             Cell cell = getCellAt(xCoord, yCoord);
-            if (!cell.isBounded() || cell.getState() != SHIP) {
+            if (cell.isAvailable() || cell.getState() != SHIP) {
                 shipCells.add(cell);
                 if (direction == VERTICAL) {
                     xCoord++;
@@ -86,11 +86,13 @@ public class Board {
         shipCells.forEach(e -> {
             e.setState(SHIP);
             e.setShip(ship);
+            e.setAvailable(false);
         });
         ship.setCellList(shipCells);
         Set<Cell> adjacentCells = getAdjacentCellsForShip(ship);
         ship.setBoundedCells(adjacentCells);
-        adjacentCells.forEach(e -> e.setBounded(true));
+        adjacentCells.forEach(e -> e.setAvailable(false));
+        shipList.add(ship);
     }
 
     public void addShip(int x, int y, Size size) {
@@ -100,7 +102,7 @@ public class Board {
     private Set<Cell> getAdjacentCellsForShip(Ship ship) {
         Set<Cell> adjacentShipCells = new HashSet<>();
         Set<Cell> shipCells = ship.getCellList();
-        shipCells.forEach(e -> getAdjacentCellsForCell(e).forEach(adjacentShipCells::add));
+        shipCells.forEach(e -> getAdjacentCellsForShipCell(e).forEach(adjacentShipCells::add));
         return adjacentShipCells;
     }
 
@@ -149,7 +151,7 @@ public class Board {
         return matrix[x][y];
     }
 
-    private Set<Cell> getAdjacentCellsForCell(Cell cell) {
+    private Set<Cell> getAdjacentCellsForShipCell(Cell cell) {
         Set<Cell> adjacentCells = new HashSet<>();
         for (int x = cell.getX() - 1; x < cell.getX() + 2; x++) {
             for (int y = cell.getY() - 1; y < cell.getY() + 2; y++) {
@@ -157,10 +159,17 @@ public class Board {
                     if (x == cell.getX() && y == cell.getY()) {
                         continue;
                     }
-                    adjacentCells.add(getCellAt(x, y));
+                    Cell cellAt = getCellAt(x, y);
+                    if (cellAt.getState() == EMPTY) {
+                        adjacentCells.add(cellAt);
+                    }
                 }
             }
         }
         return adjacentCells;
+    }
+
+    public boolean allShipsDead() {
+        return shipList.isEmpty();
     }
 }

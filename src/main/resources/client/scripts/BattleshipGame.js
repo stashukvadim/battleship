@@ -76,7 +76,7 @@ function initGame() {
 
 function sendReady() {
     // Tell extension I'm ready to play
-    alert("Button clicked");
+    console.log("Send ready button clicked");
     sfs.send(new SFS2X.Requests.System.ExtensionRequest("ready", {}, sfs.lastJoinedRoom))
 }
 
@@ -500,7 +500,7 @@ function onExtensionResponse(evt) {
     switch (cmd) {
         case "start":
             startGame(params);
-            alert("Let the game begin!!!");
+            console.log("Let the game begin!!!");
             break;
         case "stop":
             userLeft();

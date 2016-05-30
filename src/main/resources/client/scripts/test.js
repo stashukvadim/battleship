@@ -50,7 +50,7 @@ function cellCodeFromNumber(num) {
     return code;
 }
 
-function colorForNumber(num){
+function colorForNumber(num) {
     var color;
     switch (num) {
         case 0 :
@@ -73,10 +73,14 @@ function updateBoard(array, isEnemyBoard) {
     var selector = isEnemyBoard ? '#e' : '#';
 
     for (var i = 0; i < 100; i++) {
-        var code = cellCodeFromNumber(array[i]);
-        var color = colorForNumber(array[i]);
-        $(selector + i).html(code);
-        $(selector + i).css('background-color', color);
+        var num = array[i];
+        var code = cellCodeFromNumber(num);
+        var color = colorForNumber(num);
+        var currentSelector = selector + i;
+        $(currentSelector).css('background-color', color);
+        if (num != 0) {
+            $(currentSelector).off('click');
+        }
     }
 }
 

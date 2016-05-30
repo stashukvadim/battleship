@@ -16,9 +16,13 @@ public class GameExtension extends SFSExtension {
         trace("Battleship game started");
         board1 = new Board("Board1");
         board2 = new Board("Board2");
+        board1.putHardCodedShips();
+        board2.addShip(1, 1, 4);
+
         addRequestHandler("fire", MoveController.class);
         addRequestHandler("ready", ReadyHandler.class);
         addRequestHandler("setShipCell", AddShipCellHandler.class);
+
         whoseTurn = getParentRoom().getUserByPlayerId(1);
     }
 
@@ -27,9 +31,9 @@ public class GameExtension extends SFSExtension {
         trace("Battleship game destroyed");
     }
 
-    public Board getBoardForUserTurn() {
-        return whoseTurn.getId() == 1 ? board2 : board1;
-    }
+//    public Board getBoardForUserTurn() {
+//        return whoseTurn.getId() == 1 ? board2 : board1;
+//    }
 
     Room getGameRoom() {
         return this.getParentRoom();
@@ -41,6 +45,12 @@ public class GameExtension extends SFSExtension {
         User player2 = getParentRoom().getUserByPlayerId(2);
         trace("player1 = " + player1);
         trace("player2 = " + player2);
+
+        player1.setProperty("board", board1);
+        player1.setProperty("enemyBoard", board2);
+
+        player2.setProperty("board", board2);
+        player2.setProperty("enemyBoard", board1);
 
         // No turn assigned? Let's start with player 1
         if (whoseTurn == null) whoseTurn = player1;

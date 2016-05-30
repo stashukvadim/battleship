@@ -126,6 +126,10 @@ public class Board {
         throw new IllegalStateException();
     }
 
+    public FireResult fire(int cellId) {
+       return fire(cellId/10, cellId%10);
+    }
+
     private void verifyFireAllowed(int x, int y) {
         verifyCoordinatesCorrect(x, y);
         if (getCellAt(x, y).getState() == MISS || getCellAt(x, y).getState() == HIT) {

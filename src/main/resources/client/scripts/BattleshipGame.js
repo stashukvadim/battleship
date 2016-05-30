@@ -70,7 +70,7 @@ function initGame() {
 
     if (iAmSpectator == false)
         showGamePopUp("wait", message);
-    $("#your").show();
+    $(".board").show();
 
 }
 
@@ -80,9 +80,6 @@ function sendReady() {
     sfs.send(new SFS2X.Requests.System.ExtensionRequest("ready", {}, sfs.lastJoinedRoom))
 }
 
-function onSetShipCellClick(id) {
-    sfs.send(new SFS2X.Requests.System.ExtensionRequest("setShipCell", {cellId: id}, sfs.lastJoinedRoom))
-}
 
 /**
  * Add game's elements to the canvas
@@ -271,6 +268,10 @@ function startGame(params) {
     enableBoard(true);
 
     gameStarted = true;
+
+    //My func
+    disablePlayerBoard();
+    activateEnemyBoard();
 }
 
 /**
@@ -514,55 +515,20 @@ function onExtensionResponse(evt) {
         case "tie":
             showWinner(cmd, params);
             break;
-        case "board":
+        case "boardsUpdate":
         {
-            alert('params = ' + params);
-            printBoard(params);
+            updateBoards(params);
         }
     }
 }
 
 function printBoard(boardArr) {
-    var array = asArray(boardArr);
-    console.log("boardArr.length = " + array.length);
-    console.log(array);
-    updateBoard(array);
+    var arrayFromParam = boardArr.board;
+    console.log("arrayFromParam = " + arrayFromParam);
+    console.log("arrayFromParam.length = " + arrayFromParam.length);
+    updateBoard(arrayFromParam);
 }
 
-function updateBoard(array) {
-    for (var i = 0; i < 100; i++) {
-        var code = cellCodeFromNumber(array[i]);
-        $('#'+i).html(code);
-    }
-    array.forEach(function (num) {
-        console.log(cellCodeFromNumber(num));
-
-    })
-}
-
-function cellCodeFromNumber(num) {
-    var code;
-    switch (num) {
-        case 0 :
-            code = '_';
-            break;
-        case -1:
-            code = '*';
-            break;
-        case 1:
-            code = 'S';
-            break;
-        case 2 :
-            code = 'H';
-            break;
-    }
-    return code;
-}
-
-/**Implemented. returns array*/
-function asArray(boardArr) {
-    return boardArr.board;
-}
 
 function onSpectatorToPlayer(evt) {
     var updatedUser = evt.user;

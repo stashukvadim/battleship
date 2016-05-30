@@ -77,7 +77,7 @@ function updateBoard(array, isEnemyBoard) {
         var code = cellCodeFromNumber(num);
         var color = colorForNumber(num);
         var currentSelector = selector + i;
-        $(currentSelector).css('background-color', color);
+        $(currentSelector).css('background-color', color).attr('name', code);
         if (num != 0) {
             $(currentSelector).off('click');
         }
@@ -85,6 +85,18 @@ function updateBoard(array, isEnemyBoard) {
 }
 
 function updateBoards(params) {
+    var isYourTurn = params.isYourTurn;
+    handleTurn(isYourTurn);
     updateBoard(params.board);
     updateBoard(params.enemyBoard, true);
+}
+
+function handleTurn(isYourTurn) {
+    console.log("isYourTurn = " + isYourTurn);
+    if (isYourTurn) {
+        activateEnemyBoard();
+    }
+    else {
+        disableEnemyBoard();
+    }
 }

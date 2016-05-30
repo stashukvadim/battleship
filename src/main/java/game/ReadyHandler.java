@@ -2,11 +2,9 @@ package game;
 
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
-import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ReadyHandler extends BaseClientRequestHandler {
     @Override
@@ -36,28 +34,10 @@ public class ReadyHandler extends BaseClientRequestHandler {
                 trace(userList);
                 userList.forEach(e -> trace("User name = " + user));
                 gameExt.startGame();
-                sendBoardsUpdate();
+                gameExt.sendBoardsUpdate();
             } else {
                 trace("Both users are not ready");
             }
-        }
-    }
-
-    private void sendBoardsUpdate() {
-        GameExtension gameExt = (GameExtension) getParentExtension();
-        List<User> userList = gameExt.getGameRoom().getUserList();
-        for (User user : userList) {
-            ISFSObject respObj = new SFSObject();
-
-            Board board = (Board) user.getProperty("board");
-            Board enemyBoard = (Board) user.getProperty("enemyBoard");
-            respObj.putIntArray("board", board.toIntList());
-
-            List<Integer> enemyBoardList = enemyBoard.toIntList().stream().map(i -> i == 1 ? 0 : i)
-                                                     .collect(Collectors.toList());
-            respObj.putIntArray("enemyBoard", enemyBoardList);
-
-            send("boardsUpdate", respObj, user);
         }
     }
 }

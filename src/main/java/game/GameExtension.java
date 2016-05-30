@@ -6,10 +6,17 @@ import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.extensions.SFSExtension;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class GameExtension extends SFSExtension {
     private Board board1;
     private Board board2;
     private User whoseTurn;
+
+    public User getWhoseTurn() {
+        return whoseTurn;
+    }
 
     @Override
     public void init() {
@@ -66,5 +73,35 @@ public class GameExtension extends SFSExtension {
 
         send("start", resObj, getParentRoom().getUserList());
         trace("send start message to client");
+    }
+
+    public void changeTurn(User user) {
+        User player1 = getParentRoom().getUserByPlayerId(1);
+        User player2 = getParentRoom().getUserByPlayerId(2);
+        whoseTurn = user == player1 ? player2 : player1;
+        trace("changeTurn: now it's turn of " + whoseTurn);
+    }
+
+    public void sendBoardsUpdate() {
+        List<User> userList = getGameRoom().getUserList();
+        for (User user : userList) {
+            ISFSObject respObj = new SFSObject();
+
+            boolean isYourTurn = user == getWhoseTurn();
+            respObj.putBool("isYourTurn", isYourTurn);
+
+            trace("sendBoardsUpdate() : isYourTurn = " + isYourTurn);
+
+            Board board = (Board) user.getProperty("board");
+            Board enemyBoard = (Board) user.getProperty("enemyBoard");
+            respObj.putIntArray("board", board.toIntList());
+
+            List<Integer> enemyBoardList = enemyBoard.toIntList().stream().map(i -> i == 1 ? 0 : i)
+                                                     .collect(Collectors.toList());
+            respObj.putIntArray("enemyBoard", enemyBoardList);
+
+            send("boardsUpdate", respObj, user);
+            trace("sent boarUpdate for User = " + user + " params = " + respObj);
+        }
     }
 }

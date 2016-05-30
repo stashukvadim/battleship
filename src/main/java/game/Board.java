@@ -197,4 +197,14 @@ public class Board {
     public Cell[][] getMatrix() {
         return matrix;
     }
+
+    public List<Integer> toIntList() {
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                result.add(matrix[i][j].getState().toInt());
+            }
+        }
+        return result;
+    }
 }

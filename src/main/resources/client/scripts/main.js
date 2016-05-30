@@ -257,7 +257,6 @@ function onDoCreateGameBtClick(event) {
         settings.groupId = GAME_ROOMS_GROUP_NAME;
         settings.isGame = true;
         settings.maxUsers = 2;
-        settings.maxSpectators = Number($("#spectatorsIn").jqxNumberInput("val"));
 
         //Extension
         settings.extension = new SFS2X.Requests.RoomExtension(EXTENSION_ID, EXTENSIONS_CLASS);

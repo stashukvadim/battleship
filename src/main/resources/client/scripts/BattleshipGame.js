@@ -49,7 +49,7 @@ function initGame() {
         createjs.Ticker.setFPS(FPS);
 
         //Board
-        buildGameUI();
+        //buildGameUI();
     }
 
     createjs.Ticker.addListener(tick);
@@ -60,16 +60,6 @@ function initGame() {
     sfs.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, onExtensionResponse);
     sfs.addEventListener(SFS2X.SFSEvent.SPECTATOR_TO_PLAYER, onSpectatorToPlayer);
 
-    resetGameBoard();
-
-    // Setup my properties
-    iAmSpectator = (sfs.mySelf.getPlayerId(sfs.lastJoinedRoom) == -1);
-
-    // Show "wait" message
-    var message = "Waiting for player " + ((sfs.mySelf.getPlayerId(sfs.lastJoinedRoom) == 1) ? "2" : "1");
-
-    if (iAmSpectator == false)
-        showGamePopUp("wait", message);
     $(".board").show();
 
 }
@@ -256,10 +246,10 @@ function startGame(params) {
     player2Name = params.p2n;
 
     // Reset the game board
-    resetGameBoard();
+    //resetGameBoard();
 
     // Remove the "waiting for other player..." popup
-    removeGamePopUp();
+    //removeGamePopUp();
 
     p1NameCont.name.text = player1Name;
     p2NameCont.name.text = player2Name;
@@ -285,68 +275,7 @@ function setTurn() {
     }
 }
 
-/**
- * Clear the game board
- */
-function resetGameBoard() {
-    for (var i = 0; i < 9; i++) {
-        squares[i].ball.gotoAndStop(0);
-    }
-}
 
-/**
- * Enable board click
- */
-function enableBoard(enable) {
-    if (iAmSpectator == false && sfs.mySelf.getPlayerId(sfs.lastJoinedRoom) == whoseTurn) {
-        for (var i = 0; i < 9; i++) {
-            var square = squares[i];
-
-            if (square.ball.currentFrame == 0) {
-                if (enable)
-                    square.onClick = makeMove;
-                else
-                    square.onClick = null;
-            }
-        }
-    }
-}
-
-/**
- * On board click, send move to other players
- */
-function makeMove(evt) {
-    var square = evt.target;
-    square.ball.gotoAndStop(sfs.mySelf.getPlayerId(sfs.lastJoinedRoom));
-    square.onClick = null;
-
-    enableBoard(false);
-
-    var x = square.id % 3 + 1;
-    var y = Math.floor(square.id / 3) + 1;
-
-    var obj = {};
-    obj.x = x;
-    obj.y = y;
-
-    sfs.send(new SFS2X.Requests.System.ExtensionRequest("move", obj, sfs.lastJoinedRoom))
-}
-
-/**
- * Handle the opponent move
- */
-function moveReceived(params) {
-    var movingPlayer = params.t;
-    whoseTurn = (movingPlayer == 1) ? 2 : 1;
-
-    if (movingPlayer != sfs.mySelf.getPlayerId(sfs.lastJoinedRoom)) {
-        var square = squares[(params.y - 1) * 3 + (params.x - 1)];
-        square.ball.gotoAndStop(movingPlayer);
-    }
-
-    setTurn();
-    enableBoard(true);
-}
 
 /**
  * Declare game winner

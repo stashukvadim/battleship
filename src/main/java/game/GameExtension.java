@@ -14,6 +14,14 @@ public class GameExtension extends SFSExtension {
     private Board board2;
     private User whoseTurn;
 
+    public Board getBoard1() {
+        return board1;
+    }
+
+    public Board getBoard2() {
+        return board2;
+    }
+
     public User getWhoseTurn() {
         return whoseTurn;
     }
@@ -24,7 +32,7 @@ public class GameExtension extends SFSExtension {
         board1 = new Board("Board1");
         board2 = new Board("Board2");
         board1.putHardCodedShips();
-        board2.addShip(1, 1, 4);
+        board2.putHardCodedShips();
 
         addRequestHandler("fire", MoveController.class);
         addRequestHandler("ready", ReadyHandler.class);

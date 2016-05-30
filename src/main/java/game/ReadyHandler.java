@@ -13,7 +13,6 @@ public class ReadyHandler extends BaseClientRequestHandler {
         trace("Ready send from " + user);
         user.setProperty("ready", true);
         if (user.isPlayer()) {
-            // Checks if two players are available and start game
             int userCount = gameExt.getGameRoom().getSize().getUserCount();
             trace("Check if two players are available and start game. userCount = " + userCount);
             List<User> userList = gameExt.getGameRoom().getUserList();
@@ -33,8 +32,10 @@ public class ReadyHandler extends BaseClientRequestHandler {
                 trace("getUserList().size() = " + userList.size());
                 trace(userList);
                 userList.forEach(e -> trace("User name = " + user));
-                gameExt.startGame();
-                gameExt.sendBoardsUpdate();
+                if (gameExt.getBoard1().isComplete() && gameExt.getBoard2().isComplete()) {
+                    gameExt.startGame();
+                    gameExt.sendBoardsUpdate();
+                }
             } else {
                 trace("Both users are not ready");
             }

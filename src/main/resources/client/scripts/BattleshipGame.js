@@ -3,7 +3,8 @@ var currentPopUp;
 
 function initGame() {
     sfs.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, onExtensionResponse);
-    $(".board").show();
+    showBoards();
+    $("#gamebox").hide();
 }
 
 function sendReady() {

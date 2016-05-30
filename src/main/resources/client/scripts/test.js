@@ -22,6 +22,10 @@ function disableEnemyBoard() {
     $(".enemyTd").off('click');
 }
 
+function showBoards() {
+    $(".board").show();
+}
+
 function fire(id) {
     sfs.send(new SFS2X.Requests.System.ExtensionRequest("fire", {cellId: id}, sfs.lastJoinedRoom));
 }

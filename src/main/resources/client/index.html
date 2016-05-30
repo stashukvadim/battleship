@@ -75,7 +75,6 @@
             // Game View
             $("#gameChatAreaPn").jqxPanel({width: 240, height: 470, theme: theme, disabled: true, autoUpdate: true});
             $("#sendGameMsgBt").jqxButton({width: 76, theme: theme, disabled: true});
-            $("#leaveGameBt").jqxButton({width: 100, theme: theme});
 
             // Init game room creation window widgets
             $("#createGameWin").jqxWindow({
@@ -191,6 +190,7 @@
 <body onLoad="init()">
 
 <button id="sendReady">Send Ready</button>
+<button id="leaveGameBt">Leave</button>
 <!-- CONTENT -->
 <div id="main" class="group">
     <!-- Login View -->
@@ -319,10 +319,6 @@
                 </div>
             </div>
 
-            <!-- Game Controls -->
-            <div class="gameControls">
-                <input type="button" id="leaveGameBt" value="Leave game"/>
-            </div>
         </div>
     </div>
 </div>

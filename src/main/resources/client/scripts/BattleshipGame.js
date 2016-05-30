@@ -4,18 +4,15 @@ var inited = false;
 var canvas;
 var stage;
 var board;
-var squares = [];
 
 var p1NameCont;
 var p2NameCont;
 
-var statusTF;
 
 var disabler;
 var currentPopUp;
 
 var gameStarted = false;
-var iAmSpectator = false;
 
 var whoseTurn;
 var player1Id;
@@ -64,16 +61,6 @@ function sendReady() {
  */
 function tick() {
     stage.update();
-}
-
-/**
- * Destroy the game instance
- */
-function destroyGame() {
-    sfs.removeEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, onExtensionResponse);
-
-    //Remove PopUp
-    removeGamePopUp();
 }
 
 /**
@@ -141,19 +128,6 @@ function onExtensionResponse(evt) {
         case "start":
             startGame(params);
             console.log("Let the game begin!!!");
-            break;
-        case "stop":
-            userLeft();
-            break;
-        case "move":
-            moveReceived(params);
-            break;
-        case "specStatus":
-            setSpectatorBoard(params);
-            break;
-        case "win":
-        case "tie":
-            showWinner(cmd, params);
             break;
         case "boardsUpdate":
             updateBoards(params);

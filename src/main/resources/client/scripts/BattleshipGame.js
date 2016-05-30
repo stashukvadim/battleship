@@ -118,55 +118,6 @@ function startGame(params) {
 }
 
 /**
- * Set the "Player's turn" status message
- */
-function setTurn() {
-    if (iAmSpectator == false) {
-        statusTF.text = (sfs.mySelf.getPlayerId(sfs.lastJoinedRoom) == whoseTurn) ? "It's your turn" : "It's your opponent's turn";
-    } else {
-        statusTF.text = "It's " + this["player" + whoseTurn + "Name"] + " turn";
-    }
-}
-
-
-
-/**
- * Declare game winner
- */
-function showWinner(cmd, params) {
-    gameStarted = false;
-    statusTF.text = "";
-    var message = "";
-
-    if (cmd == "win") {
-        if (iAmSpectator == true) {
-            var pName = this["player" + params.w + "Name"];
-            message = pName + " is the WINNER";
-        }
-        else {
-            if (sfs.mySelf.getPlayerId(sfs.lastJoinedRoom) == params.w) {
-                // I WON! In the next match, it will be my turn first
-                message = "You are the WINNER!"
-            }
-            else {
-                // I've LOST! Next match I will be the second to move
-                message = "Sorry, you've LOST!"
-            }
-        }
-    }
-    else if (cmd == "tie") {
-        message = "It's a TIE!"
-    }
-
-    // Show "winner" message
-    if (iAmSpectator == true) {
-        showGamePopUp("endSpec", message);
-    } else {
-        showGamePopUp("end", message);
-    }
-}
-
-/**
  * Restart the game
  */
 function restartGame() {

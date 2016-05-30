@@ -1,16 +1,8 @@
-var inited = false;
 var disabler;
 var currentPopUp;
-var gameStarted = false;
 
 function initGame() {
-    if (inited == false) {
-        inited = true;
-    }
-    gameStarted = false;
-
     sfs.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, onExtensionResponse);
-
     $(".board").show();
 }
 
@@ -20,10 +12,6 @@ function sendReady() {
 }
 
 function startGame(params) {
-
-    gameStarted = true;
-
-    //My func
     disablePlayerBoard();
     activateEnemyBoard();
 }
@@ -33,7 +21,6 @@ function startGame(params) {
 function removeGamePopUp() {
     if (currentPopUp != undefined) {
         disabler.visible = false;
-
         currentPopUp.jqxWindow("close");
         currentPopUp = undefined;
     }
@@ -43,7 +30,7 @@ function onExtensionResponse(evt) {
     var params = evt.params;
     var cmd = evt.cmd;
 
-    console.log("> Received Extension Response: " + cmd);
+    console.log("Received Extension Response: " + params + " command = " + cmd);
 
     switch (cmd) {
         case "start":

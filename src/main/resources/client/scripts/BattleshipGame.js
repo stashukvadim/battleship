@@ -115,25 +115,6 @@ function restartGame() {
 }
 
 
-//------------------------------------
-// Game Popup
-//------------------------------------
-/**
- * Show the Game PopUp
- */
-function showGamePopUp(id, message) {
-    if (currentPopUp != undefined)
-        removeGamePopUp();
-
-    disabler.visible = true;
-
-    currentPopUp = $("#" + id + "GameWin");
-
-    currentPopUp.jqxWindow("open");
-    currentPopUp.jqxWindow("move", (canvas.width / 2) - (currentPopUp.jqxWindow("width") / 2) + canvas.offsetLeft, (canvas.height / 2) - (currentPopUp.jqxWindow("height") / 2) + canvas.offsetTop);
-    currentPopUp.children(".content").children("#firstRow").children("#message").html(message);
-}
-
 /**
  * Hide the Game PopUp
  */

@@ -1,89 +1,25 @@
-var FPS = 40;
-
 var inited = false;
-var canvas;
-var stage;
-var board;
-
-var p1NameCont;
-var p2NameCont;
-
-
 var disabler;
 var currentPopUp;
-
 var gameStarted = false;
 
-var whoseTurn;
-var player1Id;
-var player2Id;
-var player1Name;
-var player2Name;
-
-/**
- * Initialize the game
- */
 function initGame() {
     if (inited == false) {
         inited = true;
-
-        //Stage
-        canvas = document.getElementById("gameContainer");
-        stage = new createjs.Stage(canvas);
-        stage.mouseEventsEnabled = true;
-
-        //Ticker
-        createjs.Ticker.setFPS(FPS);
-
-        //Board
-        //buildGameUI();
     }
-
-    createjs.Ticker.addListener(tick);
-
     gameStarted = false;
 
-    // Register to SmartFox events
     sfs.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, onExtensionResponse);
 
     $(".board").show();
-
 }
 
 function sendReady() {
-    // Tell extension I'm ready to play
     console.log("Send ready button clicked");
     sfs.send(new SFS2X.Requests.System.ExtensionRequest("ready", {}, sfs.lastJoinedRoom))
 }
 
-/**
- * Update the canvas
- */
-function tick() {
-    stage.update();
-}
-
-/**
- * Start the game
- */
 function startGame(params) {
-    whoseTurn = params.t;
-    player1Id = params.p1i;
-    player2Id = params.p2i;
-    player1Name = params.p1n;
-    player2Name = params.p2n;
-
-    // Reset the game board
-    //resetGameBoard();
-
-    // Remove the "waiting for other player..." popup
-    //removeGamePopUp();
-
-    p1NameCont.name.text = player1Name;
-    p2NameCont.name.text = player2Name;
-
-    setTurn();
-    enableBoard(true);
 
     gameStarted = true;
 
@@ -91,17 +27,6 @@ function startGame(params) {
     disablePlayerBoard();
     activateEnemyBoard();
 }
-
-/**
- * Restart the game
- */
-function restartGame() {
-    removeGamePopUp();
-
-    sfs.send(new SFS2X.Requests.System.ExtensionRequest("restart", {}, sfs.lastJoinedRoom))
-}
-
-
 /**
  * Hide the Game PopUp
  */
@@ -113,10 +38,6 @@ function removeGamePopUp() {
         currentPopUp = undefined;
     }
 }
-
-//------------------------------------
-// SFS EVENT HANDLERS
-//------------------------------------
 
 function onExtensionResponse(evt) {
     var params = evt.params;

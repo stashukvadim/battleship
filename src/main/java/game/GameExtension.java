@@ -30,7 +30,7 @@ public class GameExtension extends SFSExtension {
         addRequestHandler("ready", ReadyHandler.class);
         addRequestHandler("setShipCell", AddShipCellHandler.class);
 
-        whoseTurn = getParentRoom().getUserByPlayerId(1);
+        whoseTurn = getUserById(1);
     }
 
     @Override
@@ -38,18 +38,13 @@ public class GameExtension extends SFSExtension {
         trace("Battleship game destroyed");
     }
 
-//    public Board getBoardForUserTurn() {
-//        return whoseTurn.getId() == 1 ? board2 : board1;
-//    }
-
     Room getGameRoom() {
         return this.getParentRoom();
     }
 
     void startGame() {
-
-        User player1 = getParentRoom().getUserByPlayerId(1);
-        User player2 = getParentRoom().getUserByPlayerId(2);
+        User player1 = getUserById(1);
+        User player2 = getUserById(2);
         trace("player1 = " + player1);
         trace("player2 = " + player2);
 
@@ -76,32 +71,50 @@ public class GameExtension extends SFSExtension {
     }
 
     public void changeTurn(User user) {
-        User player1 = getParentRoom().getUserByPlayerId(1);
-        User player2 = getParentRoom().getUserByPlayerId(2);
+        User player1 = getUserById(1);
+        User player2 = getUserById(2);
         whoseTurn = user == player1 ? player2 : player1;
         trace("changeTurn: now it's turn of " + whoseTurn);
     }
 
     public void sendBoardsUpdate() {
         List<User> userList = getGameRoom().getUserList();
+        boolean gameOver = isGameOver();
         for (User user : userList) {
             ISFSObject respObj = new SFSObject();
 
             boolean isYourTurn = user == getWhoseTurn();
             respObj.putBool("isYourTurn", isYourTurn);
 
-            trace("sendBoardsUpdate() : isYourTurn = " + isYourTurn);
+            trace("in sendBoardsUpdate() : isYourTurn = " + isYourTurn);
 
             Board board = (Board) user.getProperty("board");
             Board enemyBoard = (Board) user.getProperty("enemyBoard");
             respObj.putIntArray("board", board.toIntList());
-
-            List<Integer> enemyBoardList = enemyBoard.toIntList().stream().map(i -> i == 1 ? 0 : i)
-                                                     .collect(Collectors.toList());
+            List<Integer> enemyBoardList;
+            if (!gameOver) {
+                enemyBoardList = enemyBoard.toIntList().stream().map(i -> i == 1 ? 0 : i).collect(Collectors.toList());
+            } else {
+                enemyBoardList = enemyBoard.toIntList();
+            }
             respObj.putIntArray("enemyBoard", enemyBoardList);
 
             send("boardsUpdate", respObj, user);
             trace("sent boarUpdate for User = " + user + " params = " + respObj);
+
+            if (gameOver) {
+                send("gameOver", respObj, user);//dummy response object
+            }
         }
+    }
+
+    public User getUserById(int id) {
+        return getParentRoom().getUserByPlayerId(id);
+    }
+
+    public boolean isGameOver() {
+        trace("board1.allShipsDead() = " + board1.allShipsDead() + ", board2.allShipsDead() = " + board2
+                .allShipsDead());
+        return (board1.allShipsDead() || board2.allShipsDead());
     }
 }

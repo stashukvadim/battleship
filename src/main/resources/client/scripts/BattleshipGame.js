@@ -516,9 +516,10 @@ function onExtensionResponse(evt) {
             showWinner(cmd, params);
             break;
         case "boardsUpdate":
-        {
             updateBoards(params);
-        }
+            break;
+        case "gameOver" :
+            gameOver(params);
     }
 }
 

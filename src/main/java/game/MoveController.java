@@ -16,8 +16,10 @@ public class MoveController extends BaseClientRequestHandler {
             throw new SFSRuntimeException("Invalid request, mandatory param is missing. Required param = cellId");
         }
         GameExtension gameExt = (GameExtension) getParentExtension();
+        if (gameExt.isGameOver()) {
+            throw new SFSRuntimeException("Game is over. No more moves allowed.");
+        }
         if (user != gameExt.getWhoseTurn()) {
-            trace("Invalid request, it'n not this user's turn now. User = " + user);
             throw new SFSRuntimeException("Invalid request, it'n not this user's turn now. User = " + user);
         }
 

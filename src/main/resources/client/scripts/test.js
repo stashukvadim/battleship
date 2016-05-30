@@ -100,3 +100,7 @@ function handleTurn(isYourTurn) {
         disableEnemyBoard();
     }
 }
+
+function gameOver(params) {
+    alert("Game Over!!!")
+}

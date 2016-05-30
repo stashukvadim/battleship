@@ -1,15 +1,5 @@
-//------------------------------------
-// Constants
-//------------------------------------
-var EXTENSION_NAME = "battleship";
-var BOARD_SIZE = 300;
-var BOARD_BORDER = 8;
-var PIECE_SIZE = 36;
 var FPS = 40;
 
-//------------------------------------
-// Vars
-//------------------------------------
 var inited = false;
 var canvas;
 var stage;
@@ -124,60 +114,6 @@ function restartGame() {
     sfs.send(new SFS2X.Requests.System.ExtensionRequest("restart", {}, sfs.lastJoinedRoom))
 }
 
-/**
- * One of the players left the game
- */
-function userLeft() {
-    gameStarted = false;
-    statusTF.text = "";
-    var message = "";
-
-    // Show "wait" message
-    if (iAmSpectator == false) {
-        message = "Your opponent left the game" + "<br/><br/>" + "Waiting for a new player";
-        showGamePopUp("wait", message);
-    } else {
-        message = "A player left the game" + "<br/><br/>" + "Press the Join button to play";
-        showGamePopUp("waitSpec", message);
-    }
-}
-
-/**
- * Spectator receives board update. If match isn't started yet,
- * a message is displayed and he can click the join button
- */
-function setSpectatorBoard(params) {
-    removeGamePopUp();
-
-    whoseTurn = params.t;
-    player1Id = params.p1i;
-    player2Id = params.p2i;
-    player1Name = params.p1n;
-    player2Name = params.p2n;
-
-    gameStarted = params.status;
-
-    p1NameCont.name.text = player1Name;
-    p2NameCont.name.text = player2Name;
-
-    if (gameStarted == true)
-        setTurn();
-
-    var boardData = params.board;
-
-    for (var y = 0; y < boardData.length; y++) {
-        var boardRow = boardData[y];
-        for (var x = 0; x < boardRow.length; x++) {
-            var square = squares[y * 3 + x];
-            square.ball.gotoAndStop(boardRow[x]);
-        }
-    }
-
-    if (gameStarted == false) {
-        var message = "Waiting for game to start" + "<br/><br/>" + "Press the Join button to play";
-        showGamePopUp("waitSpec", message);
-    }
-}
 
 //------------------------------------
 // Game Popup

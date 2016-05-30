@@ -179,14 +179,6 @@ function setSpectatorBoard(params) {
     }
 }
 
-/**
- * If a spectator enters the game room and the match isn't started yet,
- * he can click the join button
- */
-function spectatorJoinGame() {
-    sfs.send(new SFS2X.Requests.System.SpectatorToPlayerRequest());
-}
-
 //------------------------------------
 // Game Popup
 //------------------------------------
@@ -252,11 +244,4 @@ function onExtensionResponse(evt) {
         case "gameOver" :
             gameOver(params);
     }
-}
-
-function printBoard(boardArr) {
-    var arrayFromParam = boardArr.board;
-    console.log("arrayFromParam = " + arrayFromParam);
-    console.log("arrayFromParam.length = " + arrayFromParam.length);
-    updateBoard(arrayFromParam);
 }

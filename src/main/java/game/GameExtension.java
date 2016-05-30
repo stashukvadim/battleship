@@ -18,6 +18,7 @@ public class GameExtension extends SFSExtension {
         board2 = new Board("Board2");
         addRequestHandler("fire", MoveController.class);
         addRequestHandler("ready", ReadyHandler.class);
+        addRequestHandler("setShipCell", AddShipCellHandler.class);
         whoseTurn = getParentRoom().getUserByPlayerId(1);
     }
 

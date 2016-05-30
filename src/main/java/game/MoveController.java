@@ -23,40 +23,12 @@ public class MoveController extends BaseClientRequestHandler {
 
         ISFSObject respObj = new SFSObject();
         respObj.putUtfString("fireResult", fireResult.toString());
-        respObj.putByteArray("fireResult", getByteArrayFromMatrix(gameExt.getBoardForUserTurn()));
+//        respObj.putByteArray("fireResult", getByteArrayFromMatrix(gameExt.getBoardForUserTurn()));
 
 
         gameExt.trace(String.format("Handling move from player %s. (%s, %s)", user.getPlayerId(), x, y));
 
     }
 
-    private byte[] getByteArrayFromMatrix(Board boardForUserTurn) {
-        byte[] result = new byte[100];
-        Cell[][] matrix = boardForUserTurn.getMatrix();
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                result[i * 10 + j] = cellStateToByte(matrix[i][j].getState());
-            }
-        }
-        return result;
-    }
 
-    private byte cellStateToByte(CellState state) {
-        byte result = 0;
-        switch (state) {
-            case EMPTY:
-                result = 0;
-                break;
-            case SHIP:
-                result = 1;
-                break;
-            case MISS:
-                result = -1;
-                break;
-            case HIT:
-                result = 2;
-                break;
-        }
-        return result;
-    }
 }

@@ -1,7 +1,7 @@
 //------------------------------------
 // Constants
 //------------------------------------
-var EXTENSION_NAME = "tris";
+var EXTENSION_NAME = "battleship";
 var BOARD_SIZE = 300;
 var BOARD_BORDER = 8;
 var PIECE_SIZE = 36;
@@ -71,6 +71,9 @@ function initGame() {
     if (iAmSpectator == false)
         showGamePopUp("wait", message);
 
+}
+
+function sendReady(){
     // Tell extension I'm ready to play
     sfs.send(new SFS2X.Requests.System.ExtensionRequest("ready", {}, sfs.lastJoinedRoom))
 }
@@ -490,6 +493,7 @@ function onExtensionResponse(evt) {
     switch (cmd) {
         case "start":
             startGame(params);
+            alert("Let the game begin!!!");
             break;
         case "stop":
             userLeft();

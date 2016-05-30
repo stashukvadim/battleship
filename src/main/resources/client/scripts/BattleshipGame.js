@@ -58,7 +58,6 @@ function initGame() {
 
     // Register to SmartFox events
     sfs.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, onExtensionResponse);
-    sfs.addEventListener(SFS2X.SFSEvent.SPECTATOR_TO_PLAYER, onSpectatorToPlayer);
 
     $(".board").show();
 
@@ -82,7 +81,6 @@ function tick() {
  */
 function destroyGame() {
     sfs.removeEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, onExtensionResponse);
-    sfs.removeEventListener(SFS2X.SFSEvent.SPECTATOR_TO_PLAYER, onSpectatorToPlayer);
 
     //Remove PopUp
     removeGamePopUp();
@@ -261,18 +259,4 @@ function printBoard(boardArr) {
     console.log("arrayFromParam = " + arrayFromParam);
     console.log("arrayFromParam.length = " + arrayFromParam.length);
     updateBoard(arrayFromParam);
-}
-
-
-function onSpectatorToPlayer(evt) {
-    var updatedUser = evt.user;
-
-    if (updatedUser.isItMe) {
-        iAmSpectator = false;
-
-        // Show "wait" message
-        removeGamePopUp();
-        var message = "Waiting for player " + ((sfs.mySelf.getPlayerId(sfs.lastJoinedRoom) == 1) ? "2" : "1");
-        showGamePopUp("wait", message)
-    }
 }

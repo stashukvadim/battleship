@@ -41,15 +41,26 @@ function shipSelected(size) {
 function activatePlayerBoard() {
     disablePlayerBoard();
     initPlayerBoard();
-    $(".userTd").on("click", function (event) {
-        var cellId = event.target.id;
-        console.log(cellId);
-        handleShipCellSet(cellId);
-    })
+    for (var i = 0; i < 100; i++) {
+        var cellState = boardCells[i];
+        if (cellState == 0) {
+            $("#" + i).on("click", function (event) {
+                var cellId = event.target.id;
+                console.log(cellId);
+                handleShipCellSet(cellId);
+            })
+        }
+        else {
+            $("#" + i).off('click');
+        }
+    }
 }
 
 function handleShipCellSet(cellId) {
     //boardCells[cellId] =1;
+    if (shipsCount[shipSize] == 0) {
+        return;
+    }
     shipCells.push(parseInt(cellId));
     countShipCells++;
     console.log(" countShipCells++ = " + countShipCells);
@@ -58,6 +69,7 @@ function handleShipCellSet(cellId) {
         console.log(boardCells);
         updateBoardsColor();
     }
+    activatePlayerBoard();
 }
 
 function putShip() {
@@ -86,16 +98,24 @@ function putShipBorders() {
 
 function putBordersForCell(cellId) {
     console.log("trace: putBordersForCell() - cellId = " + cellId);
-    for (var i = cellId - 11; i < cellId + 10; i += 10) {
-        for (var j = 0; j < 3; j++) {
-            var currentCellId = i + j;
-            if (isValidCell(currentCellId)) {
-                if (boardCells[currentCellId] != 1) {
-                    boardCells[currentCellId] = -2;
+    var cellX = Math.floor(cellId / 10);
+    var cellY = cellId % 10;
+    for (var x = cellX - 1; x < cellX + 2; x++) {
+        for (var y = cellY - 1; y < cellY + 2; y++) {
+            if (isValidCoordinates(x, y)) {
+                if (boardCells[xYToCellId(x, y)] != 1) {
+                    boardCells[xYToCellId(x, y)] = -2;
                 }
             }
         }
     }
+}
+function isValidCoordinates(x, y) {
+    return x >= 0 && x < 10 && y >= 0 && y < 10;
+}
+
+function xYToCellId(x, y) {
+    return x * 10 + y;
 }
 
 function isValidCell(cellId) {

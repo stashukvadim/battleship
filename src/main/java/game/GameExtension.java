@@ -6,6 +6,9 @@ import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.extensions.SFSExtension;
+import game.handler.BoardReceivedHandler;
+import game.handler.MoveController;
+import game.handler.UserLeftHandler;
 import game.model.Board;
 
 import java.util.List;
@@ -62,7 +65,7 @@ public class GameExtension extends SFSExtension {
 
     }
 
-    void startGame() {
+    public void startGame() {
         trace("startGame()");
         User player1 = getUserById(1);
         User player2 = getUserById(2);

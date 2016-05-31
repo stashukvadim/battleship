@@ -1,10 +1,11 @@
-package game;
+package game.handler;
 
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.exceptions.SFSRuntimeException;
 import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
+import game.GameExtension;
 import game.model.Board;
 import game.model.FireResult;
 

@@ -43,5 +43,6 @@ function onExtensionResponse(evt) {
             break;
         case "gameOver" :
             gameOver(params);
+            break;
     }
 }

@@ -11,9 +11,9 @@ function disablePlayerBoard() {
 }
 
 function activateEnemyBoard() {
+    disableEnemyBoard();
     $(".enemyTd").on("click", function (event) {
         var cellId = event.target.id;
-        console.log(cellId);
         fire(cellId);
     })
 }
@@ -31,6 +31,8 @@ function hideBoards() {
 }
 
 function fire(id) {
+    console.log("fire() is send for cellId = " + id);
+    console.log("sfs.lastJoinedRoom = " + sfs.lastJoinedRoom);
     sfs.send(new SFS2X.Requests.System.ExtensionRequest("fire", {cellId: id}, sfs.lastJoinedRoom));
 }
 

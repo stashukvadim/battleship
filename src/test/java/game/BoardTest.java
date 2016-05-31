@@ -191,6 +191,16 @@ public class BoardTest {
     }
 
     @Test
+    public void shouldNotIllegalMoveExceptionWhenFireFirstTimeToCell() {
+        Board board = getHardCodedBoard();
+
+        FireResult fireResult = board.fire(0);
+        board.fire(0);
+        assertThat(fireResult).isEqualTo(HIT);
+    }
+
+
+    @Test
     public void shouldThrowIllegalMoveExceptionWhenFireToAlreadyHitCell() {
         Board board = getHardCodedBoard();
 

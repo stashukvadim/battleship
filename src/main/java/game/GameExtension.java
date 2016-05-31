@@ -1,5 +1,6 @@
 package game;
 
+import com.smartfoxserver.v2.core.SFSEventType;
 import com.smartfoxserver.v2.entities.Room;
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
@@ -28,7 +29,7 @@ public class GameExtension extends SFSExtension {
 
     @Override
     public void init() {
-        trace("Battleship game started");
+        trace("init() - Battleship game started");
         board1 = new Board("Board1");
         board2 = new Board("Board2");
         board1.putHardCodedShips();
@@ -37,6 +38,7 @@ public class GameExtension extends SFSExtension {
         addRequestHandler("fire", MoveController.class);
         addRequestHandler("ready", ReadyHandler.class);
         addRequestHandler("setShipCell", AddShipCellHandler.class);
+        addEventHandler(SFSEventType.USER_LEAVE_ROOM, UserLeftHandler.class);
 
         whoseTurn = getUserById(1);
     }
@@ -48,6 +50,10 @@ public class GameExtension extends SFSExtension {
 
     Room getGameRoom() {
         return this.getParentRoom();
+    }
+
+    public void stopGame() {
+
     }
 
     void startGame() {
@@ -125,4 +131,6 @@ public class GameExtension extends SFSExtension {
                 .allShipsDead());
         return (board1.allShipsDead() || board2.allShipsDead());
     }
+
+
 }

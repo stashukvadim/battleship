@@ -24,11 +24,9 @@ public class MoveController extends BaseClientRequestHandler {
         }
 
         String cellIdString = params.getUtfString("cellId");
-        trace("sellIdString = " + cellIdString);
-        trace("sellIdString substring " + cellIdString.substring(1));
 
         int cellId = Integer.valueOf(cellIdString.substring(1));
-        trace("int cellId  = " + cellId);
+        gameExt.trace(String.format("Handling move from player %s. Cell id = %s", user.getPlayerId(), cellId));
 
         Board enemyBoard = (Board) user.getProperty("enemyBoard");
 
@@ -41,7 +39,5 @@ public class MoveController extends BaseClientRequestHandler {
         ISFSObject respObj = new SFSObject();
         respObj.putUtfString("fireResult", fireResult.toString());
         gameExt.sendBoardsUpdate();
-
-        gameExt.trace(String.format("Handling move from player %s. Cell id = %s", user.getPlayerId(), cellId));
     }
 }

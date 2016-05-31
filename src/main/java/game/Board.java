@@ -127,18 +127,23 @@ public class Board {
     }
 
     public FireResult fire(int cellId) {
-       return fire(cellId/10, cellId%10);
+        return fire(cellId / 10, cellId % 10);
     }
 
     private void verifyFireAllowed(int x, int y) {
         verifyCoordinatesCorrect(x, y);
         if (getCellAt(x, y).getState() == MISS || getCellAt(x, y).getState() == HIT) {
-            throw new IllegalMoveException("x = " + x + ", y = ");
+            throw new IllegalMoveException(
+                    "x = " + x + ", y = " + y + ". getCellAt(x,y).getState = " + getCellAt(x, y).getState());
         }
     }
 
     public Cell getCellAt(int x, int y) {
         return matrix[x][y];
+    }
+
+    public Cell getCellForId(int cellId) {
+        return matrix[cellId / 10][cellId % 10];
     }
 
     private Set<Cell> getAdjacentCellsForShipCell(Cell cell) {

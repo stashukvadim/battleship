@@ -2,30 +2,7 @@ var boardCells = [];
 var enemyBoardCells = [];
 var countCells = 0;
 
-function initPlayerBoard() {
-    console.log("in initPlayerBoard");
-    boardCells = [];
-    countCells = 0;
-    for (var i = 0; i < 100; i++) {
-        boardCells.push(0);
-    }
-    updateBoardsColor();
-}
 
-function activatePlayerBoard() {
-    console.log("in activatePlayerBoard")
-    disablePlayerBoard();
-    initPlayerBoard();
-    for (var i = 0; i < 100; i++) {
-        var cellState = boardCells[i];
-        if (cellState == 0) {
-            addCellAddHandler(i);
-        }
-        else if (cellState == 1) {
-            addCellRemoveHandler(i);
-        }
-    }
-}
 function addCell(id) {
     countCells++;
     boardCells[id] = 1;
@@ -67,6 +44,7 @@ function addCellAddHandler(id) {
 
 
 function disableAddingShips() {
+    console.log("disableAddingShips()");
     for (var i = 0; i < 100; i++) {
         var cellState = boardCells[i];
         if (cellState == 0) {

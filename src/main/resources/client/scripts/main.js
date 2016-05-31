@@ -384,7 +384,7 @@ function onRoomJoin(event) {
         // Reset roomlist selection
         onRoomSelected(null);
         console.log("Please put your ships");
-        activatePlayerBoard();
+        initPlayerBoard();
     }
 }
 

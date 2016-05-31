@@ -1,7 +1,7 @@
 package game.utils;
 
-import game.Board;
-import game.Cell;
+import game.model.Board;
+import game.model.Cell;
 
 import java.util.ArrayList;
 import java.util.List;

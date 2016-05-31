@@ -1,4 +1,4 @@
-package game;
+package game.model;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static game.CellState.*;
+import static game.model.CellState.*;
 
 public class Board {
     protected final Cell[][] matrix;

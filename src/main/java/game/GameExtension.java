@@ -6,6 +6,7 @@ import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.extensions.SFSExtension;
+import game.model.Board;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,8 +20,18 @@ public class GameExtension extends SFSExtension {
         return board1;
     }
 
+    public void setBoard1(Board board1) {
+        trace("setBoard1");
+        this.board1 = board1;
+    }
+
     public Board getBoard2() {
         return board2;
+    }
+
+    public void setBoard2(Board board2) {
+        trace("setBoard2");
+        this.board2 = board2;
     }
 
     public User getWhoseTurn() {
@@ -30,14 +41,8 @@ public class GameExtension extends SFSExtension {
     @Override
     public void init() {
         trace("init() - Battleship game started");
-        board1 = new Board("Board1");
-        board2 = new Board("Board2");
-        board1.putHardCodedShips();
-        board2.putHardCodedShips();
 
         addRequestHandler("fire", MoveController.class);
-        addRequestHandler("ready", ReadyHandler.class);
-        addRequestHandler("setShipCell", AddShipCellHandler.class);
         addRequestHandler("sendBoard", BoardReceivedHandler.class);
         addEventHandler(SFSEventType.USER_LEAVE_ROOM, UserLeftHandler.class);
 
@@ -67,9 +72,6 @@ public class GameExtension extends SFSExtension {
         board1 = (Board) player1.getProperty("board");
         board2 = (Board) player2.getProperty("board");
 
-        player1.setProperty("enemyBoard", board2);
-        player2.setProperty("enemyBoard", board1);
-
         // No turn assigned? Let's start with player 1
         if (whoseTurn == null) whoseTurn = player1;
         trace("whoseTurn = " + whoseTurn);
@@ -84,6 +86,7 @@ public class GameExtension extends SFSExtension {
 
         send("start", resObj, getParentRoom().getUserList());
         trace("send start message to client");
+        sendBoardsUpdate();
     }
 
     public void changeTurn(User user) {
@@ -94,6 +97,7 @@ public class GameExtension extends SFSExtension {
     }
 
     public void sendBoardsUpdate() {
+        trace("sendBoardsUpdate()");
         List<User> userList = getGameRoom().getUserList();
         boolean gameOver = isGameOver();
         for (User user : userList) {
@@ -104,16 +108,16 @@ public class GameExtension extends SFSExtension {
 
             trace("in sendBoardsUpdate() : isYourTurn = " + isYourTurn);
 
-            Board board = (Board) user.getProperty("board");
-            Board enemyBoard = (Board) user.getProperty("enemyBoard");
+            Board board = getUserBoard(user);
+            Board enemyBoard = getOpponentBoard(user);
             respObj.putIntArray("board", board.toIntList());
-            List<Integer> enemyBoardList;
+            List<Integer> oppBoardList;
             if (!gameOver) {
-                enemyBoardList = enemyBoard.toIntList().stream().map(i -> i == 1 ? 0 : i).collect(Collectors.toList());
+                oppBoardList = enemyBoard.toIntList().stream().map(i -> i == 1 ? 0 : i).collect(Collectors.toList());
             } else {
-                enemyBoardList = enemyBoard.toIntList();
+                oppBoardList = enemyBoard.toIntList();
             }
-            respObj.putIntArray("enemyBoard", enemyBoardList);
+            respObj.putIntArray("enemyBoard", oppBoardList);
 
             send("boardsUpdate", respObj, user);
             trace("sent boarUpdate for User = " + user + " params = " + respObj);
@@ -134,5 +138,11 @@ public class GameExtension extends SFSExtension {
         return (board1.allShipsDead() || board2.allShipsDead());
     }
 
+    public Board getUserBoard(User user) {
+        return user.getPlayerId() == 1 ? board1 : board2;
+    }
 
+    public Board getOpponentBoard(User user) {
+        return user.getPlayerId() == 1 ? board2 : board1;
+    }
 }

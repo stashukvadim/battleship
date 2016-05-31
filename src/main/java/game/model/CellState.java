@@ -1,4 +1,4 @@
-package game;
+package game.model;
 
 public enum CellState {
     EMPTY, SHIP, MISS, HIT;

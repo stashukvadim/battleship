@@ -1,4 +1,4 @@
-package game;
+package game.model;
 
 public class CellOutOfBoundsException extends RuntimeException {
     public CellOutOfBoundsException(int x, int y) {

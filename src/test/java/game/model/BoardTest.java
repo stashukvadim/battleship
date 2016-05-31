@@ -1,11 +1,11 @@
-package game;
+package game.model;
 
 import org.assertj.core.api.SoftAssertions;
 import org.junit.Test;
 
 import java.util.List;
 
-import static game.FireResult.*;
+import static game.model.FireResult.*;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.*;
 

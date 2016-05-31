@@ -1,7 +1,7 @@
-package game;
+package game.model;
 
-import static game.Board.verifyCoordinatesCorrect;
-import static game.CellState.EMPTY;
+import static game.model.Board.verifyCoordinatesCorrect;
+import static game.model.CellState.EMPTY;
 
 public class Cell {
     private int x;

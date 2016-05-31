@@ -64,10 +64,10 @@ public class GameExtension extends SFSExtension {
         trace("player1 = " + player1);
         trace("player2 = " + player2);
 
-        player1.setProperty("board", board1);
-        player1.setProperty("enemyBoard", board2);
+        board1 = (Board) player1.getProperty("board");
+        board2 = (Board) player2.getProperty("board");
 
-        player2.setProperty("board", board2);
+        player1.setProperty("enemyBoard", board2);
         player2.setProperty("enemyBoard", board1);
 
         // No turn assigned? Let's start with player 1

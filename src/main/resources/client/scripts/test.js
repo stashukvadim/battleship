@@ -9,16 +9,16 @@ function addCell(id) {
     addCellRemoveHandler(id);
     updateBoardsColor();
     if (countCells == 20) {
-        console.log("All ships set! Sending data to server!");
+        trace("All ships set! Sending data to server!");
         disableAddingShips();
-        console.log("boardCells = " + boardCells);
+        trace("boardCells = " + boardCells);
         sfs.send(new SFS2X.Requests.System.ExtensionRequest("sendBoard", {board: boardCells}, sfs.lastJoinedRoom));
     }
 }
 
 function handleBoardCheckResult(params) {
     var boardCorrect = params.boardCorrect;
-    console.log("boardCorrect = " + boardCorrect);
+    trace("boardCorrect = " + boardCorrect);
     if (!boardCorrect) {
         alert("Board is incorrect! Change ships!")
     }
@@ -44,7 +44,7 @@ function addCellAddHandler(id) {
 
 
 function disableAddingShips() {
-    console.log("disableAddingShips()");
+    trace("disableAddingShips()");
     for (var i = 0; i < 100; i++) {
         var cellState = boardCells[i];
         if (cellState == 0) {
@@ -101,8 +101,8 @@ function hideBoards() {
 }
 
 function fire(id) {
-    console.log("fire() is send for cellId = " + id);
-    console.log("sfs.lastJoinedRoom = " + sfs.lastJoinedRoom);
+    trace("fire() is send for cellId = " + id);
+    trace("sfs.lastJoinedRoom = " + sfs.lastJoinedRoom);
     sfs.send(new SFS2X.Requests.System.ExtensionRequest("fire", {cellId: id}, sfs.lastJoinedRoom));
 }
 
@@ -148,7 +148,7 @@ function updateBoards(params) {
 }
 
 function updateBoardsColor() {
-    console.log("trace: updateBoardsColor()");
+    trace("trace: updateBoardsColor()");
 
     for (var i = 0; i < 100; i++) {
         var selector = '#' + i;
@@ -161,7 +161,7 @@ function updateBoardsColor() {
 }
 
 function handleTurn(isYourTurn) {
-    console.log("isYourTurn = " + isYourTurn);
+    trace("isYourTurn = " + isYourTurn);
     if (isYourTurn) {
         activateEnemyBoard();
         info("Your turn");
@@ -182,9 +182,9 @@ function destroyGame() {
     boardCells = [];
     enemyBoardCells = [];
     countCells = 0;
-    hide(leaveGameBt);
-    hide(infoBox);
-    hide("#putDefault");
+    hide(cons.LEAVE_GAME_BT);
+    hide(cons.INFO_BOX);
+    hide(cons.PUT_DEFAULT_SHIPS_BUTTON);
 }
 
 function hide(selector) {
@@ -211,6 +211,6 @@ function putDefaultShips() {
 }
 
 function info(message) {
-    $("#infoBox").html(message);
+    $(cons.INFO_BOX).html(message);
 }
 

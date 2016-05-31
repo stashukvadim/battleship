@@ -50,9 +50,9 @@ function init() {
 
     // Show LOGIN view
     setView("login", true);
-    hide(leaveGameBt);
-    hide("#putDefault");
-    hide(infoBox);
+    hide(cons.LEAVE_GAME_BT);
+    hide(cons.PUT_DEFAULT_SHIPS_BUTTON);
+    hide(cons.INFO_BOX);
 }
 
 //------------------------------------
@@ -388,7 +388,7 @@ function onRoomJoin(event) {
 
         // Reset roomlist selection
         onRoomSelected(null);
-        console.log("Please put your ships");
+        log("Please put your ships");
         initPlayerBoard();
     }
 }
@@ -488,7 +488,7 @@ function onRoomAdd(event) {
 //------------------------------------
 
 function trace(txt, showAlert) {
-    console.log(txt);
+    log(txt);
 
     if (showAlert)
         alert(txt);

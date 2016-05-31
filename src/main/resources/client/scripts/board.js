@@ -1,5 +1,5 @@
 function initPlayerBoard() {
-    console.log("initPlayerBoard()");
+    trace("initPlayerBoard()");
     boardCells = [];
     countCells = 0;
     for (var i = 0; i < 100; i++) {

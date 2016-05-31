@@ -9,7 +9,7 @@ function addCell(id) {
     addCellRemoveHandler(id);
     updateBoardsColor();
     if (countCells == 20) {
-        alert("All ships set! Sending data to server!");
+        console.log("All ships set! Sending data to server!");
         disableAddingShips();
         console.log("boardCells = " + boardCells);
         sfs.send(new SFS2X.Requests.System.ExtensionRequest("sendBoard", {board: boardCells}, sfs.lastJoinedRoom));
@@ -23,7 +23,7 @@ function handleBoardCheckResult(params) {
         alert("Board is incorrect! Change ships!")
     }
     else {
-        alert("Board is correct!");
+        info("Waiting for another player");
         disablePlayerBoard();
     }
 }
@@ -164,14 +164,17 @@ function handleTurn(isYourTurn) {
     console.log("isYourTurn = " + isYourTurn);
     if (isYourTurn) {
         activateEnemyBoard();
+        info("Your turn");
     }
     else {
         disableEnemyBoard();
+        info("You opponent's turn");
     }
 }
 
 function gameOver(params) {
-    alert("Game Over!!!")
+
+    info('Game Over!');
 }
 
 function destroyGame() {
@@ -179,12 +182,17 @@ function destroyGame() {
     boardCells = [];
     enemyBoardCells = [];
     countCells = 0;
-    hide("#leaveGameBt");
+    hide(leaveGameBt);
+    hide(infoBox);
     hide("#putDefault");
 }
 
 function hide(selector) {
     $(selector).hide();
+}
+
+function show(selector) {
+    $(selector).show();
 }
 function putDefaultShips() {
     boardCells = [
@@ -200,5 +208,9 @@ function putDefaultShips() {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     countCells = 19;
     addCell(0);
+}
+
+function info(message) {
+    $("#infoBox").html(message);
 }
 

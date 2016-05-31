@@ -4,9 +4,11 @@ var currentPopUp;
 function initGame() {
     sfs.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, onExtensionResponse);
     showBoards();
-    $("#gamebox").hide();
+    hide(gameBox);
+    show(infoBox);
     $("#leaveGameBt").show();
     $("#putDefault").show();
+    info("Please add ships.");
 }
 
 function sendReady() {

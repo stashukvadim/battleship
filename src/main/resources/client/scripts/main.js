@@ -50,8 +50,9 @@ function init() {
 
     // Show LOGIN view
     setView("login", true);
-    hide("#leaveGameBt");
+    hide(leaveGameBt);
     hide("#putDefault");
+    hide(infoBox);
 }
 
 //------------------------------------

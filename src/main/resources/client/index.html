@@ -41,6 +41,7 @@
     <script type="text/javascript" src="scripts/BattleshipGame.js"></script>
     <script type="text/javascript" src="scripts/board.js"></script>
     <script type="text/javascript" src="scripts/test.js"></script>
+    <script type="text/javascript" src="scripts/constants.js"></script>
 
 
     <!-- Initialize user interface -->
@@ -197,255 +198,258 @@
     <button id="leaveGameBt">Leave</button>
     <button id="putDefault">Put default Ships</button>
 </div>
-<div class="board">
-    <div class="boardDescription">You</div>
-    <table id="yourTable">
-        <tr>
-            <td class='userTd' id="0"></td>
-            <td class='userTd' id="1"></td>
-            <td class='userTd' id="2"></td>
-            <td class='userTd' id="3"></td>
-            <td class='userTd' id="4"></td>
-            <td class='userTd' id="5"></td>
-            <td class='userTd' id="6"></td>
-            <td class='userTd' id="7"></td>
-            <td class='userTd' id="8"></td>
-            <td class='userTd' id="9"></td>
-        </tr>
-        <tr>
-            <td class='userTd' id="10"></td>
-            <td class='userTd' id="11"></td>
-            <td class='userTd' id="12"></td>
-            <td class='userTd' id="13"></td>
-            <td class='userTd' id="14"></td>
-            <td class='userTd' id="15"></td>
-            <td class='userTd' id="16"></td>
-            <td class='userTd' id="17"></td>
-            <td class='userTd' id="18"></td>
-            <td class='userTd' id="19"></td>
-        </tr>
-        <tr>
-            <td class='userTd' id="20"></td>
-            <td class='userTd' id="21"></td>
-            <td class='userTd' id="22"></td>
-            <td class='userTd' id="23"></td>
-            <td class='userTd' id="24"></td>
-            <td class='userTd' id="25"></td>
-            <td class='userTd' id="26"></td>
-            <td class='userTd' id="27"></td>
-            <td class='userTd' id="28"></td>
-            <td class='userTd' id="29"></td>
-        </tr>
-        <tr>
-            <td class='userTd' id="30"></td>
-            <td class='userTd' id="31"></td>
-            <td class='userTd' id="32"></td>
-            <td class='userTd' id="33"></td>
-            <td class='userTd' id="34"></td>
-            <td class='userTd' id="35"></td>
-            <td class='userTd' id="36"></td>
-            <td class='userTd' id="37"></td>
-            <td class='userTd' id="38"></td>
-            <td class='userTd' id="39"></td>
-        </tr>
-        <tr>
-            <td class='userTd' id="40"></td>
-            <td class='userTd' id="41"></td>
-            <td class='userTd' id="42"></td>
-            <td class='userTd' id="43"></td>
-            <td class='userTd' id="44"></td>
-            <td class='userTd' id="45"></td>
-            <td class='userTd' id="46"></td>
-            <td class='userTd' id="47"></td>
-            <td class='userTd' id="48"></td>
-            <td class='userTd' id="49"></td>
-        </tr>
-        <tr>
-            <td class='userTd' id="50"></td>
-            <td class='userTd' id="51"></td>
-            <td class='userTd' id="52"></td>
-            <td class='userTd' id="53"></td>
-            <td class='userTd' id="54"></td>
-            <td class='userTd' id="55"></td>
-            <td class='userTd' id="56"></td>
-            <td class='userTd' id="57"></td>
-            <td class='userTd' id="58"></td>
-            <td class='userTd' id="59"></td>
-        </tr>
-        <tr>
-            <td class='userTd' id="60"></td>
-            <td class='userTd' id="61"></td>
-            <td class='userTd' id="62"></td>
-            <td class='userTd' id="63"></td>
-            <td class='userTd' id="64"></td>
-            <td class='userTd' id="65"></td>
-            <td class='userTd' id="66"></td>
-            <td class='userTd' id="67"></td>
-            <td class='userTd' id="68"></td>
-            <td class='userTd' id="69"></td>
-        </tr>
-        <tr>
-            <td class='userTd' id="70"></td>
-            <td class='userTd' id="71"></td>
-            <td class='userTd' id="72"></td>
-            <td class='userTd' id="73"></td>
-            <td class='userTd' id="74"></td>
-            <td class='userTd' id="75"></td>
-            <td class='userTd' id="76"></td>
-            <td class='userTd' id="77"></td>
-            <td class='userTd' id="78"></td>
-            <td class='userTd' id="79"></td>
-        </tr>
-        <tr>
-            <td class='userTd' id="80"></td>
-            <td class='userTd' id="81"></td>
-            <td class='userTd' id="82"></td>
-            <td class='userTd' id="83"></td>
-            <td class='userTd' id="84"></td>
-            <td class='userTd' id="85"></td>
-            <td class='userTd' id="86"></td>
-            <td class='userTd' id="87"></td>
-            <td class='userTd' id="88"></td>
-            <td class='userTd' id="89"></td>
-        </tr>
-        <tr>
-            <td class='userTd' id="90"></td>
-            <td class='userTd' id="91"></td>
-            <td class='userTd' id="92"></td>
-            <td class='userTd' id="93"></td>
-            <td class='userTd' id="94"></td>
-            <td class='userTd' id="95"></td>
-            <td class='userTd' id="96"></td>
-            <td class='userTd' id="97"></td>
-            <td class='userTd' id="98"></td>
-            <td class='userTd' id="99"></td>
-        </tr>
-    </table>
-</div>
-<div class="board">
-    <div class="boardDescription">Opponent</div>
-    <table id="enemyTable">
-        <tr>
-            <td class='enemyTd' id="e0"></td>
-            <td class='enemyTd' id="e1"></td>
-            <td class='enemyTd' id="e2"></td>
-            <td class='enemyTd' id="e3"></td>
-            <td class='enemyTd' id="e4"></td>
-            <td class='enemyTd' id="e5"></td>
-            <td class='enemyTd' id="e6"></td>
-            <td class='enemyTd' id="e7"></td>
-            <td class='enemyTd' id="e8"></td>
-            <td class='enemyTd' id="e9"></td>
-        </tr>
-        <tr>
-            <td class='enemyTd' id="e10"></td>
-            <td class='enemyTd' id="e11"></td>
-            <td class='enemyTd' id="e12"></td>
-            <td class='enemyTd' id="e13"></td>
-            <td class='enemyTd' id="e14"></td>
-            <td class='enemyTd' id="e15"></td>
-            <td class='enemyTd' id="e16"></td>
-            <td class='enemyTd' id="e17"></td>
-            <td class='enemyTd' id="e18"></td>
-            <td class='enemyTd' id="e19"></td>
-        </tr>
-        <tr>
-            <td class='enemyTd' id="e20"></td>
-            <td class='enemyTd' id="e21"></td>
-            <td class='enemyTd' id="e22"></td>
-            <td class='enemyTd' id="e23"></td>
-            <td class='enemyTd' id="e24"></td>
-            <td class='enemyTd' id="e25"></td>
-            <td class='enemyTd' id="e26"></td>
-            <td class='enemyTd' id="e27"></td>
-            <td class='enemyTd' id="e28"></td>
-            <td class='enemyTd' id="e29"></td>
-        </tr>
-        <tr>
-            <td class='enemyTd' id="e30"></td>
-            <td class='enemyTd' id="e31"></td>
-            <td class='enemyTd' id="e32"></td>
-            <td class='enemyTd' id="e33"></td>
-            <td class='enemyTd' id="e34"></td>
-            <td class='enemyTd' id="e35"></td>
-            <td class='enemyTd' id="e36"></td>
-            <td class='enemyTd' id="e37"></td>
-            <td class='enemyTd' id="e38"></td>
-            <td class='enemyTd' id="e39"></td>
-        </tr>
-        <tr>
-            <td class='enemyTd' id="e40"></td>
-            <td class='enemyTd' id="e41"></td>
-            <td class='enemyTd' id="e42"></td>
-            <td class='enemyTd' id="e43"></td>
-            <td class='enemyTd' id="e44"></td>
-            <td class='enemyTd' id="e45"></td>
-            <td class='enemyTd' id="e46"></td>
-            <td class='enemyTd' id="e47"></td>
-            <td class='enemyTd' id="e48"></td>
-            <td class='enemyTd' id="e49"></td>
-        </tr>
-        <tr>
-            <td class='enemyTd' id="e50"></td>
-            <td class='enemyTd' id="e51"></td>
-            <td class='enemyTd' id="e52"></td>
-            <td class='enemyTd' id="e53"></td>
-            <td class='enemyTd' id="e54"></td>
-            <td class='enemyTd' id="e55"></td>
-            <td class='enemyTd' id="e56"></td>
-            <td class='enemyTd' id="e57"></td>
-            <td class='enemyTd' id="e58"></td>
-            <td class='enemyTd' id="e59"></td>
-        </tr>
-        <tr>
-            <td class='enemyTd' id="e60"></td>
-            <td class='enemyTd' id="e61"></td>
-            <td class='enemyTd' id="e62"></td>
-            <td class='enemyTd' id="e63"></td>
-            <td class='enemyTd' id="e64"></td>
-            <td class='enemyTd' id="e65"></td>
-            <td class='enemyTd' id="e66"></td>
-            <td class='enemyTd' id="e67"></td>
-            <td class='enemyTd' id="e68"></td>
-            <td class='enemyTd' id="e69"></td>
-        </tr>
-        <tr>
-            <td class='enemyTd' id="e70"></td>
-            <td class='enemyTd' id="e71"></td>
-            <td class='enemyTd' id="e72"></td>
-            <td class='enemyTd' id="e73"></td>
-            <td class='enemyTd' id="e74"></td>
-            <td class='enemyTd' id="e75"></td>
-            <td class='enemyTd' id="e76"></td>
-            <td class='enemyTd' id="e77"></td>
-            <td class='enemyTd' id="e78"></td>
-            <td class='enemyTd' id="e79"></td>
-        </tr>
-        <tr>
-            <td class='enemyTd' id="e80"></td>
-            <td class='enemyTd' id="e81"></td>
-            <td class='enemyTd' id="e82"></td>
-            <td class='enemyTd' id="e83"></td>
-            <td class='enemyTd' id="e84"></td>
-            <td class='enemyTd' id="e85"></td>
-            <td class='enemyTd' id="e86"></td>
-            <td class='enemyTd' id="e87"></td>
-            <td class='enemyTd' id="e88"></td>
-            <td class='enemyTd' id="e89"></td>
-        </tr>
-        <tr>
-            <td class='enemyTd' id="e90"></td>
-            <td class='enemyTd' id="e91"></td>
-            <td class='enemyTd' id="e92"></td>
-            <td class='enemyTd' id="e93"></td>
-            <td class='enemyTd' id="e94"></td>
-            <td class='enemyTd' id="e95"></td>
-            <td class='enemyTd' id="e96"></td>
-            <td class='enemyTd' id="e97"></td>
-            <td class='enemyTd' id="e98"></td>
-            <td class='enemyTd' id="e99"></td>
-        </tr>
-    </table>
+<div id="infoBox">Hello!</div>
+<div id="boards">
+    <div class="board">
+        <div class="boardDescription">You</div>
+        <table id="yourTable">
+            <tr>
+                <td class='userTd' id="0"></td>
+                <td class='userTd' id="1"></td>
+                <td class='userTd' id="2"></td>
+                <td class='userTd' id="3"></td>
+                <td class='userTd' id="4"></td>
+                <td class='userTd' id="5"></td>
+                <td class='userTd' id="6"></td>
+                <td class='userTd' id="7"></td>
+                <td class='userTd' id="8"></td>
+                <td class='userTd' id="9"></td>
+            </tr>
+            <tr>
+                <td class='userTd' id="10"></td>
+                <td class='userTd' id="11"></td>
+                <td class='userTd' id="12"></td>
+                <td class='userTd' id="13"></td>
+                <td class='userTd' id="14"></td>
+                <td class='userTd' id="15"></td>
+                <td class='userTd' id="16"></td>
+                <td class='userTd' id="17"></td>
+                <td class='userTd' id="18"></td>
+                <td class='userTd' id="19"></td>
+            </tr>
+            <tr>
+                <td class='userTd' id="20"></td>
+                <td class='userTd' id="21"></td>
+                <td class='userTd' id="22"></td>
+                <td class='userTd' id="23"></td>
+                <td class='userTd' id="24"></td>
+                <td class='userTd' id="25"></td>
+                <td class='userTd' id="26"></td>
+                <td class='userTd' id="27"></td>
+                <td class='userTd' id="28"></td>
+                <td class='userTd' id="29"></td>
+            </tr>
+            <tr>
+                <td class='userTd' id="30"></td>
+                <td class='userTd' id="31"></td>
+                <td class='userTd' id="32"></td>
+                <td class='userTd' id="33"></td>
+                <td class='userTd' id="34"></td>
+                <td class='userTd' id="35"></td>
+                <td class='userTd' id="36"></td>
+                <td class='userTd' id="37"></td>
+                <td class='userTd' id="38"></td>
+                <td class='userTd' id="39"></td>
+            </tr>
+            <tr>
+                <td class='userTd' id="40"></td>
+                <td class='userTd' id="41"></td>
+                <td class='userTd' id="42"></td>
+                <td class='userTd' id="43"></td>
+                <td class='userTd' id="44"></td>
+                <td class='userTd' id="45"></td>
+                <td class='userTd' id="46"></td>
+                <td class='userTd' id="47"></td>
+                <td class='userTd' id="48"></td>
+                <td class='userTd' id="49"></td>
+            </tr>
+            <tr>
+                <td class='userTd' id="50"></td>
+                <td class='userTd' id="51"></td>
+                <td class='userTd' id="52"></td>
+                <td class='userTd' id="53"></td>
+                <td class='userTd' id="54"></td>
+                <td class='userTd' id="55"></td>
+                <td class='userTd' id="56"></td>
+                <td class='userTd' id="57"></td>
+                <td class='userTd' id="58"></td>
+                <td class='userTd' id="59"></td>
+            </tr>
+            <tr>
+                <td class='userTd' id="60"></td>
+                <td class='userTd' id="61"></td>
+                <td class='userTd' id="62"></td>
+                <td class='userTd' id="63"></td>
+                <td class='userTd' id="64"></td>
+                <td class='userTd' id="65"></td>
+                <td class='userTd' id="66"></td>
+                <td class='userTd' id="67"></td>
+                <td class='userTd' id="68"></td>
+                <td class='userTd' id="69"></td>
+            </tr>
+            <tr>
+                <td class='userTd' id="70"></td>
+                <td class='userTd' id="71"></td>
+                <td class='userTd' id="72"></td>
+                <td class='userTd' id="73"></td>
+                <td class='userTd' id="74"></td>
+                <td class='userTd' id="75"></td>
+                <td class='userTd' id="76"></td>
+                <td class='userTd' id="77"></td>
+                <td class='userTd' id="78"></td>
+                <td class='userTd' id="79"></td>
+            </tr>
+            <tr>
+                <td class='userTd' id="80"></td>
+                <td class='userTd' id="81"></td>
+                <td class='userTd' id="82"></td>
+                <td class='userTd' id="83"></td>
+                <td class='userTd' id="84"></td>
+                <td class='userTd' id="85"></td>
+                <td class='userTd' id="86"></td>
+                <td class='userTd' id="87"></td>
+                <td class='userTd' id="88"></td>
+                <td class='userTd' id="89"></td>
+            </tr>
+            <tr>
+                <td class='userTd' id="90"></td>
+                <td class='userTd' id="91"></td>
+                <td class='userTd' id="92"></td>
+                <td class='userTd' id="93"></td>
+                <td class='userTd' id="94"></td>
+                <td class='userTd' id="95"></td>
+                <td class='userTd' id="96"></td>
+                <td class='userTd' id="97"></td>
+                <td class='userTd' id="98"></td>
+                <td class='userTd' id="99"></td>
+            </tr>
+        </table>
+    </div>
+    <div class="board">
+        <div class="boardDescription">Opponent</div>
+        <table id="enemyTable">
+            <tr>
+                <td class='enemyTd' id="e0"></td>
+                <td class='enemyTd' id="e1"></td>
+                <td class='enemyTd' id="e2"></td>
+                <td class='enemyTd' id="e3"></td>
+                <td class='enemyTd' id="e4"></td>
+                <td class='enemyTd' id="e5"></td>
+                <td class='enemyTd' id="e6"></td>
+                <td class='enemyTd' id="e7"></td>
+                <td class='enemyTd' id="e8"></td>
+                <td class='enemyTd' id="e9"></td>
+            </tr>
+            <tr>
+                <td class='enemyTd' id="e10"></td>
+                <td class='enemyTd' id="e11"></td>
+                <td class='enemyTd' id="e12"></td>
+                <td class='enemyTd' id="e13"></td>
+                <td class='enemyTd' id="e14"></td>
+                <td class='enemyTd' id="e15"></td>
+                <td class='enemyTd' id="e16"></td>
+                <td class='enemyTd' id="e17"></td>
+                <td class='enemyTd' id="e18"></td>
+                <td class='enemyTd' id="e19"></td>
+            </tr>
+            <tr>
+                <td class='enemyTd' id="e20"></td>
+                <td class='enemyTd' id="e21"></td>
+                <td class='enemyTd' id="e22"></td>
+                <td class='enemyTd' id="e23"></td>
+                <td class='enemyTd' id="e24"></td>
+                <td class='enemyTd' id="e25"></td>
+                <td class='enemyTd' id="e26"></td>
+                <td class='enemyTd' id="e27"></td>
+                <td class='enemyTd' id="e28"></td>
+                <td class='enemyTd' id="e29"></td>
+            </tr>
+            <tr>
+                <td class='enemyTd' id="e30"></td>
+                <td class='enemyTd' id="e31"></td>
+                <td class='enemyTd' id="e32"></td>
+                <td class='enemyTd' id="e33"></td>
+                <td class='enemyTd' id="e34"></td>
+                <td class='enemyTd' id="e35"></td>
+                <td class='enemyTd' id="e36"></td>
+                <td class='enemyTd' id="e37"></td>
+                <td class='enemyTd' id="e38"></td>
+                <td class='enemyTd' id="e39"></td>
+            </tr>
+            <tr>
+                <td class='enemyTd' id="e40"></td>
+                <td class='enemyTd' id="e41"></td>
+                <td class='enemyTd' id="e42"></td>
+                <td class='enemyTd' id="e43"></td>
+                <td class='enemyTd' id="e44"></td>
+                <td class='enemyTd' id="e45"></td>
+                <td class='enemyTd' id="e46"></td>
+                <td class='enemyTd' id="e47"></td>
+                <td class='enemyTd' id="e48"></td>
+                <td class='enemyTd' id="e49"></td>
+            </tr>
+            <tr>
+                <td class='enemyTd' id="e50"></td>
+                <td class='enemyTd' id="e51"></td>
+                <td class='enemyTd' id="e52"></td>
+                <td class='enemyTd' id="e53"></td>
+                <td class='enemyTd' id="e54"></td>
+                <td class='enemyTd' id="e55"></td>
+                <td class='enemyTd' id="e56"></td>
+                <td class='enemyTd' id="e57"></td>
+                <td class='enemyTd' id="e58"></td>
+                <td class='enemyTd' id="e59"></td>
+            </tr>
+            <tr>
+                <td class='enemyTd' id="e60"></td>
+                <td class='enemyTd' id="e61"></td>
+                <td class='enemyTd' id="e62"></td>
+                <td class='enemyTd' id="e63"></td>
+                <td class='enemyTd' id="e64"></td>
+                <td class='enemyTd' id="e65"></td>
+                <td class='enemyTd' id="e66"></td>
+                <td class='enemyTd' id="e67"></td>
+                <td class='enemyTd' id="e68"></td>
+                <td class='enemyTd' id="e69"></td>
+            </tr>
+            <tr>
+                <td class='enemyTd' id="e70"></td>
+                <td class='enemyTd' id="e71"></td>
+                <td class='enemyTd' id="e72"></td>
+                <td class='enemyTd' id="e73"></td>
+                <td class='enemyTd' id="e74"></td>
+                <td class='enemyTd' id="e75"></td>
+                <td class='enemyTd' id="e76"></td>
+                <td class='enemyTd' id="e77"></td>
+                <td class='enemyTd' id="e78"></td>
+                <td class='enemyTd' id="e79"></td>
+            </tr>
+            <tr>
+                <td class='enemyTd' id="e80"></td>
+                <td class='enemyTd' id="e81"></td>
+                <td class='enemyTd' id="e82"></td>
+                <td class='enemyTd' id="e83"></td>
+                <td class='enemyTd' id="e84"></td>
+                <td class='enemyTd' id="e85"></td>
+                <td class='enemyTd' id="e86"></td>
+                <td class='enemyTd' id="e87"></td>
+                <td class='enemyTd' id="e88"></td>
+                <td class='enemyTd' id="e89"></td>
+            </tr>
+            <tr>
+                <td class='enemyTd' id="e90"></td>
+                <td class='enemyTd' id="e91"></td>
+                <td class='enemyTd' id="e92"></td>
+                <td class='enemyTd' id="e93"></td>
+                <td class='enemyTd' id="e94"></td>
+                <td class='enemyTd' id="e95"></td>
+                <td class='enemyTd' id="e96"></td>
+                <td class='enemyTd' id="e97"></td>
+                <td class='enemyTd' id="e98"></td>
+                <td class='enemyTd' id="e99"></td>
+            </tr>
+        </table>
+    </div>
 </div>
 <!-- CONTENT -->
 <div id="main" class="group">

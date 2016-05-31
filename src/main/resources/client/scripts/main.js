@@ -222,6 +222,7 @@ function onQuickJoinBtClick(event) {
  * In order to leave the current game room, the lobby room is joined.
  */
 function onLeaveGameBtClick(event) {
+    hideBoards();
     // Join the lobby
     joinLobbyRoom();
 

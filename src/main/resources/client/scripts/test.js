@@ -26,6 +26,10 @@ function showBoards() {
     $(".board").show();
 }
 
+function hideBoards() {
+    $(".board").hide();
+}
+
 function fire(id) {
     sfs.send(new SFS2X.Requests.System.ExtensionRequest("fire", {cellId: id}, sfs.lastJoinedRoom));
 }

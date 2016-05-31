@@ -1,41 +1,12 @@
-var shipSize;
 var boardCells = [];
 var enemyBoardCells = [];
-var countShipCells;
-var shipSize;
-var shipSet = false;
-var shipCells = [];
-var shipsCount = [0, 4, 3, 2, 1];
+var countCells = 0;
 
 function initPlayerBoard() {
     for (var i = 0; i < 100; i++) {
         boardCells.push(0);
     }
     updateBoardsColor();
-    addHandlersForShips();
-}
-
-function addHandlersForShips() {
-    $('#ship4').on('click', function () {
-        shipSelected(4);
-    });
-    $('#ship3').on('click', function () {
-        shipSelected(3);
-
-    });
-    $('#ship2').on('click', function () {
-        shipSelected(2);
-
-    });
-    $('#ship1').on('click', function () {
-        shipSelected(1);
-    });
-}
-
-function shipSelected(size) {
-    shipSize = size;
-    countShipCells = 0;
-    console.log("shipSize = " + shipSize + ", countShipCells = " + countShipCells);
 }
 
 function activatePlayerBoard() {
@@ -44,82 +15,67 @@ function activatePlayerBoard() {
     for (var i = 0; i < 100; i++) {
         var cellState = boardCells[i];
         if (cellState == 0) {
-            $("#" + i).on("click", function (event) {
-                var cellId = event.target.id;
-                console.log(cellId);
-                handleShipCellSet(cellId);
-            })
+            addCellAddHandler(i);
         }
-        else {
-            $("#" + i).off('click');
+        else if (cellState == 1) {
+            addCellRemoveHandler(i);
+        }
+    }
+}
+function addCell(id) {
+    countCells++;
+    boardCells[id] = 1;
+    addCellRemoveHandler(id);
+    updateBoardsColor();
+    if (countCells == 20) {
+        alert("All ships set! Sending data to server!");
+        disableAddingShips();
+    }
+    }
+
+function addCellRemoveHandler(id) {
+    $("#" + id).off('click').on("click", function (event) {
+        var cellId = event.target.id;
+        removeCell(cellId);
+    });
+}
+
+function addCellAddHandler(id) {
+    $("#" + id).on("click", function (event) {
+        var cellId = event.target.id;
+        addCell(cellId);
+    });
+}
+
+
+function disableAddingShips() {
+    for (var i = 0; i < 100; i++) {
+        var cellState = boardCells[i];
+        if (cellState == 0) {
+            disableCellHandler(i);
         }
     }
 }
 
-function handleShipCellSet(cellId) {
-    //boardCells[cellId] =1;
-    if (shipsCount[shipSize] == 0) {
-        return;
+function disableCellHandler(id) {
+    $("#" + id).off("click");
+}
+
+function removeCell(id) {
+    countCells--;
+    if (countCells == 19) {
+        allowAddingShips();
     }
-    shipCells.push(parseInt(cellId));
-    countShipCells++;
-    console.log(" countShipCells++ = " + countShipCells);
-    if (countShipCells == shipSize) {
-        putShip();
-        console.log(boardCells);
+    boardCells[id] = 0;
+    $("#" + id).off('click').on("click", function (event) {
+        var cellId = event.target.id;
+        addCell(cellId);
+    });
         updateBoardsColor();
-    }
+}
+
+function allowAddingShips() {
     activatePlayerBoard();
-}
-
-function putShip() {
-    console.log("in putShip()");
-    for (var i = 0; i < shipCells.length; i++) {
-        console.log("shipCells[i] = " + shipCells[i]);
-        boardCells[shipCells[i]] = 1;
-        console.log(boardCells);
-    }
-    putShipBorders();
-
-    shipsCount[shipSize]--;
-    if (shipsCount[shipSize] > 0) {
-        countShipCells = 0;
-        shipCells = [];
-    }
-}
-
-function putShipBorders() {
-    console.log("trace: putShipBorders() shipCells.length = " + shipCells.length);
-
-    for (var i = 0; i < shipCells.length; i++) {
-        putBordersForCell(shipCells[i]);
-    }
-}
-
-function putBordersForCell(cellId) {
-    console.log("trace: putBordersForCell() - cellId = " + cellId);
-    var cellX = Math.floor(cellId / 10);
-    var cellY = cellId % 10;
-    for (var x = cellX - 1; x < cellX + 2; x++) {
-        for (var y = cellY - 1; y < cellY + 2; y++) {
-            if (isValidCoordinates(x, y)) {
-                if (boardCells[xYToCellId(x, y)] != 1) {
-                    boardCells[xYToCellId(x, y)] = -2;
-                }
-            }
-        }
-    }
-}
-function isValidCoordinates(x, y) {
-    return x >= 0 && x < 10 && y >= 0 && y < 10;
-}
-
-function xYToCellId(x, y) {
-    return x * 10 + y;
-}
-
-function isValidCell(cellId) {
-    return cellId >= 0 && cellId < 100;
 }
 
 function disablePlayerBoard() {

@@ -1,8 +1,27 @@
+var shipSize;
+var boardCells = [];
+var enemyBoardCells = [];
+
+function initPlayerBoard() {
+    for (var i = 0; i < 100; i++) {
+        $('#' + i).attr('name', '' + 0);
+        var name = $('#' + i);
+        console.log(name.name);
+        boardCells.push(0);
+    }
+    console.log("boardCells = " + boardCells);
+    updateBoardColor();
+}
+
 function activatePlayerBoard() {
+    disablePlayerBoard();
+    initPlayerBoard();
     $(".userTd").on("click", function (event) {
         var cellId = event.target.id;
+        var cellName = event.target.name;
         console.log(cellId);
-        onSetShipCellClick(cellId);
+        console.log(cellId * 2);
+        console.log(cellName);
     })
 }
 
@@ -87,7 +106,8 @@ function updateBoard(array, isEnemyBoard) {
         var code = cellCodeFromNumber(num);
         var color = colorForNumber(num);
         var currentSelector = selector + i;
-        $(currentSelector).css('background-color', color).attr('name', code);
+        //$(currentSelector).css('background-color', color).attr('name', code);
+        $(currentSelector).attr('name', code);
         if (num != 0) {
             $(currentSelector).off('click');
         }
@@ -99,6 +119,14 @@ function updateBoards(params) {
     handleTurn(isYourTurn);
     updateBoard(params.board);
     updateBoard(params.enemyBoard, true);
+}
+
+function updateBoardColor() {
+    for (var i = 0; i < 100; i++) {
+        var selector = '#' + i;
+        var color = colorForNumber(boardCells[i]);
+        $(selector).css('background-color', color)
+    }
 }
 
 function handleTurn(isYourTurn) {
@@ -114,3 +142,5 @@ function handleTurn(isYourTurn) {
 function gameOver(params) {
     alert("Game Over!!!")
 }
+
+

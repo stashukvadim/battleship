@@ -32,3 +32,25 @@
     /*margin: 50px 50px 50px;*/
     padding: 80px 0px 80px 80px;
 }
+
+.shipAndCount table {
+    border-collapse: collapse;
+    border: 2px solid black;;
+}
+
+.shipAndCount table td {
+    width: 20px;
+    height: 20px;
+}
+
+#ships {
+    background-color: #DCDCDC;
+    float: left;
+}
+
+.shipAndCount {
+    margin-bottom: 30px;
+    background-color: #3399FF;
+    margin-right: 30px;
+}
+

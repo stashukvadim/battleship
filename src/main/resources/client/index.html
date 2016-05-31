@@ -184,6 +184,8 @@
 
             //My event listeners
             $("#sendReady").click(sendReady);
+            $("#putDefault").click(putDefaultShips);
+
         });
     </script>
 </head>
@@ -193,6 +195,7 @@
 
 <div id="buttons">
     <button id="leaveGameBt">Leave</button>
+    <button id="putDefault">Put default Ships</button>
 </div>
 <div class="board">
     <div class="boardDescription">You</div>
@@ -320,7 +323,7 @@
     </table>
 </div>
 <div class="board">
-    <div class="boardDescription">Enemy</div>
+    <div class="boardDescription">Opponent</div>
     <table id="enemyTable">
         <tr>
             <td class='enemyTd' id="e0"></td>

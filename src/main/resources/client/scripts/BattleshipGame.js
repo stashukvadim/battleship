@@ -6,6 +6,7 @@ function initGame() {
     showBoards();
     $("#gamebox").hide();
     $("#leaveGameBt").show();
+    $("#putDefault").show();
 }
 
 function sendReady() {

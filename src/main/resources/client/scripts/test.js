@@ -80,6 +80,7 @@ function disablePlayerBoard() {
 
 function activateEnemyBoard() {
     disableEnemyBoard();
+    $("#enemyTable").css("border", "2px solid black");
     $(".enemyTd").on("click", function (event) {
         var cellId = event.target.id;
         fire(cellId);
@@ -88,6 +89,7 @@ function activateEnemyBoard() {
 
 function disableEnemyBoard() {
     $(".enemyTd").off('click');
+    $("#enemyTable").css("border", "2px solid red");
 }
 
 function showBoards() {
@@ -178,10 +180,25 @@ function destroyGame() {
     enemyBoardCells = [];
     countCells = 0;
     hide("#leaveGameBt");
+    hide("#putDefault");
 }
 
 function hide(selector) {
     $(selector).hide();
 }
-
+function putDefaultShips() {
+    boardCells = [
+        1, 1, 1, 1, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 1, 0, 0, 1, 0,
+        1, 1, 1, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 1, 1, 0, 0, 0, 0, 1, 0, 0,
+        0, 0, 0, 0, 0, 1, 0, 0, 0, 0,
+        1, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        1, 1, 0, 0, 1, 1, 0, 0, 0, 0,
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    countCells = 19;
+    addCell(0);
+}
 

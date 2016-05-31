@@ -51,6 +51,7 @@ function init() {
     // Show LOGIN view
     setView("login", true);
     hide("#leaveGameBt");
+    hide("#putDefault");
 }
 
 //------------------------------------

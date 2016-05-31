@@ -15,33 +15,33 @@ public class Ship {
         if (size == 1) {
             return;
         }
-        if (size > 1 && size < 5) {
-            boolean vertical = false;
-            int difference = cells.get(1).getAsInt() - cells.get(0).getAsInt();
-            if (difference == 10) {
-                vertical = true;
-            } else if (difference != 1) {
-                throw new IllegalArgumentException();
-            }
-            int current = cells.get(0).getAsInt();
+        if (size < 1 || size > 4) {
+            throw new IllegalArgumentException("Cells are incorrect" + cells);
+        }
 
-            for (int i = 1; i < size; i++) {
-                if (vertical) {
-                    if (current + 10 == cells.get(i).getAsInt()) {
-                        current = current + 10;
-                    } else {
-                        throw new IllegalArgumentException();
-                    }
-                } else if (!vertical) {
-                    if (current + 1 == cells.get(i).getAsInt()) {
-                        current = current + 1;
-                    } else {
-                        throw new IllegalArgumentException();
-                    }
+        boolean vertical = false;
+        int difference = cells.get(1).getAsInt() - cells.get(0).getAsInt();
+        if (difference == 10) {
+            vertical = true;
+        } else if (difference != 1) {
+            throw new IllegalArgumentException();
+        }
+        int current = cells.get(0).getAsInt();
+
+        for (int i = 1; i < size; i++) {
+            if (vertical) {
+                if (current + 10 == cells.get(i).getAsInt()) {
+                    current = current + 10;
+                } else {
+                    throw new IllegalArgumentException();
+                }
+            } else {
+                if (current + 1 == cells.get(i).getAsInt()) {
+                    current = current + 1;
+                } else {
+                    throw new IllegalArgumentException();
                 }
             }
-        } else {
-            throw new IllegalArgumentException();
         }
     }
 

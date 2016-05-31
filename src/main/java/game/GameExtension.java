@@ -38,6 +38,7 @@ public class GameExtension extends SFSExtension {
         addRequestHandler("fire", MoveController.class);
         addRequestHandler("ready", ReadyHandler.class);
         addRequestHandler("setShipCell", AddShipCellHandler.class);
+        addRequestHandler("sendBoard", BoardReceivedHandler.class);
         addEventHandler(SFSEventType.USER_LEAVE_ROOM, UserLeftHandler.class);
 
         whoseTurn = getUserById(1);
@@ -57,6 +58,7 @@ public class GameExtension extends SFSExtension {
     }
 
     void startGame() {
+        trace("startGame()");
         User player1 = getUserById(1);
         User player2 = getUserById(2);
         trace("player1 = " + player1);

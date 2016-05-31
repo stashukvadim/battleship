@@ -3,6 +3,9 @@ var enemyBoardCells = [];
 var countCells = 0;
 
 function initPlayerBoard() {
+    console.log("in initPlayerBoard");
+    boardCells = [];
+    countCells = 0;
     for (var i = 0; i < 100; i++) {
         boardCells.push(0);
     }
@@ -10,6 +13,7 @@ function initPlayerBoard() {
 }
 
 function activatePlayerBoard() {
+    console.log("in activatePlayerBoard")
     disablePlayerBoard();
     initPlayerBoard();
     for (var i = 0; i < 100; i++) {
@@ -30,8 +34,22 @@ function addCell(id) {
     if (countCells == 20) {
         alert("All ships set! Sending data to server!");
         disableAddingShips();
+        console.log("boardCells = " + boardCells);
+        sfs.send(new SFS2X.Requests.System.ExtensionRequest("sendBoard", {board: boardCells}, sfs.lastJoinedRoom));
     }
+}
+
+function handleBoardCheckResult(params) {
+    var boardCorrect = params.boardCorrect;
+    console.log("boardCorrect = " + boardCorrect);
+    if (!boardCorrect) {
+        alert("Board is incorrect! Change ships!")
     }
+    else {
+        alert("Board is correct!");
+        disablePlayerBoard();
+    }
+}
 
 function addCellRemoveHandler(id) {
     $("#" + id).off('click').on("click", function (event) {
@@ -71,7 +89,7 @@ function removeCell(id) {
         var cellId = event.target.id;
         addCell(cellId);
     });
-        updateBoardsColor();
+    updateBoardsColor();
 }
 
 function allowAddingShips() {

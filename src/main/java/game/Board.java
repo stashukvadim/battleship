@@ -25,6 +25,10 @@ public class Board {
         }
     }
 
+    public Board() {
+        this("");
+    }
+
     public static boolean coordinateCorrect(int coordinate) {
         return coordinate < 10 && coordinate >= 0;
     }
@@ -215,5 +219,20 @@ public class Board {
             }
         }
         return result;
+    }
+
+    public void putShipsFromList(List<Integer> list) {
+        List<Cell> current = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                int integer = list.get(i * 10 + j);
+                if (integer == 1) {
+                    current.add(getCellAt(i, j));
+                } else if (integer == 0 && !current.isEmpty()) {
+                    addShip(current);
+                    current.clear();
+                }
+            }
+        }
     }
 }

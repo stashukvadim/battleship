@@ -3,7 +3,10 @@ package game;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.Test;
 
+import java.util.List;
+
 import static game.FireResult.*;
+import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.*;
 
 public class BoardTest {
@@ -190,15 +193,6 @@ public class BoardTest {
         softly.assertAll();
     }
 
-    @Test
-    public void shouldNotIllegalMoveExceptionWhenFireFirstTimeToCell() {
-        Board board = getHardCodedBoard();
-
-        FireResult fireResult = board.fire(0);
-        board.fire(0);
-        assertThat(fireResult).isEqualTo(HIT);
-    }
-
 
     @Test
     public void shouldThrowIllegalMoveExceptionWhenFireToAlreadyHitCell() {
@@ -257,5 +251,25 @@ public class BoardTest {
         board = new Board("");
         board.putHardCodedShips();
         assertThat(board.isComplete()).isTrue();
+    }
+
+    @Test
+    public void testPutShipsFromListWithException() {
+        List<Integer> integerList = asList(1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1,
+                1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0);
+
+        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> board.putShipsFromList(integerList));
+    }
+
+    @Test()
+    public void testPutShipsFromListWithNoException() {
+        List<Integer> integerList = asList(1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1,
+                0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0);
+
+        board.putShipsFromList(integerList);
     }
 }

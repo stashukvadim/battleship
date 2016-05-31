@@ -44,5 +44,8 @@ function onExtensionResponse(evt) {
         case "gameOver" :
             gameOver(params);
             break;
+        case "boardCheckResult" :
+            handleBoardCheckResult(params);
+            break;
     }
 }

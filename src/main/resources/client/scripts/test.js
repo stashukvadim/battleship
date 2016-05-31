@@ -172,4 +172,16 @@ function gameOver(params) {
     alert("Game Over!!!")
 }
 
+function destroyGame() {
+    hideBoards();
+    boardCells = [];
+    enemyBoardCells = [];
+    countCells = 0;
+    hide("#leaveGameBt");
+}
+
+function hide(selector) {
+    $(selector).hide();
+}
+
 

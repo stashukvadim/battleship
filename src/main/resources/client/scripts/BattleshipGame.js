@@ -5,6 +5,7 @@ function initGame() {
     sfs.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, onExtensionResponse);
     showBoards();
     $("#gamebox").hide();
+    $("#leaveGameBt").show();
 }
 
 function sendReady() {

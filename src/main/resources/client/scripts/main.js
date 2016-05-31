@@ -50,6 +50,7 @@ function init() {
 
     // Show LOGIN view
     setView("login", true);
+    hide("#leaveGameBt");
 }
 
 //------------------------------------
@@ -222,7 +223,7 @@ function onQuickJoinBtClick(event) {
  * In order to leave the current game room, the lobby room is joined.
  */
 function onLeaveGameBtClick(event) {
-    hideBoards();
+    destroyGame();
     // Join the lobby
     joinLobbyRoom();
 
@@ -289,8 +290,10 @@ function onConnection(event) {
 }
 
 function onConnectionLost(event) {
+
     // Reset view
     setView("login", true);
+    destroyGame();
 
     enablePrivateChat(-1);
     onRoomSelected(null);

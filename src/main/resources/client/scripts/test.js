@@ -4,13 +4,9 @@ var enemyBoardCells = [];
 
 function initPlayerBoard() {
     for (var i = 0; i < 100; i++) {
-        $('#' + i).attr('name', '' + 0);
-        var name = $('#' + i);
-        console.log(name.name);
         boardCells.push(0);
     }
-    console.log("boardCells = " + boardCells);
-    updateBoardColor();
+    updateBoardsColor();
 }
 
 function activatePlayerBoard() {
@@ -60,25 +56,6 @@ function onSetShipCellClick(id) {
     sfs.send(new SFS2X.Requests.System.ExtensionRequest("setShipCell", {cellId: id}, sfs.lastJoinedRoom));
 }
 
-function cellCodeFromNumber(num) {
-    var code;
-    switch (num) {
-        case 0 :
-            code = '_';
-            break;
-        case -1:
-            code = '*';
-            break;
-        case 1:
-            code = 'S';
-            break;
-        case 2 :
-            code = 'H';
-            break;
-    }
-    return code;
-}
-
 function colorForNumber(num) {
     var color;
     switch (num) {
@@ -99,18 +76,9 @@ function colorForNumber(num) {
 }
 
 function updateBoard(array, isEnemyBoard) {
-    var selector = isEnemyBoard ? '#e' : '#';
-
+    var boardArr = isEnemyBoard ? enemyBoardCells : boardCells;
     for (var i = 0; i < 100; i++) {
-        var num = array[i];
-        var code = cellCodeFromNumber(num);
-        var color = colorForNumber(num);
-        var currentSelector = selector + i;
-        //$(currentSelector).css('background-color', color).attr('name', code);
-        $(currentSelector).attr('name', code);
-        if (num != 0) {
-            $(currentSelector).off('click');
-        }
+        boardArr[i] = array[i];
     }
 }
 
@@ -119,13 +87,17 @@ function updateBoards(params) {
     handleTurn(isYourTurn);
     updateBoard(params.board);
     updateBoard(params.enemyBoard, true);
+    updateBoardsColor();
 }
 
-function updateBoardColor() {
+function updateBoardsColor() {
     for (var i = 0; i < 100; i++) {
         var selector = '#' + i;
-        var color = colorForNumber(boardCells[i]);
-        $(selector).css('background-color', color)
+        var enemySelector = '#e' + i;
+        var cellColor = colorForNumber(boardCells[i]);
+        $(selector).css('background-color', cellColor);
+        var enemyCellColor = colorForNumber(enemyBoardCells[i]);
+        $(enemySelector).css('background-color', enemyCellColor);
     }
 }
 

@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GameExtension extends SFSExtension {
+    public static final String FIRE_REQUEST = "fire";
+    public static final String SEND_BOARD_REQUEST = "sendBoard";
+
     private Board board1;
     private Board board2;
     private User whoseTurn;
@@ -45,8 +48,8 @@ public class GameExtension extends SFSExtension {
     public void init() {
         trace("init() - Battleship game started");
 
-        addRequestHandler("fire", MoveController.class);
-        addRequestHandler("sendBoard", BoardReceivedHandler.class);
+        addRequestHandler(FIRE_REQUEST, MoveController.class);
+        addRequestHandler(SEND_BOARD_REQUEST, BoardReceivedHandler.class);
         addEventHandler(SFSEventType.USER_LEAVE_ROOM, UserLeftHandler.class);
 
         whoseTurn = getUserById(1);
@@ -71,9 +74,6 @@ public class GameExtension extends SFSExtension {
         User player2 = getUserById(2);
         trace("player1 = " + player1);
         trace("player2 = " + player2);
-
-        board1 = (Board) player1.getProperty("board");
-        board2 = (Board) player2.getProperty("board");
 
         // No turn assigned? Let's start with player 1
         if (whoseTurn == null) whoseTurn = player1;
@@ -136,8 +136,6 @@ public class GameExtension extends SFSExtension {
     }
 
     public boolean isGameOver() {
-        trace("board1.allShipsDead() = " + board1.allShipsDead() + ", board2.allShipsDead() = " + board2
-                .allShipsDead());
         return (board1.allShipsDead() || board2.allShipsDead());
     }
 

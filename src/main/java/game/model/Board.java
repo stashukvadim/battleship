@@ -2,6 +2,7 @@ package game.model;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+import game.utils.VerifyService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -9,14 +10,14 @@ import java.util.List;
 import java.util.Set;
 
 import static game.model.CellState.*;
+import static game.utils.VerifyService.coordinatesCorrect;
+import static game.utils.VerifyService.verifyCoordinatesCorrect;
 
 public class Board {
     protected final Cell[][] matrix;
     protected final Multimap<Integer, Ship> shipMultimap = ArrayListMultimap.create();
-    private final String title;
 
-    public Board(String title) {
-        this.title = title;
+    public Board() {
         matrix = new Cell[10][10];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
@@ -25,34 +26,8 @@ public class Board {
         }
     }
 
-    public Board() {
-        this("");
-    }
-
-    public static boolean coordinateCorrect(int coordinate) {
-        return coordinate < 10 && coordinate >= 0;
-    }
-
-    private static boolean coordinatesCorrect(int x, int y) {
-        return coordinateCorrect(x) && coordinateCorrect(y);
-    }
-
-    public static void verifyCoordinatesCorrect(int x, int y) throws CellOutOfBoundsException {
-        if (!coordinatesCorrect(x, y)) {
-            throw new CellOutOfBoundsException(x, y);
-        }
-    }
-
-    private static void verifyCellsCorrect(List<Cell> cells) throws IllegalArgumentException {
-        for (Cell cell : cells) {
-            if (!cell.isAvailable()) {
-                throw new IllegalArgumentException("This cell is already occupied " + cell);
-            }
-        }
-    }
-
     public void addShip(List<Cell> cells) throws IllegalArgumentException {
-        verifyCellsCorrect(cells);
+        VerifyService.verifyCellsCorrect(cells);
         Ship ship = new Ship(cells);
         addShip(ship);
     }

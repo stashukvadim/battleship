@@ -6,41 +6,35 @@ public class Ship {
     private final List<Cell> cells;
 
     public Ship(List<Cell> cells) {
-        verifyCorrectCells(cells);
+        verifyShipLegal(cells);
         this.cells = cells;
     }
 
-    private void verifyCorrectCells(List<Cell> cells) throws IllegalArgumentException {//// TODO: 29.05.2016 Simplify
-        int size = cells.size();
-        if (size == 1) {
-            return;
-        }
-        if (size < 1 || size > 4) {
+    private void verifyShipLegal(List<Cell> cells) throws IllegalArgumentException {//// TODO: 29.05.2016 Simplify
+        if (null == cells || cells.size() < 1 || cells.size() > 4) {
             throw new IllegalArgumentException("Cells are incorrect" + cells);
         }
-
-        boolean vertical = false;
-        int difference = cells.get(1).getAsInt() - cells.get(0).getAsInt();
-        if (difference == 10) {
-            vertical = true;
-        } else if (difference != 1) {
-            throw new IllegalArgumentException();
+        if (cells.size() == 1) {
+            return;
         }
-        int current = cells.get(0).getAsInt();
+        boolean vertical = false;
+        int xDiff = cells.get(1).getX() - cells.get(0).getX();
+        int yDiff = cells.get(1).getY() - cells.get(0).getY();
 
-        for (int i = 1; i < size; i++) {
-            if (vertical) {
-                if (current + 10 == cells.get(i).getAsInt()) {
-                    current = current + 10;
-                } else {
-                    throw new IllegalArgumentException();
-                }
+        if (xDiff == 1 && yDiff == 0) {
+            vertical = true;
+        } else if (yDiff == 1 && xDiff == 0) {
+            vertical = false;
+        }
+        Cell previous = cells.get(0);
+        for (int i = 1; i < cells.size(); i++) {
+            Cell current = cells.get(i);
+            if (vertical && current.getX() - previous.getX() == 1 && current.getY() == previous.getY()) {
+                previous = current;
+            } else if (!vertical && current.getY() - previous.getY() == 1 && current.getX() == previous.getX()) {
+                previous = current;
             } else {
-                if (current + 1 == cells.get(i).getAsInt()) {
-                    current = current + 1;
-                } else {
-                    throw new IllegalArgumentException();
-                }
+                throw new IllegalArgumentException();
             }
         }
     }

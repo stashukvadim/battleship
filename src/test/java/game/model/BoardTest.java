@@ -10,10 +10,10 @@ import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.*;
 
 public class BoardTest {
-    private Board board = new Board("");
+    private Board board = new Board();
 
     private Board getHardCodedBoard() {
-        Board board = new Board("");
+        Board board = new Board();
         board.putHardCodedShips();
         return board;
     }
@@ -248,7 +248,7 @@ public class BoardTest {
         board.addShip(0, 0, 4);
         assertThat(board.isComplete()).isFalse();
 
-        board = new Board("");
+        board = new Board();
         board.putHardCodedShips();
         assertThat(board.isComplete()).isTrue();
     }

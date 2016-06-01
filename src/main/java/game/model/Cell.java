@@ -1,6 +1,7 @@
 package game.model;
 
-import static game.model.Board.verifyCoordinatesCorrect;
+import game.utils.VerifyService;
+
 import static game.model.CellState.EMPTY;
 
 public class Cell {
@@ -11,7 +12,7 @@ public class Cell {
     private boolean available;
 
     public Cell(int x, int y) {
-        verifyCoordinatesCorrect(x, y);
+        VerifyService.verifyCoordinatesCorrect(x, y);
         this.x = x;
         this.y = y;
         this.state = EMPTY;
@@ -46,7 +47,7 @@ public class Cell {
         this.state = state;
     }
 
-    public int getAsInt() {
+    public int intValue() {
         return x * 10 + y;
     }
 

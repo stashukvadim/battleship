@@ -31,7 +31,6 @@ public class BoardReceivedHandler extends BaseClientRequestHandler {
         if (verifiedBoard != null) {
             trace("received board is correct");
 
-            user.setProperty("board", verifiedBoard);
             if (user.getPlayerId() == 1) {
                 gameExt.setBoard1(verifiedBoard);
             } else {

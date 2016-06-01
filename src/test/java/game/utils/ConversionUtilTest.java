@@ -1,5 +1,6 @@
 package game.utils;
 
+import game.model.BoardFactory;
 import org.junit.Test;
 
 import java.util.List;
@@ -37,15 +38,14 @@ public class ConversionUtilTest {
 
     @Test
     public void shouldNotThrowExceptionWhenMatrixIsValidBoard() {
-        Verifications verification = new Verifications(booleanMatrixFromList(correctList));
-        verification.verifyMatrixIsValidBoard();
-        System.out.println(verification.getBoard());
+        boolean[][] booleans = booleanMatrixFromList(correctList);
+        new BoardFactory().boardFromMatrix(booleans);
     }
 
     @Test
-    public void shouldThrowExceptionWhenMatrixIsNotValidBoard() {
-        Verifications verification = new Verifications(booleanMatrixFromList((incorrectList)));
-        System.out.println(verification.getBoard());
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(verification::verifyMatrixIsValidBoard);
+    public void shouldThrowExceptionWhenMatrixIsNotAValidBoard() {
+        boolean[][] booleans = booleanMatrixFromList((incorrectList));
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new BoardFactory().boardFromMatrix(booleans));
     }
 }

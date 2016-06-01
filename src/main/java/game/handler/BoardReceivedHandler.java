@@ -6,8 +6,8 @@ import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
 import game.GameExtension;
 import game.model.Board;
+import game.model.BoardFactory;
 import game.utils.ConversionUtil;
-import game.utils.Verifications;
 
 import java.util.List;
 
@@ -23,7 +23,7 @@ public class BoardReceivedHandler extends BaseClientRequestHandler {
         Board verifiedBoard = null;
         SFSObject resObj = new SFSObject();
         try {
-            verifiedBoard = new Verifications(booleans).verifyMatrixIsValidBoard();
+            verifiedBoard = new BoardFactory().boardFromMatrix(booleans);
         } catch (IllegalArgumentException e) {
             resObj.putBool("boardCorrect", false);
             trace("received board is incorrect!");

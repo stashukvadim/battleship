@@ -37,15 +37,15 @@ public class ConversionUtil {
         return result;
     }
 
-    public static int intForCoordinates(int x, int y) {
+    public static int cellIdFrom(int x, int y) {
         return x * 10 + y;
     }
 
-    public static int xFromInt(int cellId) {
+    public static int xFrom(int cellId) {
         return cellId / 10;
     }
 
-    public static int yFromInt(int cellId) {
+    public static int yFrom(int cellId) {
         return cellId % 10;
     }
 }

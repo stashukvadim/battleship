@@ -65,7 +65,7 @@ public class BoardFactory {
                 break;
             }
         }
-        board.addShip(cells);
+        board.addShip(new Ship(cells));
     }
 
     private boolean isVertical(int x, int y) {

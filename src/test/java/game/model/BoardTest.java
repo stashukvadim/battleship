@@ -1,11 +1,14 @@
 package game.model;
 
+import game.utils.ConversionUtil;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.Test;
 
 import java.util.List;
 
 import static game.model.FireResult.*;
+import static game.model.ShipFactory.shipFor;
+import static game.utils.TestUtil.putHardCodedShips;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.*;
 
@@ -14,7 +17,7 @@ public class BoardTest {
 
     private Board getHardCodedBoard() {
         Board board = new Board();
-        board.putHardCodedShips();
+        putHardCodedShips(board);
         return board;
     }
 
@@ -37,7 +40,7 @@ public class BoardTest {
 
     @Test
     public void testAddShip() {
-        board.addShip(0, 0, 1);
+        board.addShip(shipFor(0, 0, 1, board));
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
                 "0 S _ _ _ _ _ _ _ _ _ \n" +
@@ -56,7 +59,8 @@ public class BoardTest {
     @SuppressWarnings("Duplicates")
     @Test
     public void testAddShipWith4CellsVertical() {
-        board.addShip(1, 1, true, 4);
+
+        board.addShip(shipFor(1, 1, true, 4, board));
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
                 "0 _ _ _ _ _ _ _ _ _ _ \n" +
@@ -75,7 +79,7 @@ public class BoardTest {
     @SuppressWarnings("Duplicates")
     @Test
     public void testAddShipWith4CellsHorizontal() {
-        board.addShip(1, 1, 4);
+        board.addShip(shipFor(1, 1, 4, board));
         String actual = board.toString();
         String expected = "  a b c d e f g h i j \n" +
                 "0 _ _ _ _ _ _ _ _ _ _ \n" +
@@ -93,7 +97,7 @@ public class BoardTest {
 
     @Test
     public void testPutHardCodedShips() {
-        board.putHardCodedShips();
+        putHardCodedShips(board);
         Cell[][] matrix = board.matrix;
         int countShipCell = 0;
         int countEmpty = 0;
@@ -226,8 +230,8 @@ public class BoardTest {
 
     @Test
     public void shouldReturnTrueWhenAllShipsDead() {
-        board.addShip(0, 0, 2);
-        board.addShip(2, 2, 1);
+        board.addShip(shipFor(0, 0, 2, board));
+        board.addShip(shipFor(2, 2, 1, board));
         board.fire(0, 0);
         board.fire(0, 1);
         assertThat(board.allShipsDead()).isFalse();
@@ -237,19 +241,20 @@ public class BoardTest {
 
     @Test
     public void shouldThrowIllegalArgumentExceptionWhenAddTwoFourCellShips() {
-        board.addShip(0, 0, 4);
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> board.addShip(2, 0, 4));
+        board.addShip(shipFor(0, 0, 4, board));
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> board.addShip(shipFor(2, 0, 4, board)));
     }
 
     @Test
     public void testIsCompleteMethod() {
         assertThat(board.isComplete()).isFalse();
 
-        board.addShip(0, 0, 4);
+        board.addShip(shipFor(0, 0, 4, board));
         assertThat(board.isComplete()).isFalse();
 
         board = new Board();
-        board.putHardCodedShips();
+        putHardCodedShips(board);
         assertThat(board.isComplete()).isTrue();
     }
 
@@ -259,8 +264,10 @@ public class BoardTest {
                 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0);
+        boolean[][] booleans = ConversionUtil.booleanMatrixFromList(integerList);
 
-        assertThatExceptionOfType(IllegalArgumentException.class).isThrownBy(() -> board.putShipsFromList(integerList));
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new BoardFactory().boardFromMatrix(booleans));
     }
 
     @Test()
@@ -269,7 +276,7 @@ public class BoardTest {
                 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0);
-
-        board.putShipsFromList(integerList);
+        boolean[][] booleans = ConversionUtil.booleanMatrixFromList(integerList);
+        new BoardFactory().boardFromMatrix(booleans);
     }
 }

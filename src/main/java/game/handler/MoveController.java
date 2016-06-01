@@ -10,6 +10,8 @@ import game.model.Board;
 import game.model.FireResult;
 
 import static game.model.FireResult.MISS;
+import static game.utils.ConversionUtil.xFromInt;
+import static game.utils.ConversionUtil.yFromInt;
 
 public class MoveController extends BaseClientRequestHandler {
     @Override
@@ -31,7 +33,7 @@ public class MoveController extends BaseClientRequestHandler {
 
         Board enemyBoard = gameExt.getOpponentBoard(user);
 
-        FireResult fireResult = enemyBoard.fire(cellId);
+        FireResult fireResult = enemyBoard.fire(xFromInt(cellId), yFromInt(cellId));
 
         if (fireResult == MISS) {
             gameExt.changeTurn(user);

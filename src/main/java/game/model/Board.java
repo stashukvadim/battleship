@@ -2,7 +2,6 @@ package game.model;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
-import game.utils.VerifyService;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -26,13 +25,7 @@ public class Board {
         }
     }
 
-    public void addShip(List<Cell> cells) throws IllegalArgumentException {
-        VerifyService.verifyCellsCorrect(cells);
-        Ship ship = new Ship(cells);
-        addShip(ship);
-    }
-
-    private void addShip(Ship ship) {
+    public void addShip(Ship ship) {
         if (shipMultimap.get(ship.getSize()).size() > 4 - ship.getSize()) {
             throw new IllegalArgumentException(
                     "you can't insert more than " + (5 - ship.getSize()) + " for " + ship.getSize() + "-deck ships");
@@ -43,46 +36,14 @@ public class Board {
             e.setUnavailable();
             e.setState(SHIP);
         });
-        getAdjacentCellsForShip(ship).forEach(Cell::setUnavailable);
+        getBorderCellsForShip(ship).forEach(Cell::setUnavailable);
     }
 
-    public void addShip(int x, int y, boolean vertical, int size) {
-        List<Cell> shipCells = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            verifyCoordinatesCorrect(x, y);
-            Cell cell = getCellAt(x, y);
-            shipCells.add(cell);
-            if (vertical) {
-                x++;
-            } else {
-                y++;
-            }
-        }
-        addShip(shipCells);
-    }
-
-    public void addShip(int x, int y, int size) {
-        addShip(x, y, false, size);
-    }
-
-    private Set<Cell> getAdjacentCellsForShip(Ship ship) {
+    private Set<Cell> getBorderCellsForShip(Ship ship) {
         Set<Cell> adjacentShipCells = new HashSet<>();
         List<Cell> shipCells = ship.getCells();
         shipCells.forEach(e -> getAdjacentCellsForShipCell(e).forEach(adjacentShipCells::add));
         return adjacentShipCells;
-    }
-
-    protected void putHardCodedShips() {
-        addShip(0, 0, 4);
-        addShip(0, 5, 3);
-        addShip(2, 0, true, 3);
-        addShip(2, 2, 2);
-        addShip(2, 5, 2);
-        addShip(2, 8, 2);
-        addShip(4, 2, 1);
-        addShip(4, 4, 1);
-        addShip(4, 6, 1);
-        addShip(4, 8, 1);
     }
 
     public FireResult fire(int x, int y) {
@@ -96,17 +57,13 @@ public class Board {
             cell.setState(HIT);
             Ship ship = cell.getShip();
             if (ship.isDead()) {
-                getAdjacentCellsForShip(ship).forEach(e -> e.setState(MISS));
+                getBorderCellsForShip(ship).forEach(e -> e.setState(MISS));
                 return FireResult.DEAD;
             } else {
                 return FireResult.HIT;
             }
         }
         throw new IllegalStateException();
-    }
-
-    public FireResult fire(int cellId) {
-        return fire(cellId / 10, cellId % 10);
     }
 
     private void verifyFireAllowed(int x, int y) {
@@ -119,10 +76,6 @@ public class Board {
 
     public Cell getCellAt(int x, int y) {
         return matrix[x][y];
-    }
-
-    public Cell getCellForId(int cellId) {
-        return matrix[cellId / 10][cellId % 10];
     }
 
     private Set<Cell> getAdjacentCellsForShipCell(Cell cell) {
@@ -182,10 +135,6 @@ public class Board {
         return shipMultimap.size() == 10;
     }
 
-    public Cell[][] getMatrix() {
-        return matrix;
-    }
-
     public List<Integer> toIntList() {
         List<Integer> result = new ArrayList<>();
         for (int i = 0; i < matrix.length; i++) {
@@ -194,20 +143,5 @@ public class Board {
             }
         }
         return result;
-    }
-
-    public void putShipsFromList(List<Integer> list) {
-        List<Cell> current = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            for (int j = 0; j < 10; j++) {
-                int integer = list.get(i * 10 + j);
-                if (integer == 1) {
-                    current.add(getCellAt(i, j));
-                } else if (integer == 0 && !current.isEmpty()) {
-                    addShip(current);
-                    current.clear();
-                }
-            }
-        }
     }
 }

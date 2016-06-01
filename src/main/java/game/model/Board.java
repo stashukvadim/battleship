@@ -24,6 +24,10 @@ public class Board {
         }
     }
 
+    public Cell getCellAt(int x, int y) {
+        return matrix[x][y];
+    }
+
     public void addShip(Ship ship) {
         if (shipMultimap.get(ship.getSize()).size() > 4 - ship.getSize()) {
             throw new IllegalArgumentException(
@@ -36,13 +40,6 @@ public class Board {
             e.setState(SHIP);
         });
         getBorderCellsForShip(ship).forEach(Cell::setUnavailable);
-    }
-
-    private Set<Cell> getBorderCellsForShip(Ship ship) {
-        Set<Cell> adjacentShipCells = new HashSet<>();
-        List<Cell> shipCells = ship.getCells();
-        shipCells.forEach(e -> getAdjacentCellsForShipCell(e).forEach(adjacentShipCells::add));
-        return adjacentShipCells;
     }
 
     public FireResult fire(int x, int y) {
@@ -65,34 +62,8 @@ public class Board {
         throw new IllegalStateException();
     }
 
-    private void verifyFireAllowed(int x, int y) {
-        verifyCoordinatesCorrect(x, y);
-        if (getCellAt(x, y).getState() == MISS || getCellAt(x, y).getState() == HIT) {
-            throw new IllegalMoveException(
-                    "x = " + x + ", y = " + y + ". getCellAt(x,y).getState = " + getCellAt(x, y).getState());
-        }
-    }
-
-    public Cell getCellAt(int x, int y) {
-        return matrix[x][y];
-    }
-
-    private Set<Cell> getAdjacentCellsForShipCell(Cell cell) {
-        Set<Cell> adjacentCells = new HashSet<>();
-        for (int x = cell.getX() - 1; x < cell.getX() + 2; x++) {
-            for (int y = cell.getY() - 1; y < cell.getY() + 2; y++) {
-                if (coordinatesCorrect(x, y)) {
-                    if (x == cell.getX() && y == cell.getY()) {
-                        continue;
-                    }
-                    Cell cellAt = getCellAt(x, y);
-                    if (cellAt.getState() == EMPTY) {
-                        adjacentCells.add(cellAt);
-                    }
-                }
-            }
-        }
-        return adjacentCells;
+    public boolean isComplete() {
+        return shipMultimap.size() == 10;
     }
 
     public boolean allShipsDead() {
@@ -130,7 +101,36 @@ public class Board {
         return result;
     }
 
-    public boolean isComplete() {
-        return shipMultimap.size() == 10;
+    private Set<Cell> getBorderCellsForShip(Ship ship) {
+        Set<Cell> adjacentShipCells = new HashSet<>();
+        List<Cell> shipCells = ship.getCells();
+        shipCells.forEach(e -> getAdjacentCellsForShipCell(e).forEach(adjacentShipCells::add));
+        return adjacentShipCells;
+    }
+
+    private void verifyFireAllowed(int x, int y) {
+        verifyCoordinatesCorrect(x, y);
+        if (getCellAt(x, y).getState() == MISS || getCellAt(x, y).getState() == HIT) {
+            throw new IllegalMoveException(
+                    "x = " + x + ", y = " + y + ". getCellAt(x,y).getState = " + getCellAt(x, y).getState());
+        }
+    }
+
+    private Set<Cell> getAdjacentCellsForShipCell(Cell cell) {
+        Set<Cell> adjacentCells = new HashSet<>();
+        for (int x = cell.getX() - 1; x < cell.getX() + 2; x++) {
+            for (int y = cell.getY() - 1; y < cell.getY() + 2; y++) {
+                if (coordinatesCorrect(x, y)) {
+                    if (x == cell.getX() && y == cell.getY()) {
+                        continue;
+                    }
+                    Cell cellAt = getCellAt(x, y);
+                    if (cellAt.getState() == EMPTY) {
+                        adjacentCells.add(cellAt);
+                    }
+                }
+            }
+        }
+        return adjacentCells;
     }
 }

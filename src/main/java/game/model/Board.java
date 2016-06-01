@@ -3,7 +3,6 @@ package game.model;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,7 +15,7 @@ public class Board {
     protected final Cell[][] matrix;
     protected final Multimap<Integer, Ship> shipMultimap = ArrayListMultimap.create();
 
-    public Board() {
+    protected Board() {
         matrix = new Cell[10][10];
         for (int i = 0; i < matrix.length; i++) {
             for (int j = 0; j < matrix.length; j++) {
@@ -133,15 +132,5 @@ public class Board {
 
     public boolean isComplete() {
         return shipMultimap.size() == 10;
-    }
-
-    public List<Integer> toIntList() {
-        List<Integer> result = new ArrayList<>();
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                result.add(matrix[i][j].getState().toInt());
-            }
-        }
-        return result;
     }
 }

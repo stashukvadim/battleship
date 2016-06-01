@@ -1,5 +1,8 @@
 package game.utils;
 
+import game.model.Board;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class ConversionUtil {
@@ -18,6 +21,17 @@ public class ConversionUtil {
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 result[i][j] = list.get(i * 10 + j) == 1;
+            }
+        }
+        return result;
+    }
+
+
+    public static List<Integer> boardToIntList(Board board) {
+        List<Integer> result = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                result.add(board.getCellAt(i, j).getState().toInt());
             }
         }
         return result;

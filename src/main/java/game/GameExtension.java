@@ -14,6 +14,8 @@ import game.model.Board;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static game.utils.ConversionUtil.boardToIntList;
+
 public class GameExtension extends SFSExtension {
     public static final String FIRE_REQUEST = "fire";
     public static final String SEND_BOARD_REQUEST = "sendBoard";
@@ -113,12 +115,13 @@ public class GameExtension extends SFSExtension {
 
             Board board = getUserBoard(user);
             Board enemyBoard = getOpponentBoard(user);
-            respObj.putIntArray("board", board.toIntList());
+            respObj.putIntArray("board", boardToIntList(board));
             List<Integer> oppBoardList;
             if (!gameOver) {
-                oppBoardList = enemyBoard.toIntList().stream().map(i -> i == 1 ? 0 : i).collect(Collectors.toList());
+                oppBoardList = boardToIntList(enemyBoard).stream().map(i -> i == 1 ? 0 : i)
+                                                         .collect(Collectors.toList());
             } else {
-                oppBoardList = enemyBoard.toIntList();
+                oppBoardList = boardToIntList(enemyBoard);
             }
             respObj.putIntArray("enemyBoard", oppBoardList);
 

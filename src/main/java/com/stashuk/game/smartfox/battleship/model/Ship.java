@@ -3,6 +3,7 @@ package com.stashuk.game.smartfox.battleship.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.stashuk.game.smartfox.battleship.model.CellState.DAMAGED;
 import static java.util.Collections.unmodifiableList;
 
 public class Ship {
@@ -47,21 +48,11 @@ public class Ship {
     }
 
     public boolean isDamaged() {
-        for (Cell cell : cells) {
-            if (cell.getState() == CellState.DAMAGED) {
-                return true;
-            }
-        }
-        return false;
+        return cells.stream().anyMatch(c -> c.getState() == DAMAGED);
     }
 
     public boolean isDead() {
-        for (Cell cell : cells) {
-            if (cell.getState() == CellState.SHIP) {
-                return false;
-            }
-        }
-        return true;
+        return cells.stream().allMatch(c -> c.getState() == DAMAGED);
     }
 
     public int getSize() {

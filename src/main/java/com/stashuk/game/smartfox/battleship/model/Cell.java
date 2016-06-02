@@ -1,18 +1,17 @@
 package com.stashuk.game.smartfox.battleship.model;
 
-import com.stashuk.game.smartfox.battleship.utils.VerifyService;
-
 import static com.stashuk.game.smartfox.battleship.model.CellState.EMPTY;
+import static com.stashuk.game.smartfox.battleship.utils.Verifications.verifyCoordinatesCorrect;
 
 public class Cell {
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
     private CellState state;
     private Ship ship;//null for empty cell
     private boolean available;
 
     public Cell(int x, int y) {
-        VerifyService.verifyCoordinatesCorrect(x, y);
+        verifyCoordinatesCorrect(x, y);
         this.x = x;
         this.y = y;
         this.state = EMPTY;
@@ -21,10 +20,6 @@ public class Cell {
 
     public boolean isAvailable() {
         return available;
-    }
-
-    public void setAvailable() {
-        available = true;
     }
 
     public void setUnavailable() {

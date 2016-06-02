@@ -3,7 +3,7 @@ package com.stashuk.game.smartfox.battleship.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.stashuk.game.smartfox.battleship.utils.VerifyService.verifyCoordinatesCorrect;
+import static com.stashuk.game.smartfox.battleship.utils.Verifications.verifyCoordinatesCorrect;
 
 public class ShipFactory {
     public static Ship shipFor(int x, int y, boolean vertical, int size, Board board) {

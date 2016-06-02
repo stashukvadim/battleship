@@ -1,6 +1,5 @@
 package com.stashuk.game.smartfox.battleship.controller;
 
-import com.smartfoxserver.v2.core.SFSEventType;
 import com.smartfoxserver.v2.entities.Room;
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
@@ -12,9 +11,11 @@ import com.stashuk.game.smartfox.battleship.handler.UserLeftHandler;
 import com.stashuk.game.smartfox.battleship.model.Board;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
+import static com.smartfoxserver.v2.core.SFSEventType.USER_DISCONNECT;
+import static com.smartfoxserver.v2.core.SFSEventType.USER_LEAVE_ROOM;
 import static com.stashuk.game.smartfox.battleship.utils.ConversionUtil.boardToIntList;
+import static java.util.stream.Collectors.toList;
 
 public class BattleshipExtension extends SFSExtension {
     public static final String REQUEST_FIRE = "fire";
@@ -37,8 +38,8 @@ public class BattleshipExtension extends SFSExtension {
 
         addRequestHandler(REQUEST_FIRE, MoveController.class);
         addRequestHandler(REQUEST_SEND_BOARD, BoardReceivedHandler.class);
-        addEventHandler(SFSEventType.USER_DISCONNECT, UserLeftHandler.class);
-        addEventHandler(SFSEventType.USER_LEAVE_ROOM, UserLeftHandler.class);
+        addEventHandler(USER_DISCONNECT, UserLeftHandler.class);
+        addEventHandler(USER_LEAVE_ROOM, UserLeftHandler.class);
     }
 
     @Override
@@ -116,7 +117,7 @@ public class BattleshipExtension extends SFSExtension {
             List<Integer> oppBoardList;
             if (!gameOver) {
                 oppBoardList = boardToIntList(enemyBoard).stream().map(i -> i == 1 ? 0 : i)
-                                                         .collect(Collectors.toList());
+                                                         .collect(toList());
             } else {
                 oppBoardList = boardToIntList(enemyBoard);
             }

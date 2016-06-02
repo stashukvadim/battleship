@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static com.stashuk.game.smartfox.battleship.utils.ConversionUtil.booleanMatrixFromList;
-import static com.stashuk.game.smartfox.battleship.utils.ConversionUtil.int2DArrayFromList;
+import static com.stashuk.game.smartfox.battleship.utils.ConversionUtil.intMatrixFromList;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
@@ -31,7 +31,7 @@ public class ConversionUtilTest {
 
     @Test
     public void testInt2DArrayFromList() {
-        int[][] ints = int2DArrayFromList(correctList);
+        int[][] ints = intMatrixFromList(correctList);
 
         assertThat(ints).isEqualTo(correctMatrix);
     }

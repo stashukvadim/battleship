@@ -1,10 +1,10 @@
 package com.stashuk.game.smartfox.battleship.model;
 
-import com.stashuk.game.smartfox.battleship.utils.ConversionUtil;
 import org.junit.Test;
 
 import java.util.List;
 
+import static com.stashuk.game.smartfox.battleship.utils.ConversionUtil.booleanMatrixFromList;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
@@ -24,7 +24,7 @@ public class BoardFactoryTest {
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-        boolean[][] booleans = ConversionUtil.booleanMatrixFromList(listWith4DeckShipMissing);
+        boolean[][] booleans = booleanMatrixFromList(listWith4DeckShipMissing);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> new BoardFactory().boardFromMatrix(booleans));
@@ -44,7 +44,7 @@ public class BoardFactoryTest {
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        boolean[][] booleans = ConversionUtil.booleanMatrixFromList(integerListWithLShaped);
+        boolean[][] booleans = booleanMatrixFromList(integerListWithLShaped);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> new BoardFactory().boardFromMatrix(booleans));
@@ -64,7 +64,7 @@ public class BoardFactoryTest {
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-        boolean[][] booleans = ConversionUtil.booleanMatrixFromList(integerList);
+        boolean[][] booleans = booleanMatrixFromList(integerList);
 
         new BoardFactory().boardFromMatrix(booleans);
     }
@@ -83,7 +83,7 @@ public class BoardFactoryTest {
                 0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-        boolean[][] booleans = ConversionUtil.booleanMatrixFromList(integerListWithCornerShip);
+        boolean[][] booleans = booleanMatrixFromList(integerListWithCornerShip);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> new BoardFactory().boardFromMatrix(booleans));

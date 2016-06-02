@@ -56,6 +56,9 @@ public class Cell {
     }
 
     public void setShip(Ship ship) {
+        if (!available){
+            throw new IllegalArgumentException("Cell is unavailable");
+        }
         this.ship = ship;
     }
 

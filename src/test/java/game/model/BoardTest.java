@@ -259,12 +259,19 @@ public class BoardTest {
     }
 
     @Test
-    public void testPutShipsFromListWithException() {
-        List<Integer> integerList = asList(1, 0, 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1,
-                1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0);
-        boolean[][] booleans = ConversionUtil.booleanMatrixFromList(integerList);
+    public void testPutShipsFromListWithExceptionForLShapedShip() {
+        List<Integer> integerListWithLShaped = asList(
+                1, 0, 1, 0, 1, 1, 1, 0, 0, 0,//l-shaped
+                1, 1, 0, 0, 0, 0, 0, 0, 1, 0,//
+                0, 0, 0, 0, 0, 1, 1, 0, 0, 0,
+                0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+                0, 0, 0, 0, 1, 1, 1, 1, 0, 1,
+                0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        boolean[][] booleans = ConversionUtil.booleanMatrixFromList(integerListWithLShaped);
 
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> new BoardFactory().boardFromMatrix(booleans));
@@ -279,4 +286,23 @@ public class BoardTest {
         boolean[][] booleans = ConversionUtil.booleanMatrixFromList(integerList);
         new BoardFactory().boardFromMatrix(booleans);
     }
+
+    @Test()
+    public void testPutShipsFromListWithExceptionForCornerShip() {
+        List<Integer> integerListWithCornerShip = asList(
+                1, 0, 0, 0, 0, 0, 0, 1, 0, 1,
+                1, 0, 0, 1, 0, 0, 0, 1, 0, 1,
+                1, 0, 0, 0, 0, 0, 0, 1, 0, 1,
+                1, 0, 0, 0, 1, 0, 0, 0, 0, 0,
+                0, 1, 0, 0, 0, 0, 0, 0, 1, 1,
+                0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
+                0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        boolean[][] booleans = ConversionUtil.booleanMatrixFromList(integerListWithCornerShip);
+        assertThatExceptionOfType(IllegalArgumentException.class)
+                .isThrownBy(() -> new BoardFactory().boardFromMatrix(booleans));
+    }
+
 }

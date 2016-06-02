@@ -45,6 +45,7 @@ function init() {
     sfs.addEventListener(SFS2X.SFSEvent.USER_COUNT_CHANGE, onUserCountChange, this);
     sfs.addEventListener(SFS2X.SFSEvent.ROOM_REMOVE, onRoomRemove, this);
     sfs.addEventListener(SFS2X.SFSEvent.ROOM_ADD, onRoomAdd, this);
+    sfs.addEventListener(SFS2X.SFSEvent.ROOM_VARIABLES_UPDATE, onRoomRemove, this);
 
     trace("SmartFox API version: " + sfs.version);
 
@@ -389,7 +390,7 @@ function onRoomJoin(event) {
         // Reset roomlist selection
         onRoomSelected(null);
         log("Please put your ships");
-        initPlayerBoard();
+        initPlayerBoards();
     }
 }
 

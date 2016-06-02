@@ -173,8 +173,7 @@ function handleTurn(isYourTurn) {
 }
 
 function gameOver(params) {
-
-    info('Game Over!');
+    disableEnemyBoard();
 }
 
 function destroyGame() {
@@ -182,6 +181,10 @@ function destroyGame() {
     boardCells = [];
     enemyBoardCells = [];
     countCells = 0;
+    trace("in destroyGame()");
+    trace("boardCells = " + boardCells);
+    trace("enemyBoardCells = " + enemyBoardCells);
+    trace("countCells = " + countCells);
     hide(cons.LEAVE_GAME_BT);
     hide(cons.INFO_BOX);
     hide(cons.PUT_DEFAULT_SHIPS_BUTTON);
@@ -212,5 +215,10 @@ function putDefaultShips() {
 
 function info(message) {
     $(cons.INFO_BOX).html(message);
+}
+
+function handleOpponentLeft() {
+    info("Your opponent left the game. TODO add block everything!");
+    gameOver();
 }
 

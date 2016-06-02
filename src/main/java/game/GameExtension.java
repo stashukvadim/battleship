@@ -11,6 +11,7 @@ import game.handler.MoveController;
 import game.handler.UserLeftHandler;
 import game.model.Board;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +24,7 @@ public class GameExtension extends SFSExtension {
     private Board board1;
     private Board board2;
     private User whoseTurn;
+    private boolean gameOver;
 
     public Board getBoard1() {
         return board1;
@@ -52,6 +54,7 @@ public class GameExtension extends SFSExtension {
 
         addRequestHandler(FIRE_REQUEST, MoveController.class);
         addRequestHandler(SEND_BOARD_REQUEST, BoardReceivedHandler.class);
+        addEventHandler(SFSEventType.USER_DISCONNECT, UserLeftHandler.class);
         addEventHandler(SFSEventType.USER_LEAVE_ROOM, UserLeftHandler.class);
 
         whoseTurn = getUserById(1);
@@ -59,10 +62,11 @@ public class GameExtension extends SFSExtension {
 
     @Override
     public void destroy() {
-        trace("Battleship game destroyed");
+        super.destroy();
+        trace("Battleship game destroyed!");
     }
 
-    Room getGameRoom() {
+    public Room getGameRoom() {
         return this.getParentRoom();
     }
 
@@ -88,6 +92,7 @@ public class GameExtension extends SFSExtension {
         resObj.putInt("p1i", player1.getId());
         resObj.putUtfString("p2n", player2.getName());
         resObj.putInt("p2i", player2.getId());
+        resObj.putUtfString("gameName", getGameRoom().getName());
 
         send("start", resObj, getParentRoom().getUserList());
         trace("send start message to client");
@@ -134,12 +139,25 @@ public class GameExtension extends SFSExtension {
         }
     }
 
+    public List<User> getUsers() {
+        List<User> users = new ArrayList<>();
+        User user1 = getUserById(1);
+        User user2 = getUserById(2);
+        if (user1 != null) {
+            users.add(user1);
+        }
+        if (user2 != null) {
+            users.add(user2);
+        }
+        return users;
+    }
+
     public User getUserById(int id) {
         return getParentRoom().getUserByPlayerId(id);
     }
 
     public boolean isGameOver() {
-        return (board1.allShipsDead() || board2.allShipsDead());
+        return (gameOver || board1.allShipsDead() || board2.allShipsDead());
     }
 
     public Board getUserBoard(User user) {
@@ -148,5 +166,11 @@ public class GameExtension extends SFSExtension {
 
     public Board getOpponentBoard(User user) {
         return user.getPlayerId() == 1 ? board2 : board1;
+    }
+
+    public void gameOver() {
+        gameOver = true;
+        trace("User gone. removeRoom");
+        getApi().removeRoom(getGameRoom());
     }
 }

@@ -38,7 +38,7 @@
 
     <!-- Load main script -->
     <script type="text/javascript" src="scripts/main.js"></script>
-    <script type="text/javascript" src="scripts/BattleshipGame.js"></script>
+    <script type="text/javascript" src="scripts/battleship_game.js"></script>
     <script type="text/javascript" src="scripts/board.js"></script>
     <script type="text/javascript" src="scripts/test.js"></script>
     <script type="text/javascript" src="scripts/constants.js"></script>
@@ -185,7 +185,7 @@
 
             //My event listeners
             $("#sendReady").click(sendReady);
-            $("#putDefault").click(putDefaultShips);
+            $(cons.PUT_DEFAULT_SHIPS_BUTTON).click(putDefaultShips);
 
         });
     </script>

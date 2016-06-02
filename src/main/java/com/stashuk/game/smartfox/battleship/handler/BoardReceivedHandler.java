@@ -3,6 +3,7 @@ package com.stashuk.game.smartfox.battleship.handler;
 import com.smartfoxserver.v2.entities.User;
 import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
+import com.smartfoxserver.v2.exceptions.SFSRuntimeException;
 import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
 import com.stashuk.game.smartfox.battleship.controller.BattleshipExtension;
 import com.stashuk.game.smartfox.battleship.model.Board;
@@ -17,6 +18,9 @@ public class BoardReceivedHandler extends BaseClientRequestHandler {
     @Override
     public void handleClientRequest(User user, ISFSObject params) {
         BattleshipExtension game = (BattleshipExtension) getParentExtension();
+        if (game.isGameStarted()){
+            throw new SFSRuntimeException("The game already started. You can't change a board now.");
+        }
         trace("in BoardReceivedHandler. User = " + user);
         List<Integer> boardAsList = (List<Integer>) params.getIntArray("board");
         trace("board = " + boardAsList);

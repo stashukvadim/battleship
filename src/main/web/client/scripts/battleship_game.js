@@ -21,6 +21,7 @@ function sendReady() {
 function startGame(params) {
     disablePlayerBoard();
     activateEnemyBoard();
+    hide(cons.PUT_DEFAULT_SHIPS_BUTTON);
 }
 /**
  * Hide the Game PopUp

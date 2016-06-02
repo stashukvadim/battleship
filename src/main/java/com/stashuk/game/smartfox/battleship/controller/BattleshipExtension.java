@@ -31,6 +31,7 @@ public class BattleshipExtension extends SFSExtension {
     private Board board2;
     private User whoseTurn;
     private boolean gameOver;
+    private boolean gameStarted;
 
     @Override
     public void init() {
@@ -90,6 +91,11 @@ public class BattleshipExtension extends SFSExtension {
         trace("send start message to client");
 
         sendBoardsUpdate();
+        gameStarted = true;
+    }
+
+    public boolean isGameStarted() {
+        return gameStarted;
     }
 
     public void changeTurn(User user) {

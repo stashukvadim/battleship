@@ -21,7 +21,7 @@ public class BoardTest {
     public void testToStringForEmptyBoard() {
         String actual = board.toString();
         String expected =
-                "  a b c d e f g h i j \n" +
+                "  0 1 2 3 4 5 6 7 8 9 \n" +
                 "0 _ _ _ _ _ _ _ _ _ _ \n" +
                 "1 _ _ _ _ _ _ _ _ _ _ \n" +
                 "2 _ _ _ _ _ _ _ _ _ _ \n" +
@@ -40,7 +40,7 @@ public class BoardTest {
         board.addShip(shipFor(0, 0, 1, board));
         String actual = board.toString();
         String expected =
-                "  a b c d e f g h i j \n" +
+                "  0 1 2 3 4 5 6 7 8 9 \n" +
                 "0 S _ _ _ _ _ _ _ _ _ \n" +
                 "1 _ _ _ _ _ _ _ _ _ _ \n" +
                 "2 _ _ _ _ _ _ _ _ _ _ \n" +
@@ -60,7 +60,7 @@ public class BoardTest {
 
         board.addShip(shipFor(1, 1, true, 4, board));
         String actual = board.toString();
-        String expected = "  a b c d e f g h i j \n" +
+        String expected = "  0 1 2 3 4 5 6 7 8 9 \n" +
                 "0 _ _ _ _ _ _ _ _ _ _ \n" +
                 "1 _ S _ _ _ _ _ _ _ _ \n" +
                 "2 _ S _ _ _ _ _ _ _ _ \n" +
@@ -79,7 +79,7 @@ public class BoardTest {
     public void testAddShipWith4CellsHorizontal() {
         board.addShip(shipFor(1, 1, 4, board));
         String actual = board.toString();
-        String expected = "  a b c d e f g h i j \n" +
+        String expected = "  0 1 2 3 4 5 6 7 8 9 \n" +
                 "0 _ _ _ _ _ _ _ _ _ _ \n" +
                 "1 _ S S S S _ _ _ _ _ \n" +
                 "2 _ _ _ _ _ _ _ _ _ _ \n" +
@@ -94,32 +94,12 @@ public class BoardTest {
     }
 
     @Test
-    public void testPutHardCodedShips() {
-        putHardCodedShips(board);
-
-        String hardcodedBoardToString =
-                "  a b c d e f g h i j \n" +
-                "0 S S S S _ S S S _ _ \n" +
-                "1 _ _ _ _ _ _ _ _ _ _ \n" +
-                "2 S _ S S _ S S _ S S \n" +
-                "3 S _ _ _ _ _ _ _ _ _ \n" +
-                "4 S _ S _ S _ S _ S _ \n" +
-                "5 _ _ _ _ _ _ _ _ _ _ \n" +
-                "6 _ _ _ _ _ _ _ _ _ _ \n" +
-                "7 _ _ _ _ _ _ _ _ _ _ \n" +
-                "8 _ _ _ _ _ _ _ _ _ _ \n" +
-                "9 _ _ _ _ _ _ _ _ _ _ ";
-
-        assertThat(board.toString()).isEqualTo(hardcodedBoardToString);
-    }
-
-    @Test
     public void shouldReturnMissWhenFireToEmptyCell() {
         Board board = getHardCodedBoard();
 
         FireResult fireResult = board.fire(1, 1);
 
-        assertThat(fireResult).isEqualTo(MISS);
+        assertThat(fireResult).isEqualTo(MISSED);
     }
 
     @Test
@@ -185,7 +165,7 @@ public class BoardTest {
         Board board = getHardCodedBoard();
 
         FireResult fireResult = board.fire(1, 0);
-        assertThat(fireResult).isEqualTo(MISS);
+        assertThat(fireResult).isEqualTo(MISSED);
 
         assertThatThrownBy(() -> board.fire(1, 0)).isInstanceOf(IllegalMoveException.class);
     }

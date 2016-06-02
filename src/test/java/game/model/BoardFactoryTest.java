@@ -32,10 +32,10 @@ public class BoardFactoryTest {
 
 
     @Test
-    public void testPutShipsFromListWithExceptionForLShapedShip() {
+    public void shouldThrowExceptionWhenMatrixHasLShapedShip() {
         List<Integer> integerListWithLShaped = asList(
-                1, 0, 1, 0, 1, 1, 1, 0, 0, 0,//l-shaped
-                1, 1, 0, 0, 0, 0, 0, 0, 1, 0,//
+                1, 1, 1, 0, 1, 1, 1, 0, 0, 0,
+                1, 0, 0, 0, 0, 0, 0, 0, 1, 0,
                 0, 0, 0, 0, 0, 1, 1, 0, 0, 0,
                 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
                 0, 0, 0, 0, 1, 1, 1, 1, 0, 1,
@@ -51,7 +51,7 @@ public class BoardFactoryTest {
     }
 
     @Test()
-    public void testPutShipsFromListWithNoException() {
+    public void shouldNotThrowExceptionWhenMatrixIsLegalBoard() {
         List<Integer> integerList = asList(
                 1, 1, 1, 1, 0, 1, 1, 1, 0, 0,
                 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -70,7 +70,7 @@ public class BoardFactoryTest {
     }
 
     @Test()
-    public void testPutShipsFromListWithExceptionForCornerShip() {
+    public void shouldThrowExceptionWhenMatrixHasCornerShips() {
         List<Integer> integerListWithCornerShip = asList(
                 1, 0, 0, 0, 0, 0, 0, 1, 0, 1,
                 1, 0, 0, 1, 0, 0, 0, 1, 0, 1,

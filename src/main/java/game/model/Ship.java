@@ -45,7 +45,7 @@ public class Ship {
 
     public boolean isDamaged() {
         for (Cell cell : cells) {
-            if (cell.getState() == CellState.HIT) {
+            if (cell.getState() == CellState.DAMAGED) {
                 return true;
             }
         }

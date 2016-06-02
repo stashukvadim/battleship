@@ -1,24 +1,14 @@
 package game.model;
 
 public enum CellState {
-    EMPTY, SHIP, MISS, HIT;
+    EMPTY(0), SHIP(1), MISS(-1), DAMAGED(2);
 
-    public int toInt() {
-        int result = 0;
-        switch (this) {
-            case EMPTY:
-                result = 0;
-                break;
-            case SHIP:
-                result = 1;
-                break;
-            case MISS:
-                result = -1;
-                break;
-            case HIT:
-                result = 2;
-                break;
-        }
-        return result;
+    private int code;
+
+    CellState(int code) {
+        this.code = code;
+    }
+        public int intCode() {
+        return code;
     }
 }

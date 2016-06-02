@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import static game.model.CellState.*;
+import static game.model.FireResult.*;
 import static game.utils.VerifyService.coordinatesCorrect;
 import static game.utils.VerifyService.verifyCoordinatesCorrect;
 
@@ -44,22 +45,21 @@ public class Board {
 
     public FireResult fire(int x, int y) {
         verifyFireAllowed(x, y);
+
         Cell cell = getCellAt(x, y);
-        if (cell.getState() == EMPTY) {
-            cell.setState(MISS);
-            return FireResult.MISS;
-        }
         if (cell.getState() == SHIP) {
-            cell.setState(HIT);
+            cell.setState(DAMAGED);
             Ship ship = cell.getShip();
             if (ship.isDead()) {
                 getBorderCellsForShip(ship).forEach(e -> e.setState(MISS));
-                return FireResult.DEAD;
+                return DEAD;
             } else {
-                return FireResult.HIT;
+                return HIT;
             }
+        } else {
+            cell.setState(MISS);
+            return MISSED;
         }
-        throw new IllegalStateException();
     }
 
     public boolean isComplete() {
@@ -77,7 +77,7 @@ public class Board {
 
     @Override
     public String toString() {
-        String result = "  a b c d e f g h i j ";
+        String result = "  0 1 2 3 4 5 6 7 8 9 ";
         for (int i = 0; i < matrix.length; i++) {
             result += "\n" + i + " ";
             for (int j = 0; j < matrix.length; j++) {
@@ -92,7 +92,7 @@ public class Board {
                     case MISS:
                         result += "* ";
                         break;
-                    case HIT:
+                    case DAMAGED:
                         result += "H ";
                         break;
                 }
@@ -110,7 +110,7 @@ public class Board {
 
     private void verifyFireAllowed(int x, int y) {
         verifyCoordinatesCorrect(x, y);
-        if (getCellAt(x, y).getState() == MISS || getCellAt(x, y).getState() == HIT) {
+        if (getCellAt(x, y).getState() == MISS || getCellAt(x, y).getState() == DAMAGED) {
             throw new IllegalMoveException(
                     "x = " + x + ", y = " + y + ". getCellAt(x,y).getState = " + getCellAt(x, y).getState());
         }
@@ -120,11 +120,8 @@ public class Board {
         Set<Cell> adjacentCells = new HashSet<>();
         for (int x = cell.getX() - 1; x < cell.getX() + 2; x++) {
             for (int y = cell.getY() - 1; y < cell.getY() + 2; y++) {
-                if (coordinatesCorrect(x, y)) {
-                    Cell current = getCellAt(x, y);
-                    if (current.getState() == EMPTY) {
-                        adjacentCells.add(current);
-                    }
+                if (coordinatesCorrect(x, y) && getCellAt(x, y).getState() == EMPTY) {
+                    adjacentCells.add(getCellAt(x, y));
                 }
             }
         }

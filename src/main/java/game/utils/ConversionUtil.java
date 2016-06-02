@@ -31,14 +31,10 @@ public class ConversionUtil {
         List<Integer> result = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
-                result.add(board.getCellAt(i, j).getState().toInt());
+                result.add(board.getCellAt(i, j).getState().intCode());
             }
         }
         return result;
-    }
-
-    public static int cellIdFrom(int x, int y) {
-        return x * 10 + y;
     }
 
     public static int xFrom(int cellId) {

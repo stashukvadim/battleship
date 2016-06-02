@@ -9,7 +9,7 @@ import game.GameExtension;
 import game.model.Board;
 import game.model.FireResult;
 
-import static game.model.FireResult.MISS;
+import static game.model.FireResult.MISSED;
 import static game.utils.ConversionUtil.xFrom;
 import static game.utils.ConversionUtil.yFrom;
 
@@ -35,7 +35,7 @@ public class MoveController extends BaseClientRequestHandler {
 
         FireResult fireResult = enemyBoard.fire(xFrom(cellId), yFrom(cellId));
 
-        if (fireResult == MISS) {
+        if (fireResult == MISSED) {
             gameExt.changeTurn(user);
         }
 

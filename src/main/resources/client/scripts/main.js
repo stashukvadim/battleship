@@ -4,7 +4,7 @@
 var LOBBY_ROOM_NAME = "The Lobby";
 var GAME_ROOMS_GROUP_NAME = "games";
 var EXTENSION_ID = "battleship";
-var EXTENSIONS_CLASS = "game.GameExtension";
+var EXTENSIONS_CLASS = "com.stashuk.game.smartfox.battleship.controller.BattleshipExtension";
 
 //------------------------------------
 // Vars

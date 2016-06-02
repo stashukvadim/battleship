@@ -1,7 +1,7 @@
 package game;
 
-import game.model.Cell;
-import game.model.Ship;
+import com.stashuk.game.smartfox.battleship.model.Cell;
+import com.stashuk.game.smartfox.battleship.model.Ship;
 import org.junit.Test;
 
 import static java.util.Arrays.asList;

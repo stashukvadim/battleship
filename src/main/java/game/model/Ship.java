@@ -1,16 +1,19 @@
 package game.model;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import static java.util.Collections.unmodifiableList;
 
 public class Ship {
     private final List<Cell> cells;
 
-    public Ship(List<Cell> cells) {
+    public Ship(List<Cell> cells) throws IllegalArgumentException {
         verifyShipLegal(cells);
-        this.cells = cells;
+        this.cells = new ArrayList<>(cells);
     }
 
-    private void verifyShipLegal(List<Cell> cells) throws IllegalArgumentException {//// TODO: 29.05.2016 Simplify
+    private void verifyShipLegal(List<Cell> cells) throws IllegalArgumentException {
         if (null == cells || cells.size() < 1 || cells.size() > 4) {
             throw new IllegalArgumentException("Cells are incorrect" + cells);
         }
@@ -40,7 +43,7 @@ public class Ship {
     }
 
     public List<Cell> getCells() {
-        return cells;
+        return unmodifiableList(cells);
     }
 
     public boolean isDamaged() {

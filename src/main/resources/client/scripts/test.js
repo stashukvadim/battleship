@@ -83,7 +83,7 @@ function activateEnemyBoard() {
     $("#enemyTable").css("border", "2px solid black");
     $(".enemyTd").on("click", function (event) {
         var cellId = event.target.id;
-        fire(cellId);
+        fire(parseInt(cellId));
     })
 }
 

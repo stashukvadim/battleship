@@ -19,28 +19,28 @@ public class MoveController extends BaseClientRequestHandler {
         if (!params.containsKey("cellId")) {
             throw new SFSRuntimeException("Invalid request, mandatory param is missing. Required param = cellId");
         }
-        BattleshipExtension gameExt = (BattleshipExtension) getParentExtension();
-        if (gameExt.isGameOver()) {
+        BattleshipExtension game = (BattleshipExtension) getParentExtension();
+        if (game.isGameOver()) {
             throw new SFSRuntimeException("Game is over. No more moves allowed.");
         }
-        if (user != gameExt.getWhoseTurn()) {
+        if (user != game.getWhoseTurn()) {
             throw new SFSRuntimeException("Invalid request, it'n not this user's turn now. User = " + user);
         }
+
         trace("in MoveController");
-        String cellIdString = params.getUtfString("cellId");
-        int cellId = Integer.valueOf(cellIdString.substring(1));
+        int cellId = params.getInt("cellId");
         trace(String.format("Handling move from player %s. Cell id = %s", user.getPlayerId(), cellId));
 
-        Board enemyBoard = gameExt.getOpponentBoard(user);
+        Board oppBoard = game.getOpponentBoardFor(user);
 
-        FireResult fireResult = enemyBoard.fire(xFrom(cellId), yFrom(cellId));
+        FireResult fireResult = oppBoard.fire(xFrom(cellId), yFrom(cellId));
 
         if (fireResult == MISSED) {
-            gameExt.changeTurn(user);
+            game.changeTurn(user);
         }
 
-        ISFSObject respObj = new SFSObject();
-        respObj.putUtfString("fireResult", fireResult.toString());
-        gameExt.sendBoardsUpdate();
+        ISFSObject response = new SFSObject();
+        response.putUtfString("fireResult", fireResult.toString());
+        game.sendBoardsUpdate();
     }
 }

@@ -31,6 +31,22 @@ public class BattleshipExtension extends SFSExtension {
     private User whoseTurn;
     private boolean gameOver;
 
+    @Override
+    public void init() {
+        trace("init() - Battleship game started");
+
+        addRequestHandler(REQUEST_FIRE, MoveController.class);
+        addRequestHandler(REQUEST_SEND_BOARD, BoardReceivedHandler.class);
+        addEventHandler(SFSEventType.USER_DISCONNECT, UserLeftHandler.class);
+        addEventHandler(SFSEventType.USER_LEAVE_ROOM, UserLeftHandler.class);
+    }
+
+    @Override
+    public void destroy() {
+        trace("Battleship game destroyed!");
+        super.destroy();
+    }
+
     public Board getBoard1() {
         return board1;
     }
@@ -53,28 +69,8 @@ public class BattleshipExtension extends SFSExtension {
         return whoseTurn;
     }
 
-    @Override
-    public void init() {
-        trace("init() - Battleship game started");
-
-        addRequestHandler(REQUEST_FIRE, MoveController.class);
-        addRequestHandler(REQUEST_SEND_BOARD, BoardReceivedHandler.class);
-        addEventHandler(SFSEventType.USER_DISCONNECT, UserLeftHandler.class);
-        addEventHandler(SFSEventType.USER_LEAVE_ROOM, UserLeftHandler.class);
-    }
-
-    @Override
-    public void destroy() {
-        trace("Battleship game destroyed!");
-        super.destroy();
-    }
-
     public Room getGameRoom() {
         return this.getParentRoom();
-    }
-
-    public void stopGame() {
-
     }
 
     public void startGame() {
@@ -107,16 +103,16 @@ public class BattleshipExtension extends SFSExtension {
         List<User> userList = getGameRoom().getUserList();
         boolean gameOver = isGameOver();
         for (User user : userList) {
-            ISFSObject respObj = new SFSObject();
+            ISFSObject response = new SFSObject();
 
             boolean isYourTurn = user == getWhoseTurn();
-            respObj.putBool("isYourTurn", isYourTurn);
+            response.putBool("isYourTurn", isYourTurn);
 
             trace("in sendBoardsUpdate() : isYourTurn = " + isYourTurn);
 
-            Board board = getUserBoard(user);
-            Board enemyBoard = getOpponentBoard(user);
-            respObj.putIntArray("board", boardToIntList(board));
+            Board board = getBoardFor(user);
+            Board enemyBoard = getOpponentBoardFor(user);
+            response.putIntArray("board", boardToIntList(board));
             List<Integer> oppBoardList;
             if (!gameOver) {
                 oppBoardList = boardToIntList(enemyBoard).stream().map(i -> i == 1 ? 0 : i)
@@ -124,10 +120,10 @@ public class BattleshipExtension extends SFSExtension {
             } else {
                 oppBoardList = boardToIntList(enemyBoard);
             }
-            respObj.putIntArray("enemyBoard", oppBoardList);
+            response.putIntArray("enemyBoard", oppBoardList);
 
-            send(RESPONSE_BOARDS_UPDATE, respObj, user);
-            trace("sent boarUpdate for User = " + user + " params = " + respObj);
+            send(RESPONSE_BOARDS_UPDATE, response, user);
+            trace("sent boarUpdate for User = " + user + " params = " + response);
 
             if (gameOver) {
                 send(RESPONSE_GAME_OVER, new SFSObject(), user);
@@ -147,11 +143,11 @@ public class BattleshipExtension extends SFSExtension {
         return (gameOver || board1.allShipsDead() || board2.allShipsDead());
     }
 
-    public Board getUserBoard(User user) {
+    public Board getBoardFor(User user) {
         return user.getPlayerId() == 1 ? board1 : board2;
     }
 
-    public Board getOpponentBoard(User user) {
+    public Board getOpponentBoardFor(User user) {
         return user.getPlayerId() == 1 ? board2 : board1;
     }
 

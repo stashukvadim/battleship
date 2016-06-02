@@ -10,8 +10,8 @@ public class UserLeftHandler extends BaseServerEventHandler {
     @Override
     public void handleServerEvent(ISFSEvent isfsEvent) throws SFSException {
         trace("User left room!");
-        BattleshipExtension gameExt = (BattleshipExtension) getParentExtension();
-        send(BattleshipExtension.RESPONSE_OPPONENT_LEFT, new SFSObject(), gameExt.getUsers());
-        gameExt.gameOver();
+        BattleshipExtension game = (BattleshipExtension) getParentExtension();
+        send(BattleshipExtension.RESPONSE_OPPONENT_LEFT, new SFSObject(), game.getUsers());
+        game.gameOver();
     }
 }

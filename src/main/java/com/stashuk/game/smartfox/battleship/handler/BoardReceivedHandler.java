@@ -16,34 +16,34 @@ import static com.stashuk.game.smartfox.battleship.controller.BattleshipExtensio
 public class BoardReceivedHandler extends BaseClientRequestHandler {
     @Override
     public void handleClientRequest(User user, ISFSObject params) {
-        BattleshipExtension gameExt = (BattleshipExtension) getParentExtension();
+        BattleshipExtension game = (BattleshipExtension) getParentExtension();
         trace("in BoardReceivedHandler. User = " + user);
         List<Integer> boardAsList = (List<Integer>) params.getIntArray("board");
         trace("board = " + boardAsList);
         boolean[][] booleans = ConversionUtil.booleanMatrixFromList(boardAsList);
 
         Board verifiedBoard = null;
-        SFSObject resObj = new SFSObject();
+        SFSObject response = new SFSObject();
         try {
             verifiedBoard = new BoardFactory().boardFromMatrix(booleans);
         } catch (IllegalArgumentException e) {
-            resObj.putBool("boardCorrect", false);
+            response.putBool("boardCorrect", false);
             trace("received board is incorrect!");
         }
         if (verifiedBoard != null) {
             trace("received board is correct");
 
             if (user.getPlayerId() == 1) {
-                gameExt.setBoard1(verifiedBoard);
+                game.setBoard1(verifiedBoard);
             } else {
-                gameExt.setBoard2(verifiedBoard);
+                game.setBoard2(verifiedBoard);
             }
-            resObj.putBool("boardCorrect", true);
+            response.putBool("boardCorrect", true);
         }
 
-        send(RESPONSE_BOARD_CHECK_RESULT, resObj, user);
-        if (gameExt.getBoard1() != null && gameExt.getBoard2() != null) {
-            gameExt.startGame();
+        send(RESPONSE_BOARD_CHECK_RESULT, response, user);
+        if (game.getBoard1() != null && game.getBoard2() != null) {
+            game.startGame();
         }
     }
 }

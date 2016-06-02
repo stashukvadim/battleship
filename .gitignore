@@ -1,6 +1,6 @@
 .gradle
 .idea
-Battleship.iml
+*.iml
 gradlew
 gradlew.bat
 gradle

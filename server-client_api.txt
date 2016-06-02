@@ -1,0 +1,11 @@
+Server->Client
+-gameOver{}
+-boardsUpdate{isYourTurn: boolean, board:intArray, enemyBoard:intArray}
+-start{}
+-boardCheckResult{boardCorrect:boolean}
+-opponentLeft{}
+
+
+Client->Server
+-sendBoard{board: intArray}
+-fire{cellId:int}

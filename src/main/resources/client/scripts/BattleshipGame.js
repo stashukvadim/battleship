@@ -46,7 +46,7 @@ function onExtensionResponse(evt) {
     switch (cmd) {
         case servResp.START:
             startGame(params);
-            trace("Let the game begin!!! Game name = " + params.gameName, true);
+            trace("Let the game begin!!!", true);
             break;
         case servResp.BOARDS_UPDATE:
             updateBoards(params);

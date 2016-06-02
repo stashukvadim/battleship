@@ -12,3 +12,8 @@ var servResp = {
     BOARD_CHECK_RESULT: "boardCheckResult",
     OPPONENT_LEFT: "opponentLeft"
 };
+
+var clientReq = {
+    FIRE: "fire",
+    SEND_BOARD: "sendBoard"
+};

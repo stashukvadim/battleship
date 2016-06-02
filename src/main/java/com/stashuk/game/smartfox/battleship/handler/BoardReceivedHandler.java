@@ -11,6 +11,8 @@ import com.stashuk.game.smartfox.battleship.utils.ConversionUtil;
 
 import java.util.List;
 
+import static com.stashuk.game.smartfox.battleship.controller.BattleshipExtension.RESPONSE_BOARD_CHECK_RESULT;
+
 public class BoardReceivedHandler extends BaseClientRequestHandler {
     @Override
     public void handleClientRequest(User user, ISFSObject params) {
@@ -39,7 +41,7 @@ public class BoardReceivedHandler extends BaseClientRequestHandler {
             resObj.putBool("boardCorrect", true);
         }
 
-        send("boardCheckResult", resObj, user);
+        send(RESPONSE_BOARD_CHECK_RESULT, resObj, user);
         if (gameExt.getBoard1() != null && gameExt.getBoard2() != null) {
             gameExt.startGame();
         }

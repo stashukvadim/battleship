@@ -11,15 +11,20 @@ import com.stashuk.game.smartfox.battleship.handler.MoveController;
 import com.stashuk.game.smartfox.battleship.handler.UserLeftHandler;
 import com.stashuk.game.smartfox.battleship.model.Board;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.stashuk.game.smartfox.battleship.utils.ConversionUtil.boardToIntList;
 
 public class BattleshipExtension extends SFSExtension {
-    public static final String FIRE_REQUEST = "fire";
-    public static final String SEND_BOARD_REQUEST = "sendBoard";
+    public static final String REQUEST_FIRE = "fire";
+    public static final String REQUEST_SEND_BOARD = "sendBoard";
+
+    public static final String RESPONSE_BOARDS_UPDATE = "boardsUpdate";
+    public static final String RESPONSE_GAME_OVER = "gameOver";
+    public static final String RESPONSE_START = "start";
+    public static final String RESPONSE_BOARD_CHECK_RESULT = "boardCheckResult";
+    public static final String RESPONSE_OPPONENT_LEFT = "opponentLeft";
 
     private Board board1;
     private Board board2;
@@ -52,18 +57,16 @@ public class BattleshipExtension extends SFSExtension {
     public void init() {
         trace("init() - Battleship game started");
 
-        addRequestHandler(FIRE_REQUEST, MoveController.class);
-        addRequestHandler(SEND_BOARD_REQUEST, BoardReceivedHandler.class);
+        addRequestHandler(REQUEST_FIRE, MoveController.class);
+        addRequestHandler(REQUEST_SEND_BOARD, BoardReceivedHandler.class);
         addEventHandler(SFSEventType.USER_DISCONNECT, UserLeftHandler.class);
         addEventHandler(SFSEventType.USER_LEAVE_ROOM, UserLeftHandler.class);
-
-        whoseTurn = getUserById(1);
     }
 
     @Override
     public void destroy() {
-        super.destroy();
         trace("Battleship game destroyed!");
+        super.destroy();
     }
 
     public Room getGameRoom() {
@@ -81,21 +84,14 @@ public class BattleshipExtension extends SFSExtension {
         trace("player1 = " + player1);
         trace("player2 = " + player2);
 
-        // No turn assigned? Let's start with player 1
-        if (whoseTurn == null) whoseTurn = player1;
+        if (whoseTurn == null) {
+            whoseTurn = Math.random() < 0.5 ? player1 : player2;
+        }
         trace("whoseTurn = " + whoseTurn);
 
-        // Send START event to client
-        ISFSObject resObj = new SFSObject();
-        resObj.putInt("t", whoseTurn.getPlayerId());
-        resObj.putUtfString("p1n", player1.getName());
-        resObj.putInt("p1i", player1.getId());
-        resObj.putUtfString("p2n", player2.getName());
-        resObj.putInt("p2i", player2.getId());
-        resObj.putUtfString("gameName", getGameRoom().getName());
-
-        send("start", resObj, getParentRoom().getUserList());
+        send(RESPONSE_START, new SFSObject(), getParentRoom().getUserList());
         trace("send start message to client");
+
         sendBoardsUpdate();
     }
 
@@ -130,26 +126,17 @@ public class BattleshipExtension extends SFSExtension {
             }
             respObj.putIntArray("enemyBoard", oppBoardList);
 
-            send("boardsUpdate", respObj, user);
+            send(RESPONSE_BOARDS_UPDATE, respObj, user);
             trace("sent boarUpdate for User = " + user + " params = " + respObj);
 
             if (gameOver) {
-                send("gameOver", respObj, user);//dummy response object
+                send(RESPONSE_GAME_OVER, new SFSObject(), user);
             }
         }
     }
 
     public List<User> getUsers() {
-        List<User> users = new ArrayList<>();
-        User user1 = getUserById(1);
-        User user2 = getUserById(2);
-        if (user1 != null) {
-            users.add(user1);
-        }
-        if (user2 != null) {
-            users.add(user2);
-        }
-        return users;
+        return getGameRoom().getPlayersList();
     }
 
     public User getUserById(int id) {

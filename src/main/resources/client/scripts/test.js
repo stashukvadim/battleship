@@ -12,7 +12,7 @@ function addCell(id) {
         trace("All ships set! Sending data to server!");
         disableAddingShips();
         trace("boardCells = " + boardCells);
-        sfs.send(new SFS2X.Requests.System.ExtensionRequest("sendBoard", {board: boardCells}, sfs.lastJoinedRoom));
+        sfs.send(new SFS2X.Requests.System.ExtensionRequest(clientReq.SEND_BOARD, {board: boardCells}, sfs.lastJoinedRoom));
     }
 }
 
@@ -102,13 +102,7 @@ function hideBoards() {
 
 function fire(id) {
     trace("fire() is send for cellId = " + id);
-    trace("sfs.lastJoinedRoom = " + sfs.lastJoinedRoom);
-    sfs.send(new SFS2X.Requests.System.ExtensionRequest("fire", {cellId: id}, sfs.lastJoinedRoom));
-}
-
-
-function onSetShipCellClick(id) {
-    sfs.send(new SFS2X.Requests.System.ExtensionRequest("setShipCell", {cellId: id}, sfs.lastJoinedRoom));
+    sfs.send(new SFS2X.Requests.System.ExtensionRequest(clientReq.FIRE, {cellId: id}, sfs.lastJoinedRoom));
 }
 
 function colorForNumber(num) {
@@ -218,7 +212,7 @@ function info(message) {
 }
 
 function handleOpponentLeft() {
-    info("Your opponent left the game. TODO add block everything!");
+    info("Your opponent left the game :(");
     gameOver();
 }
 

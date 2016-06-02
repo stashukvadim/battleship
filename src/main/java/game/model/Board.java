@@ -121,12 +121,9 @@ public class Board {
         for (int x = cell.getX() - 1; x < cell.getX() + 2; x++) {
             for (int y = cell.getY() - 1; y < cell.getY() + 2; y++) {
                 if (coordinatesCorrect(x, y)) {
-                    if (x == cell.getX() && y == cell.getY()) {
-                        continue;
-                    }
-                    Cell cellAt = getCellAt(x, y);
-                    if (cellAt.getState() == EMPTY) {
-                        adjacentCells.add(cellAt);
+                    Cell current = getCellAt(x, y);
+                    if (current.getState() == EMPTY) {
+                        adjacentCells.add(current);
                     }
                 }
             }

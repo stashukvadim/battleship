@@ -2,7 +2,8 @@ var disabler;
 var currentPopUp;
 
 function initGame() {
-    sfs.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, onExtensionResponse);
+    sfs.removeEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, onExtensionResponse);
+    sfs.addEventListener(SFS2X.SFSEvent.EXTENSION_RESPONSE, onExtensionResponse, this);
     showBoards();
 
     hide(cons.GAME_BOX);
@@ -45,16 +46,20 @@ function onExtensionResponse(evt) {
     switch (cmd) {
         case servResp.START:
             startGame(params);
-            log("Let the game begin!!!");
+            trace("Let the game begin!!! Game name = " + params.gameName, true);
             break;
         case servResp.BOARDS_UPDATE:
             updateBoards(params);
             break;
         case servResp.GAME_OVER :
             gameOver(params);
+            info('Game Over!');
             break;
         case servResp.BOARD_CHECK_RESULT :
             handleBoardCheckResult(params);
+            break;
+        case servResp.OPPONENT_LEFT:
+            handleOpponentLeft();
             break;
     }
 }

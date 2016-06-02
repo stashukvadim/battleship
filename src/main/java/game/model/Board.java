@@ -12,8 +12,8 @@ import static game.utils.VerifyService.coordinatesCorrect;
 import static game.utils.VerifyService.verifyCoordinatesCorrect;
 
 public class Board {
-    protected final Cell[][] matrix;
-    protected final Multimap<Integer, Ship> shipMultimap = ArrayListMultimap.create();
+    private final Cell[][] matrix;
+    private final Multimap<Integer, Ship> shipMultimap = ArrayListMultimap.create();
 
     protected Board() {
         matrix = new Cell[10][10];

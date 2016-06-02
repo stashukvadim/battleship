@@ -41,6 +41,9 @@ public class BoardFactory {
                 }
             }
         }
+        if (!board.isComplete()) {
+            throw new IllegalArgumentException();
+        }
         return board;
     }
 

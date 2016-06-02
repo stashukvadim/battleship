@@ -1,15 +1,11 @@
 package game.model;
 
-import game.utils.ConversionUtil;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.Test;
-
-import java.util.List;
 
 import static game.model.FireResult.*;
 import static game.model.ShipFactory.shipFor;
 import static game.utils.TestUtil.putHardCodedShips;
-import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.*;
 
 public class BoardTest {
@@ -24,7 +20,8 @@ public class BoardTest {
     @Test
     public void testToStringForEmptyBoard() {
         String actual = board.toString();
-        String expected = "  a b c d e f g h i j \n" +
+        String expected =
+                "  a b c d e f g h i j \n" +
                 "0 _ _ _ _ _ _ _ _ _ _ \n" +
                 "1 _ _ _ _ _ _ _ _ _ _ \n" +
                 "2 _ _ _ _ _ _ _ _ _ _ \n" +
@@ -42,7 +39,8 @@ public class BoardTest {
     public void testAddShip() {
         board.addShip(shipFor(0, 0, 1, board));
         String actual = board.toString();
-        String expected = "  a b c d e f g h i j \n" +
+        String expected =
+                "  a b c d e f g h i j \n" +
                 "0 S _ _ _ _ _ _ _ _ _ \n" +
                 "1 _ _ _ _ _ _ _ _ _ _ \n" +
                 "2 _ _ _ _ _ _ _ _ _ _ \n" +
@@ -98,35 +96,9 @@ public class BoardTest {
     @Test
     public void testPutHardCodedShips() {
         putHardCodedShips(board);
-        Cell[][] matrix = board.matrix;
-        int countShipCell = 0;
-        int countEmpty = 0;
-        int countHit = 0;
-        int countMiss = 0;
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix.length; j++) {
-                switch (matrix[i][j].getState()) {
-                    case EMPTY:
-                        countEmpty++;
-                        break;
-                    case SHIP:
-                        countShipCell++;
-                        break;
-                    case MISS:
-                        countMiss++;
-                        break;
-                    case HIT:
-                        countHit++;
-                        break;
-                }
-            }
-        }
-        assertThat(countEmpty).isEqualTo(80);
-        assertThat(countShipCell).isEqualTo(20);
-        assertThat(countHit).isEqualTo(0);
-        assertThat(countMiss).isEqualTo(0);
 
-        String expected = "  a b c d e f g h i j \n" +
+        String hardcodedBoardToString =
+                "  a b c d e f g h i j \n" +
                 "0 S S S S _ S S S _ _ \n" +
                 "1 _ _ _ _ _ _ _ _ _ _ \n" +
                 "2 S _ S S _ S S _ S S \n" +
@@ -138,7 +110,7 @@ public class BoardTest {
                 "8 _ _ _ _ _ _ _ _ _ _ \n" +
                 "9 _ _ _ _ _ _ _ _ _ _ ";
 
-        assertThat(board.toString()).isEqualTo(expected);
+        assertThat(board.toString()).isEqualTo(hardcodedBoardToString);
     }
 
     @Test
@@ -257,52 +229,4 @@ public class BoardTest {
         putHardCodedShips(board);
         assertThat(board.isComplete()).isTrue();
     }
-
-    @Test
-    public void testPutShipsFromListWithExceptionForLShapedShip() {
-        List<Integer> integerListWithLShaped = asList(
-                1, 0, 1, 0, 1, 1, 1, 0, 0, 0,//l-shaped
-                1, 1, 0, 0, 0, 0, 0, 0, 1, 0,//
-                0, 0, 0, 0, 0, 1, 1, 0, 0, 0,
-                0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
-                0, 0, 0, 0, 1, 1, 1, 1, 0, 1,
-                0, 1, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 1, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        boolean[][] booleans = ConversionUtil.booleanMatrixFromList(integerListWithLShaped);
-
-        assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> new BoardFactory().boardFromMatrix(booleans));
-    }
-
-    @Test()
-    public void testPutShipsFromListWithNoException() {
-        List<Integer> integerList = asList(1, 1, 1, 1, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 0, 1, 1,
-                0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0);
-        boolean[][] booleans = ConversionUtil.booleanMatrixFromList(integerList);
-        new BoardFactory().boardFromMatrix(booleans);
-    }
-
-    @Test()
-    public void testPutShipsFromListWithExceptionForCornerShip() {
-        List<Integer> integerListWithCornerShip = asList(
-                1, 0, 0, 0, 0, 0, 0, 1, 0, 1,
-                1, 0, 0, 1, 0, 0, 0, 1, 0, 1,
-                1, 0, 0, 0, 0, 0, 0, 1, 0, 1,
-                1, 0, 0, 0, 1, 0, 0, 0, 0, 0,
-                0, 1, 0, 0, 0, 0, 0, 0, 1, 1,
-                0, 0, 0, 1, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                0, 0, 0, 0, 0, 0, 0, 0, 1, 1,
-                0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-        boolean[][] booleans = ConversionUtil.booleanMatrixFromList(integerListWithCornerShip);
-        assertThatExceptionOfType(IllegalArgumentException.class)
-                .isThrownBy(() -> new BoardFactory().boardFromMatrix(booleans));
-    }
-
 }

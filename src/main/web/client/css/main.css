@@ -329,7 +329,7 @@ input.textInput[disabled] {
 }
 
 .jqx-listbox .game:before {
-	content: url('../images/icon.png');
+	content: url('../images/battleship_logo.jpg');
 }
 
 .jqx-listbox .itemSub {

@@ -18,11 +18,6 @@ function sendReady() {
     sfs.send(new SFS2X.Requests.System.ExtensionRequest("ready", {}, sfs.lastJoinedRoom))
 }
 
-function startGame(params) {
-    disablePlayerBoard();
-    activateEnemyBoard();
-    hide(cons.PUT_DEFAULT_SHIPS_BUTTON);
-}
 /**
  * Hide the Game PopUp
  */
@@ -47,14 +42,12 @@ function onExtensionResponse(evt) {
     switch (cmd) {
         case servResp.START:
             startGame(params);
-            trace("Let the game begin!!!", true);
             break;
         case servResp.BOARDS_UPDATE:
             updateBoards(params);
             break;
         case servResp.GAME_OVER :
             gameOver(params);
-            info('Game Over!');
             break;
         case servResp.BOARD_CHECK_RESULT :
             handleBoardCheckResult(params);

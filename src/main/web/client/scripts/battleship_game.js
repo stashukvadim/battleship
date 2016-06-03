@@ -14,7 +14,7 @@ function initGame() {
 }
 
 function sendReady() {
-    log("Send ready button clicked");
+    trace("Send ready button clicked");
     sfs.send(new SFS2X.Requests.System.ExtensionRequest("ready", {}, sfs.lastJoinedRoom))
 }
 
@@ -29,15 +29,11 @@ function removeGamePopUp() {
     }
 }
 
-function log(message) {
-    console.log(message);
-}
-
 function onExtensionResponse(evt) {
     var params = evt.params;
     var cmd = evt.cmd;
 
-    log("Received Extension Response: " + params + " command = " + cmd);
+    trace("Received Extension Response: " + params + " command = " + cmd);
 
     switch (cmd) {
         case servResp.START:

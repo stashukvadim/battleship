@@ -389,7 +389,7 @@ function onRoomJoin(event) {
 
         // Reset roomlist selection
         onRoomSelected(null);
-        log("Please put your ships");
+        trace("Please put your ships");
         initPlayerBoards();
     }
 }
@@ -489,7 +489,7 @@ function onRoomAdd(event) {
 //------------------------------------
 
 function trace(txt, showAlert) {
-    log(txt);
+    console.log(txt);
 
     if (showAlert)
         alert(txt);

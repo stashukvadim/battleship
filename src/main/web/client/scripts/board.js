@@ -2,7 +2,6 @@ var boardCells = [];
 var enemyBoardCells = [];
 var countCells = 0;
 
-
 function addCell(id) {
     countCells++;
     boardCells[id] = 1;
@@ -152,9 +151,6 @@ function destroyGame() {
     enemyBoardCells = [];
     countCells = 0;
     trace("in destroyGame()");
-    trace("boardCells = " + boardCells);
-    trace("enemyBoardCells = " + enemyBoardCells);
-    trace("countCells = " + countCells);
     hide(cons.LEAVE_GAME_BT);
     hide(cons.INFO_BOX);
     hide(cons.PUT_DEFAULT_SHIPS_BUTTON);
@@ -167,6 +163,7 @@ function hide(selector) {
 function show(selector) {
     $(selector).show();
 }
+
 function putDefaultShips() {
     boardCells = [
         1, 1, 1, 1, 0, 0, 0, 0, 0, 0,

@@ -4,8 +4,10 @@ Server->Client
 -start{}
 -boardCheckResult{boardCorrect:boolean}
 -opponentLeft{}
+-randomBoard{randomBoard:intArray}
 
 
 Client->Server
 -sendBoard{board: intArray}
 -fire{cellId:int}
+-getRandomBoard{}

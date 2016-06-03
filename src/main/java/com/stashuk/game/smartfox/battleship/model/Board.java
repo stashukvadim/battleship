@@ -30,11 +30,17 @@ public class Board {
         return matrix[x][y];
     }
 
-    public void addShip(Ship ship) {
+    public boolean addShip(Ship ship) {
         if (shipMultimap.get(ship.getSize()).size() > 4 - ship.getSize()) {
             throw new IllegalArgumentException(
                     "you can't insert more than " + (5 - ship.getSize()) + " for " + ship.getSize() + "-deck ships");
         }
+        //check that all cells are available
+        boolean allCellsAvailable = ship.getCells().stream().allMatch(Cell::isAvailable);
+        if (!allCellsAvailable){
+            return false;
+        }
+
         shipMultimap.put(ship.getSize(), ship);
         ship.getCells().forEach(e -> {
             e.setShip(ship);
@@ -42,6 +48,8 @@ public class Board {
             e.setState(SHIP);
         });
         getBorderCellsForShip(ship).forEach(Cell::setUnavailable);
+
+        return true;
     }
 
     public FireResult fire(int x, int y) {

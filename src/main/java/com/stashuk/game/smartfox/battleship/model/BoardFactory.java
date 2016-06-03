@@ -2,11 +2,12 @@ package com.stashuk.game.smartfox.battleship.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static com.stashuk.game.smartfox.battleship.utils.Verifications.correctCoordinates;
 
 public class BoardFactory {
-    private boolean[][] matrix;
+    private boolean[][] matrix = new boolean[10][10];
     private boolean[][] seen;
     private Board board = new Board();
 
@@ -18,10 +19,42 @@ public class BoardFactory {
         if (matrix.length != 10 || matrix[0].length != 10) {
             throw new IllegalArgumentException();
         }
+        for (int i = 0; i < 10; i++) {
+            System.arraycopy(matrix[i], 0, this.matrix[i], 0, matrix.length);
+        }
         this.matrix = matrix;
         seen = new boolean[10][10];
 
         return verifyMatrixIsValidBoard();
+    }
+
+    public Board newRandomBoard() {
+        board = new Board();
+        for (int i = 4; i >= 1; i--) {
+            for (int j = 5 - i; j > 0; j--) {
+                putRandomShip(i);
+            }
+        }
+        return board;
+    }
+
+    private void putRandomShip(int shipSize) {
+        Random random = new Random();
+        boolean shipSet = false;
+        while (!shipSet) {
+            boolean isVertical = random.nextBoolean();
+            int xMaxRand = isVertical ? 11 - shipSize : 10;
+            int yMaxRand = isVertical ? 10 : 11 - shipSize;
+            try {
+                Ship ship = ShipFactory
+                        .shipFor(random.nextInt(xMaxRand), random.nextInt(yMaxRand), isVertical, shipSize, board);
+                boolean added = board.addShip(ship);
+                if (added) {
+                    shipSet = true;
+                }
+            } catch (IllegalArgumentException | CellOutOfBoundsException ignored) {
+            }
+        }
     }
 
     private Board verifyMatrixIsValidBoard() {

@@ -6,6 +6,7 @@ import java.util.List;
 
 import static com.stashuk.game.smartfox.battleship.utils.ConversionUtil.booleanMatrixFromList;
 import static java.util.Arrays.asList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 public class BoardFactoryTest {
@@ -87,5 +88,11 @@ public class BoardFactoryTest {
 
         assertThatExceptionOfType(IllegalArgumentException.class)
                 .isThrownBy(() -> new BoardFactory().boardFromMatrix(booleans));
+    }
+
+    @Test()
+    public void testRandomBoard() {
+        Board board = new BoardFactory().newRandomBoard();
+        assertThat(board.isComplete()).isTrue();
     }
 }

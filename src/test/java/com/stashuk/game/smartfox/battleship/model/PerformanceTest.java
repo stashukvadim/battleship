@@ -1,15 +1,15 @@
 package com.stashuk.game.smartfox.battleship.model;
 
-import com.stashuk.game.smartfox.battleship.utils.TestUtil;
 import org.junit.Test;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class PerformanceTest {
-    @Test(timeout = 1000)
-    public void shouldCreateOneThousandBoardsInLessThanASecond() throws Exception {
-        for (int i = 0; i < 1000; i++) {
-            Board board = new Board();
-            TestUtil.putHardCodedShips(board);
-            String s = board.toString();
+    @Test(timeout = 2000)
+    public void shouldCreateFiveThousandRandomBoardsInLessThanTwoSeconds() {
+        for (int i = 0; i < 5000; i++) {
+            Board board = new BoardFactory().newRandomBoard();
+            assertThat(board.isComplete()).isTrue();
         }
     }
 }

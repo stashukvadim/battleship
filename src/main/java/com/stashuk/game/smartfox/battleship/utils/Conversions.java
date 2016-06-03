@@ -5,7 +5,7 @@ import com.stashuk.game.smartfox.battleship.model.Board;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ConversionUtil {
+public class Conversions {
     public static int[][] intMatrixFromList(List<Integer> list) {
         int[][] result = new int[10][10];
         for (int i = 0; i < 10; i++) {

@@ -10,7 +10,7 @@ import com.stashuk.game.smartfox.battleship.model.Board;
 import com.stashuk.game.smartfox.battleship.model.BoardFactory;
 
 import static com.stashuk.game.smartfox.battleship.controller.BattleshipExtension.RESPONSE_RANDOM_BOARD;
-import static com.stashuk.game.smartfox.battleship.utils.ConversionUtil.boardToIntList;
+import static com.stashuk.game.smartfox.battleship.utils.Conversions.boardToIntList;
 
 public class GetRandomBoardHandler extends BaseClientRequestHandler {
 

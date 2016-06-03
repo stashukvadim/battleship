@@ -1,9 +1,6 @@
 package com.stashuk.game.smartfox.battleship.utils;
 
-import com.stashuk.game.smartfox.battleship.model.Cell;
 import com.stashuk.game.smartfox.battleship.model.CellOutOfBoundsException;
-
-import java.util.List;
 
 public class Verifications {
     public static boolean correctCoordinates(int x, int y) {
@@ -21,14 +18,6 @@ public class Verifications {
     public static void verifyCoordinatesCorrect(int x, int y) throws CellOutOfBoundsException {
         if (!coordinatesCorrect(x, y)) {
             throw new CellOutOfBoundsException(x, y);
-        }
-    }
-
-    public static void verifyCellsCorrect(List<Cell> cells) throws IllegalArgumentException {
-        for (Cell cell : cells) {
-            if (!cell.isAvailable()) {
-                throw new IllegalArgumentException("This cell is already occupied " + cell);
-            }
         }
     }
 }

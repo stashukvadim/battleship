@@ -10,8 +10,8 @@ import com.stashuk.game.smartfox.battleship.model.Board;
 import com.stashuk.game.smartfox.battleship.model.FireResult;
 
 import static com.stashuk.game.smartfox.battleship.model.FireResult.MISSED;
-import static com.stashuk.game.smartfox.battleship.utils.ConversionUtil.xFrom;
-import static com.stashuk.game.smartfox.battleship.utils.ConversionUtil.yFrom;
+import static com.stashuk.game.smartfox.battleship.utils.Conversions.xFrom;
+import static com.stashuk.game.smartfox.battleship.utils.Conversions.yFrom;
 
 public class MoveController extends BaseClientRequestHandler {
     @Override

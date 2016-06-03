@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static com.stashuk.game.smartfox.battleship.utils.ConversionUtil.booleanMatrixFromList;
+import static com.stashuk.game.smartfox.battleship.utils.Conversions.booleanMatrixFromList;
 import static java.util.Arrays.asList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatExceptionOfType;

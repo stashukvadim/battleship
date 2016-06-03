@@ -8,7 +8,7 @@ import com.smartfoxserver.v2.extensions.BaseClientRequestHandler;
 import com.stashuk.game.smartfox.battleship.controller.BattleshipExtension;
 import com.stashuk.game.smartfox.battleship.model.Board;
 import com.stashuk.game.smartfox.battleship.model.BoardFactory;
-import com.stashuk.game.smartfox.battleship.utils.ConversionUtil;
+import com.stashuk.game.smartfox.battleship.utils.Conversions;
 
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class BoardReceivedHandler extends BaseClientRequestHandler {
         trace("in BoardReceivedHandler. User = " + user);
         List<Integer> boardAsList = (List<Integer>) params.getIntArray("board");
         trace("board = " + boardAsList);
-        boolean[][] booleans = ConversionUtil.booleanMatrixFromList(boardAsList);
+        boolean[][] booleans = Conversions.booleanMatrixFromList(boardAsList);
 
         Board verifiedBoard = null;
         SFSObject response = new SFSObject();

@@ -15,7 +15,7 @@ import java.util.List;
 
 import static com.smartfoxserver.v2.core.SFSEventType.USER_DISCONNECT;
 import static com.smartfoxserver.v2.core.SFSEventType.USER_LEAVE_ROOM;
-import static com.stashuk.game.smartfox.battleship.utils.ConversionUtil.boardToIntList;
+import static com.stashuk.game.smartfox.battleship.utils.Conversions.boardToIntList;
 import static java.util.stream.Collectors.toList;
 
 public class BattleshipExtension extends SFSExtension {

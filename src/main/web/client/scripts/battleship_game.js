@@ -9,7 +9,7 @@ function initGame() {
     hide(cons.GAME_BOX);
     show(cons.INFO_BOX);
     show(cons.LEAVE_GAME_BT);
-    show(cons.PUT_DEFAULT_SHIPS_BUTTON);
+    show(cons.PUT_RANDOM_SHIPS_BUTTON);
     info("Please add ships.");
 }
 
@@ -50,6 +50,9 @@ function onExtensionResponse(evt) {
             break;
         case servResp.OPPONENT_LEFT:
             handleOpponentLeft();
+            break;
+        case servResp.RANDOM_BOARD:
+            handleRandomBoard(params);
             break;
     }
 }

@@ -6,6 +6,7 @@ import com.smartfoxserver.v2.entities.data.ISFSObject;
 import com.smartfoxserver.v2.entities.data.SFSObject;
 import com.smartfoxserver.v2.extensions.SFSExtension;
 import com.stashuk.game.smartfox.battleship.handler.BoardReceivedHandler;
+import com.stashuk.game.smartfox.battleship.handler.GetRandomBoardHandler;
 import com.stashuk.game.smartfox.battleship.handler.MoveController;
 import com.stashuk.game.smartfox.battleship.handler.UserLeftHandler;
 import com.stashuk.game.smartfox.battleship.model.Board;
@@ -20,8 +21,10 @@ import static java.util.stream.Collectors.toList;
 public class BattleshipExtension extends SFSExtension {
     public static final String REQUEST_FIRE = "fire";
     public static final String REQUEST_SEND_BOARD = "sendBoard";
+    public static final String REQUEST_GET_RANDOM_BOARD = "getRandomBoard";
 
     public static final String RESPONSE_BOARDS_UPDATE = "boardsUpdate";
+    public static final String RESPONSE_RANDOM_BOARD = "randomBoard";
     public static final String RESPONSE_GAME_OVER = "gameOver";
     public static final String RESPONSE_START = "start";
     public static final String RESPONSE_BOARD_CHECK_RESULT = "boardCheckResult";
@@ -39,6 +42,7 @@ public class BattleshipExtension extends SFSExtension {
 
         addRequestHandler(REQUEST_FIRE, MoveController.class);
         addRequestHandler(REQUEST_SEND_BOARD, BoardReceivedHandler.class);
+        addRequestHandler(REQUEST_GET_RANDOM_BOARD, GetRandomBoardHandler.class);
         addEventHandler(USER_DISCONNECT, UserLeftHandler.class);
         addEventHandler(USER_LEAVE_ROOM, UserLeftHandler.class);
     }
@@ -122,8 +126,7 @@ public class BattleshipExtension extends SFSExtension {
             response.putIntArray("board", boardToIntList(board));
             List<Integer> oppBoardList;
             if (!gameOver) {
-                oppBoardList = boardToIntList(enemyBoard).stream().map(i -> i == 1 ? 0 : i)
-                                                         .collect(toList());
+                oppBoardList = boardToIntList(enemyBoard).stream().map(i -> i == 1 ? 0 : i).collect(toList());
             } else {
                 oppBoardList = boardToIntList(enemyBoard);
             }

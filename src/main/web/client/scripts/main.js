@@ -52,7 +52,7 @@ function init() {
     // Show LOGIN view
     setView("login", true);
     hide(cons.LEAVE_GAME_BT);
-    hide(cons.PUT_DEFAULT_SHIPS_BUTTON);
+    hide(cons.PUT_RANDOM_SHIPS_BUTTON);
     hide(cons.INFO_BOX);
 }
 

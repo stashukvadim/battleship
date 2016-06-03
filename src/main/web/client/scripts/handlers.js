@@ -1,7 +1,7 @@
 function startGame(params) {
     disablePlayerBoard();
     activateEnemyBoard();
-    hide(cons.PUT_DEFAULT_SHIPS_BUTTON);
+    hide(cons.PUT_RANDOM_SHIPS_BUTTON);
     trace("Let the game begin!!!", true);
 }
 
@@ -11,6 +11,14 @@ function updateBoards(params) {
     updateBoard(params.board);
     updateBoard(params.enemyBoard, true);
     updateBoardsColor();
+}
+function handleRandomBoard(params){
+    disablePlayerBoard();
+    updateBoard(params.randomBoard);
+    hide(cons.PUT_RANDOM_SHIPS_BUTTON);
+    updateBoardsColor();
+    info("Waiting for another player...");
+    trace("Received random board from server.");
 }
 
 function gameOver(params) {
@@ -31,6 +39,6 @@ function handleBoardCheckResult(params) {
 }
 
 function handleOpponentLeft() {
-    info("Your opponent left the game :(");
     gameOver();
+    info("Your opponent left the game :(");
 }

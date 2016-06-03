@@ -153,7 +153,7 @@ function destroyGame() {
     trace("in destroyGame()");
     hide(cons.LEAVE_GAME_BT);
     hide(cons.INFO_BOX);
-    hide(cons.PUT_DEFAULT_SHIPS_BUTTON);
+    hide(cons.PUT_RANDOM_SHIPS_BUTTON);
 }
 
 function hide(selector) {
@@ -178,6 +178,10 @@ function putDefaultShips() {
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
     countCells = 19;
     addCell(0);
+}
+
+function putRandomShips(){
+    sfs.send(new SFS2X.Requests.System.ExtensionRequest(clientReq.GET_RANDOM_BOARD, {}, sfs.lastJoinedRoom));
 }
 
 function info(message) {
